@@ -1,0 +1,1029 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WDT4vRO</title>
+  <link rel="stylesheet" href="https://unpkg.com/@clr/ui/clr-ui.min.css" />
+  <link rel="stylesheet" href="https://unpkg.com/@clr/icons/clr-icons.min.css" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="https://unpkg.com/svg2pdf.js@2.3.4/dist/svg2pdf.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Metropolis:wght@400;700&display=swap');
+    body {
+      font-family: 'Metropolis', Arial, sans-serif;
+      font-size: 14px;
+      background-color: #f7fafd;
+      margin: 0;
+      padding: 0;
+    }
+
+    h1 {
+      font-family: 'Metropolis', Arial, sans-serif;
+      color: #007cbb;
+      text-align: center;
+      margin-top: 20px;
+      font-size: 24px;
+    }
+
+    .upload-section {
+      font-family: 'Metropolis', Arial, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin: 20px;
+      font-size: 14px;
+      gap: 10px;
+    }
+
+    #graph {
+      border: 1px solid #ccc;
+      margin: 20px auto;
+      background-color: #ffffff;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      padding: 20px;
+      max-width: 90%;
+      text-align: center;
+      overflow: auto;
+    }
+
+    .details {
+      font-family: 'Metropolis', Arial, sans-serif;
+      margin: 20px auto;
+      max-width: 90%;
+      background-color: #ffffff;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      padding: 20px;
+      font-size: 14px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 14px;
+    }
+
+    th, td {
+      font-family: 'Metropolis', Arial, sans-serif;
+      border: 1px solid #ccc;
+      padding: 8px;
+      text-align: left;
+    }
+
+    th {
+      font-family: 'Metropolis', Arial, sans-serif;
+      background-color: #007cbb;
+      color: #ffffff;
+    }
+
+    pre {
+      white-space: pre-wrap;
+      word-wrap: break-word;
+      background-color: #f8f8f8;
+      padding: 10px;
+      border-radius: 4px;
+    }
+    
+    button {
+      padding: 8px 16px;
+      background-color: #007cbb;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-family: 'Metropolis', Arial, sans-serif;
+    }
+    
+    button:hover {
+      background-color: #0069a3;
+    }
+
+    .error {
+      color: red;
+      background-color: #ffe6e6;
+      padding: 10px;
+      border-radius: 4px;
+      margin: 10px 0;
+    }
+
+    .success {
+      color: green;
+      background-color: #e6ffe6;
+      padding: 10px;
+      border-radius: 4px;
+      margin: 10px 0;
+    }
+
+    .top-bar {
+      background: #001437;
+      border-bottom: 1px solid #001437;
+      padding: 16px 32px;
+      display: flex;
+      align-items: center;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.03);
+      margin-bottom: 0;
+    }
+    .top-bar .icon {
+      width: 32px;
+      height: 32px;
+      margin-right: 16px;
+      display: inline-block;
+      vertical-align: middle;
+    }
+    .top-bar .title {
+      font-family: 'Metropolis', Arial, sans-serif;
+      color: #fff;
+      letter-spacing: 0.5px;
+      text-align: left;
+      display: inline-block;
+      vertical-align: middle;
+      cursor: pointer;
+    }
+    .themed-input[type="file"] {
+      display: none;
+    }
+    .welcome-box, .welcome-notes, .welcome-box ul, .welcome-box li {
+      font-family: 'Metropolis', Arial, sans-serif;
+    }
+    .btn.btn-primary {
+      background: #007cbb !important;
+      color: #fff !important;
+      border: none !important;
+      font-family: 'Metropolis', Arial, sans-serif;
+      font-size: 12px;
+      font-weight: bold;
+      border-radius: 6px;
+      padding: 12px 32px;
+      box-shadow: 0 2px 8px rgba(0,124,187,0.08);
+      transition: background 0.2s;
+    }
+    .btn.btn-primary:hover {
+      background: #005b8a !important;
+    }
+    .welcome-box {
+      background: #fff;
+      border-radius: 16px;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.07);
+      max-width: 1400px;
+      min-width: 900px;
+      min-height: 420px;
+      margin: 40px auto 32px auto;
+      display: flex;
+      align-items: center;
+      padding: 48px 60px;
+      justify-content: space-between;
+      gap: 48px;
+      position: relative;
+    }
+    .welcome-notes {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      align-items: flex-start;
+      text-align: left;
+      height: 100%;
+    }
+    .welcome-notes h2 {
+      font-size: 1.5rem;
+      font-weight: bold;
+      margin-bottom: 12px;
+    }
+    .welcome-notes .welcome-desc {
+      font-size: 0.6rem;
+      font-weight: 400;
+      margin-bottom: 10px;
+    }
+    .welcome-notes ul {
+      font-size: 0.6rem;
+      margin-top: 0;
+      margin-bottom: 0;
+      padding-left: 20px;
+    }
+    .welcome-graphic {
+      flex-shrink: 0;
+      width: 40%;
+      min-height: 320px;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      position: relative;
+      overflow: hidden;
+    }
+    .dot-bg {
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 0;
+      background-image: radial-gradient(#e0e4ea 1.5px, transparent 1.5px);
+      background-size: 18px 18px;
+      background-position: 0 0;
+    }
+    .welcome-graphic img {
+      max-width: 100%;
+      max-height: 100%;
+      object-fit: contain;
+      position: relative;
+      z-index: 1;
+    }
+    .welcome-upload-bottom {
+      position: absolute;
+      left: 60px;
+      bottom: 48px;
+      z-index: 2;
+    }
+    .upload-section {
+      margin-top: 24px;
+      display: flex;
+      justify-content: flex-start;
+    }
+    .no-script {
+      padding: 10px;
+      color: #666;
+      font-style: italic;
+      border: 1px dashed #ccc;
+      text-align: center;
+    }
+
+    .footer-note {
+      width: 100%;
+      text-align: center;
+      font-size: 0.85rem;
+      color: #888;
+      margin-top: 32px;
+      margin-bottom: 12px;
+      letter-spacing: 0.02em;
+      font-family: 'Metropolis', Arial, sans-serif;
+    }
+    #messages {
+      /* Add font family for all messages */
+      font-family: 'Metropolis', Arial, sans-serif;
+    }
+    #messages > div {
+      font-family: 'Metropolis', Arial, sans-serif;
+    }
+    #downloadPdfBtn {
+      display: none;
+    }
+    .details-main-heading {
+      font-size: 2.2rem;
+      font-weight: 900;
+      margin-bottom: 32px;
+      margin-top: 0;
+      letter-spacing: 0.01em;
+    }
+    .details-section-heading {
+      font-size: 1.25rem;
+      font-weight: 700;
+      margin-top: 32px;
+      margin-bottom: 18px;
+      letter-spacing: 0.01em;
+    }
+  </style>
+  <script src="https://cdn.jsdelivr.net/npm/monaco-editor@0.44.0/min/vs/loader.js"></script>
+  <script src="https://unpkg.com/@clr/icons/clr-icons.min.js"></script>
+</head>
+<body>
+  <div class="top-bar">
+    <img src="assets/wdt4vro_icon.svg" class="icon" alt="Workflow Icon" />
+    <span class="title" id="mainTitle">Workflow Documentation Tool for Aria Automation Orchestrator</span>
+    <div id="topBarActions" style="margin-left:auto; display:flex; align-items:center;">
+      <span id="zoomControls" style="display:none; margin-right: 12px;">
+        <button id="zoomInBtn" class="btn btn-primary" style="padding: 6px 10px; margin-right: 4px; min-width: 0; width: 36px; height: 36px; display: inline-flex; align-items: center; justify-content: center;">
+          <span style="font-size: 20px; color: #fff;">&#x2b;</span> <!-- Plus sign for zoom in -->
+        </button>
+        <button id="zoomOutBtn" class="btn btn-primary" style="padding: 6px 10px; min-width: 0; width: 36px; height: 36px; display: inline-flex; align-items: center; justify-content: center;">
+          <span style="font-size: 20px; color: #fff;">&#x2212;</span> <!-- Minus sign for zoom out -->
+        </button>
+      </span>
+      <button id="downloadPdfBtn" class="btn btn-primary" style="display:none; margin-left: 24px;">Download as PDF</button>
+    </div>
+  </div>
+  <div class="welcome-box">
+    <div class="welcome-notes">
+      <h2>Welcome to WDT4vRO</h2>
+      <p class="welcome-desc">Workflow Documentation Tool for Aria Automation Orchestrator helps you visualize, document, and understand vRO workflows with clarity. Upload your vRO workflow XML and instantly see a diagram that matches the real vRO designer, complete with icons, arrows, and details for every node.</p>
+      <ul>
+        <li>SVG diagram with vRO-style icons and layout</li>
+        <li>Automatic start and error handler nodes</li>
+        <li>Monaco-powered code viewer for scripts</li>
+        <li>Modern, accessible UI</li>
+      </ul>
+    </div>
+    <div class="welcome-graphic">
+      <div class="dot-bg"></div>
+      <img src="assets/welcome-note-image.png" alt="Workflow Graphic" />
+    </div>
+    <div class="welcome-upload-bottom">
+      <label for="fileUpload" class="btn btn-primary" style="margin-right: 0; cursor:pointer;">
+        Choose File
+      </label>
+      <input type="file" id="fileUpload" accept=".xml" class="themed-input">
+    </div>
+  </div>
+  <div id="messages"></div>
+  <div id="exportArea">
+    <div id="graphZoomContainer" style="display:none; width: 100%; height: 100%; overflow: auto;">
+  <div id="graph"></div>
+    </div>
+    <div class="details" style="display:none;">
+    <div id="details"></div>
+    </div>
+  </div>
+
+  <footer class="footer-note">
+    Developed by Mayank Goyal (mayankgoyalmax@gmail.com) &bull; Made with <span style="color:#e25555;">&hearts;</span>
+  </footer>
+
+  <script>
+    // Icon mapping for different workflow item types and prototype-ids
+    const iconMapping = {
+      "end": "icons/end.svg",
+      "scriptable-task": "icons/scriptable-task.svg",
+      "custom-condition": "icons/decision.svg",
+      "input": "icons/user-interaction.svg",
+      "waiting-timer": "icons/waiting-timer.svg",
+      "waiting-event": "icons/waiting-event.svg",
+      "action": "icons/action.svg",
+      "workflow": "icons/workflow.svg",
+      "foreach": "icons/foreach-element.svg",
+      "multiple": "icons/nested-workflow.svg",
+      "decision-activity": "icons/decision-activity.svg",
+      "switch": "icons/switch.svg",
+      "task:prototype-id=change-credential": "icons/change-credential.svg",
+      "task:prototype-id=sleep": "icons/sleep.svg",
+      "task:prototype-id=wait-until-date": "icons/wait-until-date.svg",
+      "task:prototype-id=wait-custom-event": "icons/wait-custom-event.svg",
+      "task:prototype-id=send-custom-event": "icons/send-custom-event.svg",
+      "task:prototype-id=increase-counter": "icons/increase-counter.svg",
+      "task:prototype-id=decrease-counter": "icons/decrease-counter.svg",
+      "task:prototype-id=system-log": "icons/system-log.svg",
+      "task:prototype-id=system-warning": "icons/system-warning.svg",
+      "task:prototype-id=system-error": "icons/system-error.svg",
+      "task:prototype-id=server-log": "icons/server-log.svg",
+      "task:prototype-id=server-warning": "icons/server-warning.svg",
+      "task:prototype-id=server-error": "icons/server-error.svg",
+      "task:prototype-id=system-server-log": "icons/system-server-log.svg",
+      "task:prototype-id=system-server-warning": "icons/system-server-warning.svg",
+      "task:prototype-id=system-server-error": "icons/system-server-error.svg",
+      "task:prototype-id=http-post": "icons/http-post.svg",
+      "task:prototype-id=http-get": "icons/http-get.svg",
+      "start": "icons/start.svg",
+      "default": "icons/workflow.svg"
+    };
+
+    // Color mapping for different node types
+    const colorMapping = {
+      "task": "#4CAF50",
+      "scriptable-task": "#4CAF50",
+      "action": "#4CAF50", 
+      "condition": "#FF9800",
+      "decision": "#FF9800",
+      "end": "#F44336",
+      "start": "#2196F3",
+      "workflow": "#2196F3",
+      "default": "#9E9E9E"
+    };
+
+    // Helper to get icon for a node
+    function getIconForNode(item) {
+      const type = item.getAttribute("type");
+      const prototypeId = item.getAttribute("prototype-id");
+      const scriptModule = item.getAttribute("script-module");
+      
+      // Special case: End node with end-mode="1" should use exception icon
+      if (type === "end" && item.getAttribute("end-mode") === "1") {
+        return "icons/exception.svg";
+      }
+
+      // Special case: Task with script-module should use action icon
+      if (type === "task" && scriptModule) {
+        return "icons/action.svg";
+      }
+      
+      // Special case: Schedule workflow
+      if (type === "task") {
+        // Check for input binding named workflowScheduleDate and output binding named scheduledTask
+        const inBinds = Array.from(item.getElementsByTagName("in-binding")[0]?.getElementsByTagName("bind") || []);
+        const outBinds = Array.from(item.getElementsByTagName("out-binding")[0]?.getElementsByTagName("bind") || []);
+        const hasScheduleInput = inBinds.some(b => b.getAttribute("name") === "workflowScheduleDate");
+        const hasScheduleOutput = outBinds.some(b => b.getAttribute("name") === "scheduledTask");
+        if (hasScheduleInput && hasScheduleOutput) {
+          return "icons/schedule-workflow.svg";
+        }
+      }
+
+      if (prototypeId && iconMapping[type + ":prototype-id=" + prototypeId]) {
+        return iconMapping[type + ":prototype-id=" + prototypeId];
+      }
+      if (iconMapping[type]) {
+        return iconMapping[type];
+      }
+      return iconMapping["default"];
+    }
+
+    // Function to show messages to user
+    function showMessage(message, type = 'info') {
+      const messagesDiv = document.getElementById('messages');
+      const messageDiv = document.createElement('div');
+      messageDiv.className = type;
+      messageDiv.textContent = message;
+      messagesDiv.innerHTML = '';
+      messagesDiv.appendChild(messageDiv);
+      
+      // Auto-hide after 5 seconds
+      setTimeout(() => {
+        if (messagesDiv.contains(messageDiv)) {
+          messagesDiv.removeChild(messageDiv);
+        }
+      }, 5000);
+    }
+
+    // Function to create node positions using simple layout algorithm
+    // Replace the calculateNodePositions function with this improved version
+    function calculateNodePositions(workflowItems) {
+      const positions = {};
+      const nodeWidth = 120;
+      const nodeHeight = 100;
+      let minX = Infinity, minY = Infinity;
+
+      workflowItems.forEach(item => {
+        const posElem = item.getElementsByTagName("position")[0];
+        if (posElem) {
+          const x = parseFloat(posElem.getAttribute("x")) || 0;
+          const y = parseFloat(posElem.getAttribute("y")) || 0;
+          if (x < minX) minX = x;
+          if (y < minY) minY = y;
+        }
+      });
+
+      // Use different scales for x and y
+      const scaleX = 1.5; // Try 3, 4, or 5 for tighter layout
+      const scaleY = 3; // Keep as is, or adjust for vertical spacing
+
+      workflowItems.forEach(item => {
+        const name = item.getAttribute("name");
+        const posElem = item.getElementsByTagName("position")[0];
+        let x = 0, y = 0;
+        if (posElem) {
+          x = (parseFloat(posElem.getAttribute("x")) || 0) - minX;
+          y = (parseFloat(posElem.getAttribute("y")) || 0) - minY;
+        }
+        positions[name] = {
+          x: x * scaleX + 60,
+          y: y * scaleY + 60,
+          width: nodeWidth,
+          height: nodeHeight
+        };
+      });
+
+      // Calculate minimum x among all nodes
+      minX = Math.min(...Object.values(positions).map(p => p.x));
+      // Desired left margin for the start node
+      const leftMargin = 60;
+      const startNodeWidth = 120;
+      const offset = leftMargin + startNodeWidth + 20 - minX; // 20px gap after start node
+      // Shift all nodes to the right by 'offset'
+      Object.values(positions).forEach(pos => {
+        pos.x += offset;
+      });
+
+      return positions;
+    }
+
+    // Fallback simple grid layout
+    function simpleGridLayout(workflowItems) {
+      const positions = {};
+      const nodeWidth = 120;
+      const nodeHeight = 100;
+      const horizontalSpacing = 180;
+      const verticalSpacing = 150;
+      
+      workflowItems.forEach((item, index) => {
+        const name = item.getAttribute("name");
+        const row = Math.floor(index / 4);
+        const col = index % 4;
+        
+        positions[name] = {
+          x: col * horizontalSpacing + 60,
+          y: row * verticalSpacing + 60,
+          width: nodeWidth,
+          height: nodeHeight
+        };
+      });
+      
+      return positions;
+    }
+    // Function to create arrow path between two points (center to center)
+    function createArrowPath(x1, y1, x2, y2) {
+      const dx = x2 - x1;
+      const dy = y2 - y1;
+      const length = Math.sqrt(dx * dx + dy * dy);
+      if (length === 0) return '';
+      // Normalize direction
+      const unitX = dx / length;
+      const unitY = dy / length;
+      // Node dimensions
+      const nodeWidth = 120;
+      const nodeHeight = 100;
+      
+      // Adjust vertical position - connect at 40% height instead of center (50%)
+      // This accounts for the icon taking more space at the top
+      const verticalOffset = nodeHeight * 0.1; // 10% up from center
+      
+      // Start at edge of source node, adjusted vertically
+      const startX = x1 + unitX * (nodeWidth / 2);
+      const startY = y1 - verticalOffset + unitY * (nodeHeight / 2);
+      // End at edge of target node, adjusted vertically
+      const endX = x2 - unitX * (nodeWidth / 2);
+      const endY = y2 - verticalOffset - unitY * (nodeHeight / 2);
+      
+      return `M${startX},${startY} L${endX},${endY}`;
+    }
+
+    document.getElementById('fileUpload').addEventListener('change', (e) => {
+      const file = e.target.files[0];
+      if (!file) {
+        showMessage('Please upload a file first.', 'error');
+        return;
+      }
+      showMessage('Processing workflow...', 'success');
+      const reader = new FileReader();
+      reader.onload = function(event) {
+        try {
+          const workflowXML = event.target.result;
+          const parser = new DOMParser();
+          const xmlDoc = parser.parseFromString(workflowXML, "application/xml");
+          if (xmlDoc.getElementsByTagName("parsererror").length > 0) {
+            throw new Error('Error parsing XML file. Please check the file format.');
+          }
+          const workflowItems = Array.from(xmlDoc.getElementsByTagName("workflow-item"));
+          const inputs = Array.from(xmlDoc.getElementsByTagName("input")[0]?.getElementsByTagName("param") || []);
+          const outputs = Array.from(xmlDoc.getElementsByTagName("output")[0]?.getElementsByTagName("param") || []);
+          if (workflowItems.length === 0) {
+            throw new Error('No workflow items found in the XML file.');
+          }
+          // Patch: treat type=task with no prototype-id and no script-module as scriptable-task
+          workflowItems.forEach(item => {
+            if (
+              item.getAttribute("type") === "task" &&
+              !item.hasAttribute("prototype-id") &&
+              !item.hasAttribute("script-module")
+            ) {
+              item.setAttribute("type", "scriptable-task");
+            }
+          });
+          // Calculate positions for nodes
+          const positions = calculateNodePositions(workflowItems);
+          // Calculate SVG dimensions
+          const maxX = Math.max(...Object.values(positions).map(p => p.x + p.width));
+          const maxY = Math.max(...Object.values(positions).map(p => p.y + p.height));
+          const svgWidth = maxX + 60;
+          const svgHeight = maxY + 60;
+          // Create SVG with foreignObject nodes
+          let svgContent = `<svg width="${svgWidth}" height="${svgHeight}" viewBox="0 0 ${svgWidth} ${svgHeight}">
+            <defs>
+              <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+                <path d="M 0 0 L 10 5 L 0 10 z" fill="#0079ad"/>
+              </marker>
+              <marker id="arrow-green" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+                <path d="M 0 0 L 10 5 L 0 10 z" fill="green"/>
+              </marker>
+              <marker id="arrow-red" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+                <path d="M 0 0 L 10 5 L 0 10 z" fill="red"/>
+              </marker>
+            </defs>`;
+
+          // --- Error Handler Nodes ---
+          // Find all error-handler elements
+          const errorHandlers = Array.from(xmlDoc.getElementsByTagName("error-handler"));
+          // Build a list of error handler nodes to add
+          const errorHandlerNodes = [];
+          errorHandlers.forEach(eh => {
+            const targetName = eh.getAttribute("name");
+            if (targetName && positions[targetName]) {
+              // Position error handler node to the left of the referenced node
+              const targetPos = positions[targetName];
+              const errorHandlerName = `error-handler-${targetName}`;
+              // Place flush with left margin, same y as target
+              const errorHandlerX = 60; // left margin
+              const errorHandlerY = targetPos.y;
+              positions[errorHandlerName] = {
+                x: errorHandlerX,
+                y: errorHandlerY,
+                width: targetPos.width,
+                height: targetPos.height
+              };
+              errorHandlerNodes.push({
+                name: errorHandlerName,
+                label: "Error handler",
+                icon: "icons/error-handler.svg",
+                target: targetName,
+                pos: positions[errorHandlerName]
+              });
+            }
+          });
+
+          // --- Render nodes ---
+          // Add error handler nodes first
+          errorHandlerNodes.forEach(eh => {
+            svgContent += `
+            <!-- Error Handler Node: ${eh.name} -->
+            <g transform="translate(${eh.pos.x},${eh.pos.y})">
+              <foreignObject width="${eh.pos.width}" height="${eh.pos.height}">
+                <div xmlns="http://www.w3.org/1999/xhtml" style="
+                  display: inline-block;
+                  text-align: center;
+                  font-family: Arial;
+                  font-size: 12px;
+                  width: 100%;
+                  height: 100%;
+                ">
+                  <img src="${eh.icon}" 
+                       width="40" height="40" 
+                       style="display: block; margin: 0 auto;"
+                       onerror="this.style.display='none'"/>
+                  <div style="margin-top: 5px; font-weight: bold;">
+                    ${eh.label}
+                  </div>
+                </div>
+              </foreignObject>
+            </g>`;
+          });
+
+          // Add regular workflow nodes
+          workflowItems.forEach(item => {
+            const name = item.getAttribute("name");
+            let type = item.getAttribute("type") || "default";
+            let displayName = item.getElementsByTagName("display-name")[0]?.textContent || name;
+            // If type is 'link', treat as 'workflow'
+            if (type === 'link') {
+              type = 'workflow';
+              displayName = 'workflow';
+            }
+            // For end nodes, always show 'End' as the label
+            if (type === 'end') {
+              displayName = 'End';
+            }
+            const icon = getIconForNode(item);
+            const color = colorMapping[type] || colorMapping.default;
+            const pos = positions[name];
+
+            svgContent += `
+            <!-- Node: ${name} -->
+            <g transform="translate(${pos.x},${pos.y})">
+              <foreignObject width="${pos.width}" height="${pos.height}">
+                <div xmlns="http://www.w3.org/1999/xhtml" style="
+                  display: inline-block;
+                  text-align: center;
+                  font-family: Arial;
+                  font-size: 12px;
+                  width: 100%;
+                  height: 100%;
+                ">
+                  <img src="${icon}" 
+                       width="40" height="40" 
+                       style="display: block; margin: 0 auto;"
+                       onerror="this.style.display='none'"/>
+                  <div style="margin-top: 5px; font-weight: bold;">
+                    ${displayName}
+                  </div>
+                </div>
+              </foreignObject>
+            </g>`;
+          });
+
+          // Add connections/arrows
+          workflowItems.forEach(item => {
+            const name = item.getAttribute("name");
+            const outName = item.getAttribute("out-name");
+            const altOutName = item.getAttribute("alt-out-name");
+            const type = item.getAttribute("type") || "default";
+            
+            const fromPos = positions[name];
+            const fromX = fromPos.x + fromPos.width / 2;
+            const fromY = fromPos.y + fromPos.height / 2;
+
+            if (outName && positions[outName]) {
+              const toPos = positions[outName];
+              const toX = toPos.x + toPos.width / 2;
+              const toY = toPos.y + toPos.height / 2;
+              
+              const isDecision = type === "condition" || type === "decision" || type === "custom-condition" || type === "decision-activity";
+              const arrowColor = isDecision ? "green" : "#0079ad";
+              const markerId = isDecision ? "arrow-green" : "arrow";
+              const pathData = createArrowPath(fromX, fromY, toX, toY);
+              
+              if (pathData) {
+                svgContent += `
+                <path d="${pathData}" stroke="${arrowColor}" stroke-width="1.5" fill="none" marker-end="url(#${markerId})"/>`;
+                
+
+              }
+            }
+
+            if (altOutName && positions[altOutName]) {
+              const toPos = positions[altOutName];
+              const toX = toPos.x + toPos.width / 2;
+              const toY = toPos.y + toPos.height / 2;
+              
+              const pathData = createArrowPath(fromX, fromY, toX, toY);
+              
+              if (pathData) {
+                svgContent += `
+                <path d="${pathData}" stroke="red" stroke-width="2" stroke-dasharray="5,5" fill="none" marker-end="url(#arrow-red)"/>`;
+                
+
+              }
+            }
+          });
+
+          // --- Render error handler arrows ---
+          errorHandlerNodes.forEach(eh => {
+            // Draw from center of error handler node to center of target node using createArrowPath
+            const fromX = eh.pos.x + eh.pos.width / 2;
+            const fromY = eh.pos.y + eh.pos.height / 2;
+            const toPos = positions[eh.target];
+            const toX = toPos.x + toPos.width / 2;
+            const toY = toPos.y + toPos.height / 2;
+            const pathData = createArrowPath(fromX, fromY, toX, toY);
+            svgContent += `<path d="${pathData}" stroke="#0079ad" stroke-width="1.5" fill="none" marker-end="url(#arrow)"/>`;
+          });
+
+          // Find all node names
+          const allNodeNames = workflowItems.map(item => item.getAttribute("name"));
+          // Find all targets (nodes that are the destination of an arrow)
+          const targets = new Set();
+          workflowItems.forEach(item => {
+            const outName = item.getAttribute("out-name");
+            const altOutName = item.getAttribute("alt-out-name");
+            if (outName) targets.add(outName);
+            if (altOutName) targets.add(altOutName);
+          });
+          // Find all error handler targets
+          const errorHandlerTargets = new Set(errorHandlerNodes.map(eh => eh.target));
+          // True start nodes: those with no incoming arrows
+          const startCandidates = allNodeNames.filter(name => !targets.has(name) && !errorHandlerTargets.has(name));
+
+          // Build up start node SVGs and arrows
+          let startNodesSVG = '';
+          let startArrowsSVG = '';
+          startCandidates.forEach((startNodeName, idx) => {
+            const pos = positions[startNodeName];
+            const startNodeX = pos.x - 180;
+            const startNodeY = pos.y;
+            startNodesSVG += `
+              <g transform="translate(${startNodeX},${startNodeY})">
+                <foreignObject width="120" height="100">
+                  <div xmlns="http://www.w3.org/1999/xhtml" style="display: inline-block; text-align: center; font-family: Arial; font-size: 12px; width: 100%; height: 100%;">
+                    <img src="icons/start.svg" width="40" height="40" style="display: block; margin: 0 auto;"/>
+                    <div style="margin-top: 5px; font-weight: bold;">Start</div>
+                  </div>
+                </foreignObject>
+              </g>
+            `;
+            // Draw an arrow from center of start node to center of target node using createArrowPath
+            const fromX = startNodeX + 60; // center x of start node (120/2)
+            const fromY = startNodeY + 50; // center y of start node (100/2)
+            const toX = pos.x + pos.width / 2;
+            const toY = pos.y + pos.height / 2;
+            const pathData = createArrowPath(fromX, fromY, toX, toY);
+            startArrowsSVG += `<path d="${pathData}" stroke="#0079ad" stroke-width="1.5" fill="none" marker-end="url(#arrow)"/>`;
+          });
+          // Insert start nodes/arrows right after the <svg ...> tag
+          svgContent = svgContent.replace(/(<svg[^>]*>)/, `$1${startNodesSVG}${startArrowsSVG}`);
+
+          svgContent += '</svg>';
+
+          // Hide welcome box, show graph, details, and download button
+          document.querySelector('.welcome-box').style.display = 'none';
+          const graphZoomContainer = document.getElementById("graphZoomContainer");
+          graphZoomContainer.style.display = '';
+              const graphDiv = document.getElementById("graph");
+          graphDiv.style.display = '';
+          const detailsDiv = document.querySelector('.details');
+          detailsDiv.style.display = '';
+          const downloadBtn = document.getElementById('downloadPdfBtn');
+          downloadBtn.style.display = 'inline-block';
+          // Show zoom controls after workflow upload
+          const zoomControls = document.getElementById('zoomControls');
+          if (zoomControls) zoomControls.style.display = '';
+          showMessage('Download as PDF button is now visible.', 'success');
+          console.log('Download as PDF button should now be visible.');
+          graphDiv.innerHTML = svgContent;
+          // Update details section
+          updateDetails(xmlDoc, workflowItems, inputs, outputs);
+          showMessage('Workflow processed successfully!', 'success');
+          // Reset zoom on new diagram
+          currentZoom = 1.0;
+          const svg = graphDiv.querySelector('svg');
+          if (svg) {
+            svg.style.transform = `scale(${currentZoom})`;
+            svg.style.transformOrigin = 'top left';
+            svg.style.display = 'block';
+          }
+
+        } catch (error) {
+          console.error('Error processing file:', error);
+          showMessage(`Error: ${error.message}`, 'error');
+        }
+      };
+      reader.readAsText(file);
+    });
+    
+    function updateDetails(xmlDoc, workflowItems, inputs, outputs) {
+          const detailsDiv = document.getElementById("details");
+      // Workflow-level details
+      const workflowInputs = inputs.map(input => 
+        `<tr><td>${input.getAttribute("name")}</td><td>${input.getAttribute("type")}</td></tr>`
+      ).join("") || "<tr><td colspan='2'>No workflow inputs</td></tr>";
+      const workflowOutputs = outputs.map(output => 
+        `<tr><td>${output.getAttribute("name")}</td><td>${output.getAttribute("type")}</td></tr>`
+      ).join("") || "<tr><td colspan='2'>No workflow outputs</td></tr>";
+          const workflowAttributes = Array.from(xmlDoc.getElementsByTagName("attrib")).map(attr => {
+            const name = attr.getAttribute("name");
+            const type = attr.getAttribute("type");
+            const value = attr.getElementsByTagName("value")[0]?.textContent || "No value";
+        return `<tr><td>${name}</td><td>${type}</td><td>${value}</td></tr>`;
+      }).join("") || "<tr><td colspan='3'>No workflow attributes</td></tr>";
+      // Workflow items details (skip end/item0 nodes)
+      const itemsDetails = workflowItems.filter(item => {
+        const name = item.getAttribute("name");
+        const type = item.getAttribute("type") || "default";
+        // Exclude end nodes and item0
+        return type !== "end" && name !== "item0";
+      }).map(item => {
+        const name = item.getAttribute("name");
+        const type = item.getAttribute("type") || "default";
+        const displayName = item.getElementsByTagName("display-name")[0]?.textContent || name;
+        const itemInputs = Array.from(item.getElementsByTagName("in-binding")[0]?.getElementsByTagName("bind") || []);
+        const itemOutputs = Array.from(item.getElementsByTagName("out-binding")[0]?.getElementsByTagName("bind") || []);
+        const script = item.getElementsByTagName("script")[0]?.textContent || "";
+        const scriptId = `monaco-script-${name}`;
+        return `
+          <div style="margin-bottom: 20px;">
+            <h4>${displayName} (${type})</h4>
+            <table border="1">
+              <tr>
+                <th colspan="2">Inputs</th>
+                <th colspan="2">Outputs</th>
+              </tr>
+              <tr>
+                <td colspan="2">
+                  ${itemInputs.length > 0 ? 
+                    `<table><tr><th>Name</th><th>Type</th></tr>
+                    ${itemInputs.map(input => 
+                      `<tr><td>${input.getAttribute("name")}</td><td>${input.getAttribute("type")}</td></tr>`
+                    ).join("")}</table>` 
+                    : "No inputs"}
+                </td>
+                <td colspan="2">
+                  ${itemOutputs.length > 0 ? 
+                    `<table><tr><th>Name</th><th>Type</th></tr>
+                    ${itemOutputs.map(output => 
+                      `<tr><td>${output.getAttribute("name")}</td><td>${output.getAttribute("type")}</td></tr>`
+                    ).join("")}</table>` 
+                    : "No outputs"}
+                </td>
+              </tr>
+              <tr>
+                <td colspan="4">
+                  <strong>Script:</strong>
+                  ${script ? `<div id="${scriptId}" class="monaco-script" style="height:${script.split('\n').length > 2 ? '300px' : '100px'};border:1px solid #eee;"></div>` : '<div class="no-script">No script content</div>'}
+                </td>
+              </tr>
+            </table>
+          </div>
+        `;
+      }).join("");
+      detailsDiv.innerHTML = `
+        <div class="details-section-heading">Workflow-Level Details</div>
+        <table border="1">
+          <tr>
+            <th colspan="2">Input Parameters</th>
+            <th colspan="2">Output Parameters</th>
+          </tr>
+          <tr>
+            <td colspan="2">
+              ${workflowInputs ? `<table><tr><th>Name</th><th>Type</th></tr>${workflowInputs}</table>` : "No inputs"}
+            </td>
+            <td colspan="2">
+              ${workflowOutputs ? `<table><tr><th>Name</th><th>Type</th></tr>${workflowOutputs}</table>` : "No outputs"}
+            </td>
+          </tr>
+          <tr>
+            <th colspan="4">Workflow Attributes</th>
+          </tr>
+          <tr>
+            <td colspan="4">
+              ${workflowAttributes ? `<table><tr><th>Name</th><th>Type</th><th>Value</th></tr>${workflowAttributes}</table>` : "No attributes"}
+            </td>
+          </tr>
+        </table>
+        <div class="details-section-heading">Workflow Items</div>
+        ${itemsDetails}
+      `;
+      // Initialize Monaco Editor for each script
+      if (typeof require !== 'undefined') {
+        require.config({ paths: { 'vs': 'https://cdn.jsdelivr.net/npm/monaco-editor@0.44.0/min/vs' } });
+        require(['vs/editor/editor.main'], function () {
+          workflowItems.forEach(item => {
+            const name = item.getAttribute("name");
+            const type = item.getAttribute("type") || "default";
+            if (type === "end" || name === "item0") return;
+            const script = item.getElementsByTagName("script")[0]?.textContent.trim() || "";
+            const scriptId = `monaco-script-${name}`;
+            const el = document.getElementById(scriptId);
+            if (!el) return;
+            
+            if (!script) {
+              el.innerHTML = '<div class="no-script">No script available</div>';
+              return;
+            }
+            
+            const lineCount = script.split('\n').length;
+            const editorHeight = lineCount <= 2 ? 100 : 300;
+            
+            monaco.editor.create(el, {
+              value: script,
+              language: 'javascript',
+              minimap: { enabled: false },
+              scrollBeyondLastLine: false,
+              automaticLayout: true,
+              theme: 'vs-dark',
+              lineNumbers: 'on',
+              fontSize: 12,
+              lineHeight: 18,
+              readOnly: true
+            });
+            
+            el.style.height = `${editorHeight}px`;
+          });
+        });
+      }
+    }
+
+    // Add click handler to title to return to welcome note view
+    document.addEventListener('DOMContentLoaded', function() {
+      const title = document.getElementById('mainTitle');
+      if (title) {
+        title.addEventListener('click', function() {
+          document.querySelector('.welcome-box').style.display = '';
+          document.getElementById('graphZoomContainer').style.display = 'none';
+          document.querySelector('.details').style.display = 'none';
+          const downloadBtn = document.getElementById('downloadPdfBtn');
+          downloadBtn.style.display = 'none';
+          // Hide zoom controls when returning to welcome screen
+          const zoomControls = document.getElementById('zoomControls');
+          if (zoomControls) zoomControls.style.display = 'none';
+        });
+      }
+    });
+
+    // Download as PDF logic
+    document.getElementById('downloadPdfBtn').addEventListener('click', function() {
+      const exportArea = document.getElementById('exportArea');
+      if (!exportArea) return;
+      html2canvas(exportArea, {backgroundColor: '#fff', scale: 2}).then(canvas => {
+        const imgData = canvas.toDataURL('image/png');
+        const imgWidth = canvas.width;
+        const imgHeight = canvas.height;
+        const { jsPDF } = window.jspdf;
+        // 1 px = 0.75 pt
+        const pdf = new jsPDF({
+          orientation: imgWidth > imgHeight ? 'l' : 'p',
+          unit: 'pt',
+          format: [imgWidth * 0.75, imgHeight * 0.75]
+        });
+        pdf.addImage(imgData, 'PNG', 0, 0, imgWidth * 0.75, imgHeight * 0.75);
+        pdf.save('workflow-documentation.pdf');
+      });
+    });
+
+    // Zoom controls logic
+    let currentZoom = 1.0;
+    const minZoom = 0.2;
+    const maxZoom = 3.0;
+    const zoomStep = 0.1;
+    document.getElementById('zoomInBtn').addEventListener('click', function() {
+      const svg = document.querySelector('#graph svg');
+      if (currentZoom < maxZoom && svg) {
+        currentZoom += zoomStep;
+        svg.style.transform = `scale(${currentZoom})`;
+        svg.style.transformOrigin = 'top left';
+      }
+    });
+    document.getElementById('zoomOutBtn').addEventListener('click', function() {
+      const svg = document.querySelector('#graph svg');
+      if (currentZoom > minZoom && svg) {
+        currentZoom -= zoomStep;
+        svg.style.transform = `scale(${currentZoom})`;
+        svg.style.transformOrigin = 'top left';
+      }
+    });
+  </script>
+</body>
+</html>
