@@ -1,0 +1,118 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<workflow xmlns="http://vmware.com/vco/workflow" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://vmware.com/vco/workflow http://vmware.com/vco/workflow/Workflow-v4.xsd" root-name="item1" object-name="workflow:name=generic" id="C98080808080808080808080808080805E80808001322751030482b80adf61e7c" version="0.0.0" api-version="6.0.0" allowed-operations="vf" restartMode="1" resumeFromFailedMode="0">
+  <display-name><![CDATA[Run program in guest]]></display-name>
+  <description><![CDATA[Starts a program in the guest operating system.
+A process started this way can have its status queried with this API. When the process completes, its exit code and end time will be available for 5 minutes after completion.]]></description>
+  <position y="50.0" x="100.0"/>
+  <input>
+    <param name="vmUsername" type="string">
+      <description><![CDATA[Username for the virtual machine]]></description>
+    </param>
+    <param name="vmPassword" type="SecureString">
+      <description><![CDATA[Password for the virtual machine]]></description>
+    </param>
+    <param name="vm" type="VC:VirtualMachine">
+      <description><![CDATA[Virtual machine]]></description>
+    </param>
+    <param name="interactiveSession" type="boolean">
+      <description><![CDATA[This is set to true if the client wants an interactive session in the guest.]]></description>
+    </param>
+    <param name="programPath" type="string">
+      <description><![CDATA[The absolute path to the program to start. For Linux guest operating systems, /bin/bash is used to start the program.  For Solaris guest operating systems, /bin/bash is used to start the program if it exists. Otherwise /bin/sh is used. If /bin/sh is used, then the process ID returned will be that of the shell used to start the program, rather than the program itself, due to the differences in how /bin/sh and /bin/bash work. This PID will still be usable for watching the process with this API to find its exit code and elapsed time. ]]></description>
+    </param>
+    <param name="arguments" type="string">
+      <description><![CDATA[The arguments to the program. In Linux and Solaris guest operating systems, the program will be executed by a guest shell. This allows stdio redirection, but may also require that characters which must be escaped to the shell also be escaped on the command line provided. For Windows guest operating systems, prefixing the command with "cmd /c" can provide stdio redirection. ]]></description>
+    </param>
+    <param name="workingDirectory" type="string">
+      <description><![CDATA[The absolute path of the working directory for the program to be run. VMware recommends explicitly setting the working directory for the program to be run. If this value is unset or is an empty string, the behavior depends on the guest operating system. For Linux guest operating systems, if this value is unset or is an empty string, the working directory will be the home directory of the user associated with the guest authentication. For other guest operating systems, if this value is unset, the behavior is unspecified. ]]></description>
+    </param>
+    <param name="environment" type="Array/string">
+      <description><![CDATA[An array of environment variables, specified in the guest OS notation (eg PATH=c:\bin;c:\windows\system32 or LD_LIBRARY_PATH=/usr/lib:/lib), to be set for the program being run. Note that these are not additions to the default environment variables; they define the complete set available to the program. If none are specified the values are guest dependent. ]]></description>
+    </param>
+  </input>
+  <output>
+    <param name="result" type="number">
+      <description><![CDATA[The pid of the program started.]]></description>
+    </param>
+  </output>
+  <workflow-item name="item0" type="end" end-mode="0">
+    <position y="45.40909090909091" x="384.5"/>
+  </workflow-item>
+  <workflow-item name="item1" out-name="item0" type="task">
+    <display-name><![CDATA[Scriptable task]]></display-name>
+    <script encoded="false"><![CDATA[var host = vm.sdkConnection;
+
+var guestOperationsManager = host.guestOperationsManager;
+var guestAuth = new VcNamePasswordAuthentication();
+guestAuth.username = vmUsername;
+guestAuth.password = vmPassword;
+guestAuth.interactiveSession = interactiveSession;
+
+var guestProgramSpec = new VcGuestProgramSpec();
+guestProgramSpec.programPath = programPath;
+guestProgramSpec.arguments = arguments;
+guestProgramSpec.workingDirectory = workingDirectory;
+guestProgramSpec.envVariables = environment;
+
+var processManager = guestOperationsManager.processManager;
+result = processManager.startProgramInGuest(vm , guestAuth , guestProgramSpec);]]></script>
+    <in-binding>
+      <bind name="vmUsername" type="string" export-name="vmUsername"/>
+      <bind name="vmPassword" type="SecureString" export-name="vmPassword"/>
+      <bind name="vm" type="VC:VirtualMachine" export-name="vm"/>
+      <bind name="programPath" type="string" export-name="programPath"/>
+      <bind name="arguments" type="string" export-name="arguments"/>
+      <bind name="workingDirectory" type="string" export-name="workingDirectory"/>
+      <bind name="environment" type="Array/string" export-name="environment"/>
+      <bind name="interactiveSession" type="boolean" export-name="interactiveSession"/>
+    </in-binding>
+    <out-binding>
+      <bind name="result" type="number" export-name="result"/>
+    </out-binding>
+    <position y="55.40909090909091" x="204.5"/>
+  </workflow-item>
+  <presentation>
+    <p-param name="vmUsername">
+      <desc><![CDATA[Username for the virtual machine]]></desc>
+    </p-param>
+    <p-param name="vmPassword">
+      <desc><![CDATA[Password for the virtual machine]]></desc>
+    </p-param>
+    <p-param name="vm">
+      <desc><![CDATA[Virtual machine]]></desc>
+      <p-qual kind="static" name="mandatory" type="boolean"><![CDATA[true]]></p-qual>
+    </p-param>
+    <p-param name="interactiveSession">
+      <desc><![CDATA[Set to 'Yes' if you want an interactive session in the guest.]]></desc>
+    </p-param>
+    <p-group>
+      <title><![CDATA[Program path]]></title>
+      <desc><![CDATA[The absolute path to the program to start. For Linux guest operating systems, /bin/bash is used to start the program.  For Solaris guest operating systems, /bin/bash is used to start the program if it exists. Otherwise /bin/sh is used. If /bin/sh is used, then the process ID returned will be that of the shell used to start the program, rather than the program itself, due to the differences in how /bin/sh and /bin/bash work. This PID will still be usable for watching the process with this API to find its exit code and elapsed time. ]]></desc>
+      <p-param name="programPath">
+        <desc><![CDATA[Program path]]></desc>
+        <p-qual kind="static" name="mandatory" type="boolean"><![CDATA[true]]></p-qual>
+      </p-param>
+    </p-group>
+    <p-group>
+      <title><![CDATA[Arguments]]></title>
+      <desc><![CDATA[The arguments to the program. In Linux and Solaris guest operating systems, the program will be executed by a guest shell. This allows stdio redirection, but may also require that characters which must be escaped to the shell also be escaped on the command line provided. For Windows guest operating systems, prefixing the command with "cmd /c" can provide stdio redirection. ]]></desc>
+      <p-param name="arguments">
+        <desc><![CDATA[Arguments]]></desc>
+      </p-param>
+    </p-group>
+    <p-group>
+      <title><![CDATA[Working directory]]></title>
+      <desc><![CDATA[The absolute path of the working directory for the program to be run. VMware recommends explicitly setting the working directory for the program to be run. If this value is unset or is an empty string, the behavior depends on the guest operating system. For Linux guest operating systems, if this value is unset or is an empty string, the working directory will be the home directory of the user associated with the guest authentication. For other guest operating systems, if this value is unset, the behavior is unspecified. ]]></desc>
+      <p-param name="workingDirectory">
+        <desc><![CDATA[Working directory]]></desc>
+      </p-param>
+    </p-group>
+    <p-group>
+      <title><![CDATA[Environment]]></title>
+      <desc><![CDATA[An array of environment variables, specified in the guest OS notation (eg PATH=c:\bin;c:\windows\system32 or LD_LIBRARY_PATH=/usr/lib:/lib), to be set for the program being run. Note that these are not additions to the default environment variables; they define the complete set available to the program. If none are specified the values are guest dependent. ]]></desc>
+      <p-param name="environment">
+        <desc><![CDATA[Environment]]></desc>
+      </p-param>
+    </p-group>
+  </presentation>
+</workflow>
