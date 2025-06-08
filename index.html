@@ -544,11 +544,28 @@
     }
 
     function displayWorkflowName(name) {
-      // Add workflow name to the details section
+      // Remove any existing workflow name header
+      const existingHeader = document.querySelector('.details h1');
+      if (existingHeader) {
+        existingHeader.remove();
+      }
+      
+      // Add new workflow name with improved styling
       const detailsContainer = document.querySelector('.details');
       const detailsHeader = document.createElement('h1');
       detailsHeader.textContent = `Workflow Name: ${name}`;
-      detailsHeader.style.marginBottom = '20px';
+      detailsHeader.style.cssText = `
+        margin-bottom: 30px;
+        font-size: 28px;
+        font-weight: 700;
+        color: #007cbb;
+        text-align: center;
+        padding: 15px 20px;
+        background-color: #ffffff;
+        border-bottom: 3px solid #007cbb;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        border-radius: 4px;
+      `;
       detailsContainer.insertBefore(detailsHeader, detailsContainer.firstChild);
     }
 
@@ -861,6 +878,9 @@
     
     function updateDetails(xmlDoc, workflowItems, inputs, outputs) {
           const detailsDiv = document.getElementById("details");
+      // Clear existing content first
+      detailsDiv.innerHTML = '';
+      
       // Workflow-level details
       const workflowInputs = inputs.map(input => 
         `<tr><td>${input.getAttribute("name")}</td><td>${input.getAttribute("type")}</td></tr>`
