@@ -544,17 +544,9 @@
     }
 
     function displayWorkflowName(name) {
-      // Add workflow name to the top of the graph
-      const graphContainer = document.getElementById('graph');
-      const nameHeader = document.createElement('h2');
-      nameHeader.textContent = `Workflow: ${name}`;
-      nameHeader.style.textAlign = 'center';
-      nameHeader.style.marginBottom = '20px';
-      graphContainer.insertBefore(nameHeader, graphContainer.firstChild);
-
       // Add workflow name to the details section
       const detailsContainer = document.querySelector('.details');
-      const detailsHeader = document.createElement('h2');
+      const detailsHeader = document.createElement('h1');
       detailsHeader.textContent = `Workflow Name: ${name}`;
       detailsHeader.style.marginBottom = '20px';
       detailsContainer.insertBefore(detailsHeader, detailsContainer.firstChild);
