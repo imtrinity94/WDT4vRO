@@ -7,8 +7,8 @@
   <link rel="stylesheet" href="https://unpkg.com/@clr/ui/clr-ui.min.css" />
   <link rel="stylesheet" href="https://unpkg.com/@clr/icons/clr-icons.min.css" />
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
   <script src="https://unpkg.com/svg2pdf.js@2.3.4/dist/svg2pdf.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Metropolis:wght@400;700&display=swap');
     body {
@@ -163,8 +163,8 @@
     }
     .welcome-box {
       background: #fff;
-      border-radius: 16px;
-      box-shadow: 0 4px 24px rgba(0,0,0,0.07);
+      border-radius: 2px;
+      box-shadow: 0 0 2px rgba(0,0,0,0.48);
       max-width: 1400px;
       min-width: 900px;
       min-height: 420px;
@@ -327,7 +327,9 @@
   <div id="messages"></div>
   <div id="exportArea">
     <div id="graphZoomContainer" style="display:none; width: 100%; height: 100%; overflow: auto;">
-  <div id="graph"></div>
+      <!-- <div class="dot-bg" style="position: relative;"> -->
+        <div id="graph" style="position: relative; z-index: 1;"></div>
+      </div>
     </div>
     <div class="details" style="display:none;">
     <div id="details"></div>
@@ -433,12 +435,10 @@
       messageDiv.textContent = message;
       messagesDiv.innerHTML = '';
       messagesDiv.appendChild(messageDiv);
-      
+
       // Auto-hide after 5 seconds
       setTimeout(() => {
-        if (messagesDiv.contains(messageDiv)) {
-          messagesDiv.removeChild(messageDiv);
-        }
+        messagesDiv.innerHTML = '';
       }, 5000);
     }
 
@@ -518,30 +518,46 @@
       return positions;
     }
     // Function to create arrow path between two points (center to center)
-    function createArrowPath(x1, y1, x2, y2) {
+    function createArrowPath(x1, y1, x2, y2, isDotted = false) {
       const dx = x2 - x1;
       const dy = y2 - y1;
       const length = Math.sqrt(dx * dx + dy * dy);
       if (length === 0) return '';
-      // Normalize direction
       const unitX = dx / length;
       const unitY = dy / length;
-      // Node dimensions
       const nodeWidth = 120;
       const nodeHeight = 100;
-      
-      // Adjust vertical position - connect at 40% height instead of center (50%)
-      // This accounts for the icon taking more space at the top
-      const verticalOffset = nodeHeight * 0.1; // 10% up from center
-      
-      // Start at edge of source node, adjusted vertically
+      const verticalOffset = nodeHeight * 0.1;
       const startX = x1 + unitX * (nodeWidth / 2);
       const startY = y1 - verticalOffset + unitY * (nodeHeight / 2);
-      // End at edge of target node, adjusted vertically
       const endX = x2 - unitX * (nodeWidth / 2);
       const endY = y2 - verticalOffset - unitY * (nodeHeight / 2);
       
       return `M${startX},${startY} L${endX},${endY}`;
+    }
+
+    let workflowName = "workflow"; // Default name
+
+    function extractWorkflowName(xmlDoc) {
+      const nameElement = xmlDoc.querySelector("workflow > display-name");
+      return nameElement ? nameElement.textContent : "workflow";
+    }
+
+    function displayWorkflowName(name) {
+      // Add workflow name to the top of the graph
+      const graphContainer = document.getElementById('graph');
+      const nameHeader = document.createElement('h2');
+      nameHeader.textContent = `Workflow: ${name}`;
+      nameHeader.style.textAlign = 'center';
+      nameHeader.style.marginBottom = '20px';
+      graphContainer.insertBefore(nameHeader, graphContainer.firstChild);
+
+      // Add workflow name to the details section
+      const detailsContainer = document.querySelector('.details');
+      const detailsHeader = document.createElement('h2');
+      detailsHeader.textContent = `Workflow Name: ${name}`;
+      detailsHeader.style.marginBottom = '20px';
+      detailsContainer.insertBefore(detailsHeader, detailsContainer.firstChild);
     }
 
     document.getElementById('fileUpload').addEventListener('change', (e) => {
@@ -560,6 +576,11 @@
           if (xmlDoc.getElementsByTagName("parsererror").length > 0) {
             throw new Error('Error parsing XML file. Please check the file format.');
           }
+
+          // Extract and set the workflow name
+          workflowName = extractWorkflowName(xmlDoc);
+          displayWorkflowName(workflowName);
+
           const workflowItems = Array.from(xmlDoc.getElementsByTagName("workflow-item"));
           const inputs = Array.from(xmlDoc.getElementsByTagName("input")[0]?.getElementsByTagName("param") || []);
           const outputs = Array.from(xmlDoc.getElementsByTagName("output")[0]?.getElementsByTagName("param") || []);
@@ -583,19 +604,24 @@
           const maxY = Math.max(...Object.values(positions).map(p => p.y + p.height));
           const svgWidth = maxX + 60;
           const svgHeight = maxY + 60;
-          // Create SVG with foreignObject nodes
+          // Create SVG with background and foreignObject nodes
           let svgContent = `<svg width="${svgWidth}" height="${svgHeight}" viewBox="0 0 ${svgWidth} ${svgHeight}">
-            <defs>
-              <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto">
-                <path d="M 0 0 L 10 5 L 0 10 z" fill="#0079ad"/>
-              </marker>
-              <marker id="arrow-green" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto">
-                <path d="M 0 0 L 10 5 L 0 10 z" fill="green"/>
-              </marker>
-              <marker id="arrow-red" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto">
-                <path d="M 0 0 L 10 5 L 0 10 z" fill="red"/>
-              </marker>
-            </defs>`;
+  <defs>
+    <pattern id="dotGrid" width="18" height="18" patternUnits="userSpaceOnUse">
+      <circle cx="9" cy="9" r="1" fill="#cbd4d8" />
+    </pattern>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="5" markerHeight="6" orient="auto">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#0079ad"/>
+    </marker>
+    <marker id="arrow-green" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="5" markerHeight="6" orient="auto">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="green"/>
+    </marker>
+    <marker id="arrow-red" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="5" markerHeight="6" orient="auto">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="red"/>
+    </marker>
+  </defs>
+  <rect width="100%" height="100%" fill="url(#dotGrid)" />
+`;
 
           // --- Error Handler Nodes ---
           // Find all error-handler elements
@@ -778,7 +804,14 @@
             startNodesSVG += `
               <g transform="translate(${startNodeX},${startNodeY})">
                 <foreignObject width="120" height="100">
-                  <div xmlns="http://www.w3.org/1999/xhtml" style="display: inline-block; text-align: center; font-family: Arial; font-size: 12px; width: 100%; height: 100%;">
+                  <div xmlns="http://www.w3.org/1999/xhtml" style="
+                    display: inline-block;
+                    text-align: center;
+                    font-family: 'Metropolis', Arial, sans-serif;
+                    font-size: 12px;
+                    width: 100%;
+                    height: 100%;
+                  ">
                     <img src="icons/start.svg" width="40" height="40" style="display: block; margin: 0 auto;"/>
                     <div style="margin-top: 5px; font-weight: bold;">Start</div>
                   </div>
@@ -892,7 +925,7 @@
               <tr>
                 <td colspan="4">
                   <strong>Script:</strong>
-                  ${script ? `<div id="${scriptId}" class="monaco-script" style="height:${script.split('\n').length > 2 ? '300px' : '100px'};border:1px solid #eee;"></div>` : '<div class="no-script">No script content</div>'}
+                  ${script ? `<div id="${scriptId}" class="monaco-script" style="height:${script.split('\n').length > 2 ? '300px' : '50px'};border:1px solid #eee;"></div>` : '<div class="no-script">No script content</div>'}
                 </td>
               </tr>
             </table>
@@ -953,7 +986,7 @@
               minimap: { enabled: false },
               scrollBeyondLastLine: false,
               automaticLayout: true,
-              theme: 'vs-dark',
+              theme: 'vs', // Changed from 'vs-dark' to 'vs'
               lineNumbers: 'on',
               fontSize: 12,
               lineHeight: 18,
@@ -984,24 +1017,60 @@
     });
 
     // Download as PDF logic
-    document.getElementById('downloadPdfBtn').addEventListener('click', function() {
-      const exportArea = document.getElementById('exportArea');
-      if (!exportArea) return;
-      html2canvas(exportArea, {backgroundColor: '#fff', scale: 2}).then(canvas => {
-        const imgData = canvas.toDataURL('image/png');
-        const imgWidth = canvas.width;
-        const imgHeight = canvas.height;
-        const { jsPDF } = window.jspdf;
-        // 1 px = 0.75 pt
-        const pdf = new jsPDF({
-          orientation: imgWidth > imgHeight ? 'l' : 'p',
-          unit: 'pt',
-          format: [imgWidth * 0.75, imgHeight * 0.75]
+    function downloadAsPDF() {
+      const { jsPDF } = window.jspdf;
+
+      // Get the graph container and details container
+      const graphContainer = document.getElementById('graphZoomContainer');
+      const detailsContainer = document.querySelector('.details');
+
+      // Create a new jsPDF instance
+      const pdf = new jsPDF('l', 'pt', 'a4');
+      const pageWidth = pdf.internal.pageSize.getWidth();
+      const pageHeight = pdf.internal.pageSize.getHeight();
+
+      // Function to add content to PDF
+      const addContentToPDF = (element, callback) => {
+        html2canvas(element, {
+          scale: 2,
+          logging: false,
+          useCORS: true,
+          allowTaint: true
+        }).then(canvas => {
+          const imgData = canvas.toDataURL('image/png');
+          const imgWidth = pageWidth;
+          const imgHeight = canvas.height * imgWidth / canvas.width;
+          
+          let heightLeft = imgHeight;
+          let position = 0;
+
+          pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
+          heightLeft -= pageHeight;
+
+          while (heightLeft >= 0) {
+            position = heightLeft - imgHeight;
+            pdf.addPage();
+            pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
+            heightLeft -= pageHeight;
+          }
+
+          callback();
         });
-        pdf.addImage(imgData, 'PNG', 0, 0, imgWidth * 0.75, imgHeight * 0.75);
-        pdf.save('workflow-documentation.pdf');
+      };
+
+      // Add graph to PDF
+      addContentToPDF(graphContainer, () => {
+        // Add details to PDF
+        pdf.addPage();
+        addContentToPDF(detailsContainer, () => {
+          // Save the PDF with the workflow name
+          pdf.save(`${workflowName}.pdf`);
+        });
       });
-    });
+    }
+
+    // Update the event listener for the download button
+    document.getElementById('downloadPdfBtn').addEventListener('click', downloadAsPDF);
 
     // Zoom controls logic
     let currentZoom = 1.0;
@@ -1024,6 +1093,39 @@
         svg.style.transformOrigin = 'top left';
       }
     });
+
+    function createSwitchArrows(workflowItems, positions) {
+      let arrows = '';
+
+      workflowItems.forEach(item => {
+        if (item.getAttribute('type') === 'switch') {
+          const switchName = item.getAttribute('name');
+          const condition = item.querySelector('condition');
+          if (condition) {
+            const targetName = condition.getAttribute('label');
+            if (positions[switchName] && positions[targetName]) {
+              const from = positions[switchName];
+              const to = positions[targetName];
+              console.log(`Creating arrow from ${switchName} to ${targetName}:`, from, to); // Debugging log
+              const path = createArrowPath(
+                from.x + from.width / 2,
+                from.y + from.height / 2,
+                to.x + to.width / 2,
+                to.y + to.height / 2
+              );
+              arrows += `<path d="${path}" stroke="#0079ad" stroke-width="1.5" fill="none" marker-end="url(#arrow)" />`;
+            } else {
+              console.warn(`Missing positions for switch: ${switchName} or target: ${targetName}`); // Debugging log
+            }
+          }
+        }
+      });
+
+      return arrows;
+    }
+    console.log('Invoking createSwitchArrows with workflowItems and positions:', workflowItems, positions); // Debugging log
+    const switchArrows = createSwitchArrows(workflowItems, positions);
+    console.log('Generated switch arrows:', switchArrows); // Debugging log
   </script>
 </body>
 </html>
