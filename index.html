@@ -970,8 +970,9 @@
             }
             
             const lineCount = script.split('\n').length;
-            const editorHeight = lineCount <= 2 ? 100 : 300;
-            
+            // Calculate height based on line count and average line height
+            const avgLineHeight = 18.2; // Average line height in pixels
+            const editorHeight = lineCount * avgLineHeight;
             monaco.editor.create(el, {
               value: script,
               language: 'javascript',
