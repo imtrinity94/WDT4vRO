@@ -56,12 +56,16 @@
       box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
       padding: 20px;
       font-size: 14px;
+      word-wrap: break-word;
+      overflow-wrap: break-word;
+      /* overflow: auto; */
     }
 
     table {
       width: 100%;
       border-collapse: collapse;
       font-size: 14px;
+      table-layout: fixed;
     }
 
     th, td {
@@ -69,6 +73,10 @@
       border: 1px solid #ccc;
       padding: 8px;
       text-align: left;
+      word-wrap: break-word;
+      overflow-wrap: break-word;
+      white-space: normal;
+      max-width: 200px;
     }
 
     th {
@@ -170,9 +178,7 @@
       min-height: 420px;
       margin: 40px auto 32px auto;
       display: flex;
-      align-items: center;
       padding: 48px 60px;
-      justify-content: space-between;
       gap: 48px;
       position: relative;
     }
@@ -184,6 +190,7 @@
       align-items: flex-start;
       text-align: left;
       height: 100%;
+      margin-top: 0;
     }
     .welcome-notes h2 {
       font-size: 1.5rem;
@@ -207,7 +214,7 @@
       min-height: 320px;
       height: 100%;
       display: flex;
-      align-items: center;
+      align-items: flex-start;
       justify-content: flex-end;
       position: relative;
       overflow: hidden;
@@ -304,13 +311,13 @@
   </div>
   <div class="welcome-box">
     <div class="welcome-notes">
-      <h2>Welcome to WDT4vRO</h2>
-      <p class="welcome-desc">Workflow Documentation Tool for Aria Automation Orchestrator helps you visualize, document, and understand vRO workflows with clarity. Upload your vRO workflow XML and instantly see a diagram that matches the real vRO designer, complete with icons, arrows, and details for every node.</p>
+      <h2>Welcome to Workflow Documentation Tool</h2>
+      <p class="welcome-desc">This tool helps you visualize, document, and understand vRO workflows with clarity. Upload your vRO workflow XML and instantly see a diagram that matches the real vRO designer, complete with icons, arrows, and details for every node.</p>
       <ul>
-        <li>SVG diagram with vRO-style icons and layout</li>
-        <li>Automatic start and error handler nodes</li>
+        <li>Converts Workflow XMLs into beautiful SVG diagrams</li>
+        <li>Lists all the nodes and their properties</li>
         <li>Monaco-powered code viewer for scripts</li>
-        <li>Modern, accessible UI</li>
+        <li>Clarity based UI</li>
       </ul>
     </div>
     <div class="welcome-graphic">
@@ -319,7 +326,7 @@
     </div>
     <div class="welcome-upload-bottom">
       <label for="fileUpload" class="btn btn-primary" style="margin-right: 0; cursor:pointer;">
-        Choose File
+        Upload Workflow XML
       </label>
       <input type="file" id="fileUpload" accept=".xml" class="themed-input">
     </div>
@@ -402,7 +409,7 @@
       }
 
       // Special case: Task with script-module should use action icon
-      if (type === "task" && scriptModule) {
+      if ((type === "task" && scriptModule) || (type === "task" && scriptModule === "")) {
         return "icons/action.svg";
       }
       
@@ -533,6 +540,28 @@
       const endX = x2 - unitX * (nodeWidth / 2);
       const endY = y2 - verticalOffset - unitY * (nodeHeight / 2);
       
+      // For dotted arrows, create a dashed line
+      if (isDotted) {
+        const dashLength = 4;
+        const gapLength = 4;
+        const totalLength = Math.sqrt((endX - startX) ** 2 + (endY - startY) ** 2);
+        const numDashes = Math.floor(totalLength / (dashLength + gapLength));
+        
+        let path = `M${startX},${startY}`;
+        for (let i = 0; i < numDashes; i++) {
+          const t = i / numDashes;
+          const dashX = startX + t * (endX - startX);
+          const dashY = startY + t * (endY - startY);
+          path += ` L${dashX},${dashY}`;
+          if (i < numDashes - 1) {
+            const gapX = dashX + (gapLength / totalLength) * (endX - startX);
+            const gapY = dashY + (gapLength / totalLength) * (endY - startY);
+            path += ` M${gapX},${gapY}`;
+          }
+        }
+        return path;
+      }
+      
       return `M${startX},${startY} L${endX},${endY}`;
     }
 
@@ -628,6 +657,9 @@
     <marker id="arrow-red" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="5" markerHeight="6" orient="auto">
       <path d="M 0 0 L 10 5 L 0 10 z" fill="red"/>
     </marker>
+    <marker id="catchArrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="red"/>
+    </marker>
   </defs>
   <rect width="100%" height="100%" fill="url(#dotGrid)" />
 `;
@@ -706,6 +738,15 @@
             const icon = getIconForNode(item);
             const color = colorMapping[type] || colorMapping.default;
             const pos = positions[name];
+            let nodeText = displayName;
+            
+            // For workflow and link types, use display-name if available
+            if (type === 'workflow' || type === 'link') {
+              const displayNameElement = item.getElementsByTagName('display-name')[0];
+              if (displayNameElement) {
+                nodeText = displayNameElement.textContent;
+              }
+            }
 
             svgContent += `
             <!-- Node: ${name} -->
@@ -724,7 +765,7 @@
                        style="display: block; margin: 0 auto;"
                        onerror="this.style.display='none'"/>
                   <div style="margin-top: 5px; font-weight: bold;">
-                    ${displayName}
+                    ${nodeText}
                   </div>
                 </div>
               </foreignObject>
@@ -736,6 +777,7 @@
             const name = item.getAttribute("name");
             const outName = item.getAttribute("out-name");
             const altOutName = item.getAttribute("alt-out-name");
+            const catchName = item.getAttribute("catch-name");
             const type = item.getAttribute("type") || "default";
             
             const fromPos = positions[name];
@@ -770,6 +812,21 @@
               if (pathData) {
                 svgContent += `
                 <path d="${pathData}" stroke="red" stroke-width="2" stroke-dasharray="5,5" fill="none" marker-end="url(#arrow-red)"/>`;
+                
+
+              }
+            }
+
+            if (catchName && positions[catchName]) {
+              const toPos = positions[catchName];
+              const toX = toPos.x + toPos.width / 2;
+              const toY = toPos.y + toPos.height / 2;
+              
+              const pathData = createArrowPath(fromX, fromY, toX, toY);
+              
+              if (pathData) {
+                svgContent += `
+                <path d="${pathData}" stroke="red" stroke-width="1.5" fill="none" stroke-dasharray="4,4" marker-end="url(#catchArrow)"/>`;
                 
 
               }
