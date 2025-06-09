@@ -288,9 +288,6 @@
     #messages > div {
       font-family: 'Metropolis', Arial, sans-serif;
     }
-    #downloadPdfBtn {
-      display: none;
-    }
     .details-main-heading {
       font-size: 2.2rem;
       font-weight: 900;
@@ -308,6 +305,7 @@
   </style>
   <script src="https://cdn.jsdelivr.net/npm/monaco-editor@0.44.0/min/vs/loader.js"></script>
   <script src="https://unpkg.com/@clr/icons/clr-icons.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 </head>
 <body>
   <div class="top-bar">
@@ -322,7 +320,8 @@
           <span style="font-size: 20px; color: #fff;">&#x2212;</span> <!-- Minus sign for zoom out -->
         </button>
       </span>
-      <button id="downloadPdfBtn" class="btn btn-primary" style="display:none; margin-left: 24px;">Download as PDF</button>
+      <button id="downloadSvgBtn" class="btn btn-primary" style="display:none; margin-left: 24px;">Download Diagram</button>
+      <button id="downloadHtmlBtn" class="btn btn-primary" style="display:none; margin-left: 8px;">Download as HTML</button>
     </div>
   </div>
   <div class="welcome-box">
@@ -352,7 +351,6 @@
     <div id="graphZoomContainer" style="display:none; width: 100%; height: 100%; overflow: auto;">
       <!-- <div class="dot-bg" style="position: relative;"> -->
         <div id="graph" style="position: relative; z-index: 1;"></div>
-      </div>
     </div>
     <div class="details" style="display:none;">
     <div id="details"></div>
@@ -368,6 +366,7 @@
     const iconMapping = {
       "end": "icons/end.svg",
       "scriptable-task": "icons/scriptable-task.svg",
+      "condition": "icons/decision.svg",
       "custom-condition": "icons/decision.svg",
       "input": "icons/user-interaction.svg",
       "waiting-timer": "icons/waiting-timer.svg",
@@ -700,13 +699,27 @@
                 width: targetPos.width,
                 height: targetPos.height
               };
-              errorHandlerNodes.push({
-                name: errorHandlerName,
-                label: "Error handler",
-                icon: "icons/error-handler.svg",
-                target: targetName,
-                pos: positions[errorHandlerName]
-              });
+              // Get the referenced node's position
+              const refPos = positions[targetName];
+              if (refPos) {
+                // Position error handler to the left of the target node at the same level
+                const ehX = refPos.x - 200; // 100 pixels to the left
+                const ehY = refPos.y; // Same y-coordinate as target node
+                errorHandlerNodes.push({
+                  name: errorHandlerName,
+                  label: "Error handler",
+                  icon: "icons/error-handler.svg",
+                  target: targetName,
+                  pos: {
+                    x: ehX,
+                    y: ehY,
+                    width: 120,
+                    height: 100
+                  }
+                });
+              } else {
+                console.warn(`Could not find position for target node ${targetName}`);
+              }
             }
           });
 
@@ -720,7 +733,7 @@
                 <div xmlns="http://www.w3.org/1999/xhtml" style="
                   display: inline-block;
                   text-align: center;
-                  font-family: Arial;
+                  font-family: 'Metropolis', Arial, sans-serif;
                   font-size: 12px;
                   width: 100%;
                   height: 100%;
@@ -729,7 +742,7 @@
                        width="40" height="40" 
                        style="display: block; margin: 0 auto;"
                        onerror="this.style.display='none'"/>
-                  <div style="margin-top: 5px; font-weight: bold;">
+                  <div style="margin-top: 5px; font-weight: 700; font-family: 'Metropolis', Arial, sans-serif;">
                     ${eh.label}
                   </div>
                 </div>
@@ -771,7 +784,7 @@
                 <div xmlns="http://www.w3.org/1999/xhtml" style="
                   display: inline-block;
                   text-align: center;
-                  font-family: Arial;
+                  font-family: 'Metropolis', Arial, sans-serif;
                   font-size: 12px;
                   width: 100%;
                   height: 100%;
@@ -780,7 +793,7 @@
                        width="40" height="40" 
                        style="display: block; margin: 0 auto;"
                        onerror="this.style.display='none'"/>
-                  <div style="margin-top: 5px; font-weight: bold;">
+                  <div style="margin-top: 5px; font-weight: 700; font-family: 'Metropolis', Arial, sans-serif;">
                     ${nodeText}
                   </div>
                 </div>
@@ -875,7 +888,7 @@
                   height: 100%;
                 ">
                   <img src="icons/start.svg" width="40" height="40" style="display: block; margin: 0 auto;"/>
-                  <div style="margin-top: 5px; font-weight: bold;">Start</div>
+                  <div style="margin-top: 5px; font-weight: 700; font-family: 'Metropolis', Arial, sans-serif;">Start</div>
                 </div>
               </foreignObject>
             </g>
@@ -896,21 +909,24 @@
 
           svgContent += '</svg>';
 
-          // Hide welcome box, show graph, details, and download button
+          // Hide welcome box, show graph, details, and download buttons
           document.querySelector('.welcome-box').style.display = 'none';
           const graphZoomContainer = document.getElementById("graphZoomContainer");
+          
+          // Show download buttons and zoom controls
+          document.getElementById('downloadSvgBtn').style.display = 'inline-block';
+          document.getElementById('downloadHtmlBtn').style.display = 'inline-block';
+          document.getElementById('zoomControls').style.display = 'flex';
           graphZoomContainer.style.display = '';
           const graphDiv = document.getElementById("graph");
           graphDiv.style.display = '';
           const detailsDiv = document.querySelector('.details');
           detailsDiv.style.display = '';
-          const downloadBtn = document.getElementById('downloadPdfBtn');
-          downloadBtn.style.display = 'inline-block';
+          
           // Show zoom controls after workflow upload
           const zoomControls = document.getElementById('zoomControls');
           if (zoomControls) zoomControls.style.display = '';
-          showMessage('Download as PDF button is now visible.', 'success');
-          console.log('Download as PDF button should now be visible.');
+          showMessage('Workflow loaded successfully!', 'success');
           graphDiv.innerHTML = svgContent;
           // Update details section
           updateDetails(xmlDoc, workflowItems, inputs, outputs);
@@ -1076,8 +1092,14 @@
           document.querySelector('.welcome-box').style.display = '';
           document.getElementById('graphZoomContainer').style.display = 'none';
           document.querySelector('.details').style.display = 'none';
-          const downloadBtn = document.getElementById('downloadPdfBtn');
-          downloadBtn.style.display = 'none';
+          
+          // Hide all download buttons when returning to welcome screen
+          const downloadButtons = ['downloadSvgBtn', 'downloadHtmlBtn'];
+          downloadButtons.forEach(btnId => {
+            const btn = document.getElementById(btnId);
+            if (btn) btn.style.display = 'none';
+          });
+          
           // Hide zoom controls when returning to welcome screen
           const zoomControls = document.getElementById('zoomControls');
           if (zoomControls) zoomControls.style.display = 'none';
@@ -1085,61 +1107,443 @@
       }
     });
 
-    // Download as PDF logic
-    function downloadAsPDF() {
-      const { jsPDF } = window.jspdf;
+    // Function to create a PNG of the diagram
+    async function createDiagramImage() {
+      const svgElement = document.querySelector('svg');
+      if (!svgElement) {
+        throw new Error('No diagram content found');
+      }
 
-      // Get the graph container and details container
-      const graphContainer = document.getElementById('graphZoomContainer');
-      const detailsContainer = document.querySelector('.details');
+      // Create a temporary container to hold the SVG
+      const container = document.createElement('div');
+      container.style.position = 'fixed';
+      container.style.top = '-9999px';
+      container.style.background = 'white';
+      container.style.padding = '20px';
+      
+      // Clone the SVG and its parent to maintain styles
+      const svgClone = svgElement.cloneNode(true);
+      container.appendChild(svgClone);
+      document.body.appendChild(container);
 
-      // Create a new jsPDF instance
-      const pdf = new jsPDF('l', 'pt', 'a4');
-      const pageWidth = pdf.internal.pageSize.getWidth();
-      const pageHeight = pdf.internal.pageSize.getHeight();
-
-      // Function to add content to PDF
-      const addContentToPDF = (element, callback) => {
-        html2canvas(element, {
-          scale: 2,
-          logging: false,
-          useCORS: true,
-          allowTaint: true
-        }).then(canvas => {
-          const imgData = canvas.toDataURL('image/png');
-          const imgWidth = pageWidth;
-          const imgHeight = canvas.height * imgWidth / canvas.width;
+      // Function to convert images to data URLs
+      async function convertImagesToDataUrls(element) {
+        const images = element.querySelectorAll('image, img');
+        const promises = [];
+        
+        for (const img of images) {
+          const src = img.getAttribute('xlink:href') || img.src;
+          if (!src) continue;
           
-          let heightLeft = imgHeight;
-          let position = 0;
+          const promise = new Promise((resolve) => {
+            const imgEl = new Image();
+            imgEl.crossOrigin = 'Anonymous';
+            imgEl.onload = () => {
+              try {
+                const canvas = document.createElement('canvas');
+                canvas.width = imgEl.width || 24;
+                canvas.height = imgEl.height || 24;
+                const ctx = canvas.getContext('2d');
+                ctx.drawImage(imgEl, 0, 0);
+                const dataUrl = canvas.toDataURL('image/png');
+                if (img.tagName.toLowerCase() === 'image') {
+                  img.setAttribute('xlink:href', dataUrl);
+                } else {
+                  img.src = dataUrl;
+                }
+              } catch (e) {
+                console.error('Error converting image:', e);
+              }
+              resolve();
+            };
+            imgEl.onerror = () => {
+              console.warn('Failed to load image:', src);
+              resolve();
+            };
+            imgEl.src = src;
+          });
+          
+          promises.push(promise);
+        }
+        
+        return Promise.all(promises);
+      }
 
-          pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
-          heightLeft -= pageHeight;
+      try {
+        // Convert all images to data URLs
+        await convertImagesToDataUrls(svgClone);
 
-          while (heightLeft >= 0) {
-            position = heightLeft - imgHeight;
-            pdf.addPage();
-            pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
-            heightLeft -= pageHeight;
+        // Use html2canvas to convert SVG to canvas
+        const canvas = await html2canvas(container, {
+          scale: 2,
+          useCORS: true,
+          logging: false,
+          allowTaint: true,
+          backgroundColor: 'white',
+          onclone: (clonedDoc) => {
+            const clonedSvg = clonedDoc.querySelector('svg');
+            if (clonedSvg) {
+              clonedSvg.style.display = 'block';
+              clonedSvg.style.overflow = 'visible';
+            }
+            const foreignObjects = clonedDoc.querySelectorAll('foreignObject');
+            foreignObjects.forEach(fo => {
+              fo.style.overflow = 'visible';
+              const content = fo.querySelector('div');
+              if (content) {
+                content.style.display = 'block';
+                content.style.overflow = 'visible';
+              }
+            });
           }
-
-          callback();
         });
-      };
 
-      // Add graph to PDF
-      addContentToPDF(graphContainer, () => {
-        // Add details to PDF
-        pdf.addPage();
-        addContentToPDF(detailsContainer, () => {
-          // Save the PDF with the workflow name
-          pdf.save(`${workflowName}.pdf`);
-        });
-      });
+        return canvas.toDataURL('image/png');
+      } finally {
+        // Clean up
+        document.body.removeChild(container);
+      }
     }
 
-    // Update the event listener for the download button
-    document.getElementById('downloadPdfBtn').addEventListener('click', downloadAsPDF);
+
+    // Download as PDF logic
+    async function downloadAsPDF() {
+      try {
+        const { jsPDF } = window.jspdf;
+        const detailsContainer = document.querySelector('.details');
+
+        // Create a new jsPDF instance
+        const pdf = new jsPDF('p', 'pt', 'a4');
+        const pageWidth = pdf.internal.pageSize.getWidth();
+        const pageHeight = pdf.internal.pageSize.getHeight();
+
+        // Create the diagram image
+        const diagramDataUrl = await createDiagramImage();
+        
+        // Add diagram as first page
+        const imgProps = pdf.getImageProperties(diagramDataUrl);
+        const imgWidth = pageWidth - 40; // Add some margin
+        const imgHeight = (imgProps.height * imgWidth) / imgProps.width;
+        
+        // Add diagram page (landscape)
+        pdf.addPage([Math.max(pageWidth, imgWidth + 40), Math.max(pageHeight, imgHeight + 40)], 'l');
+        pdf.addImage(diagramDataUrl, 'PNG', 20, 20, imgWidth, imgHeight, undefined, 'FAST');
+
+        // Add details pages (portrait)
+        if (detailsContainer) {
+          const detailsCanvas = await html2canvas(detailsContainer, {
+            scale: 2,
+            logging: false,
+            useCORS: true,
+            allowTaint: true,
+            backgroundColor: 'white'
+          });
+          
+          const detailsDataUrl = detailsCanvas.toDataURL('image/png');
+          const detailsProps = pdf.getImageProperties(detailsDataUrl);
+          const detailsImgWidth = pageWidth - 40; // Add some margin
+          const detailsImgHeight = (detailsProps.height * detailsImgWidth) / detailsProps.width;
+          
+          // Add details pages with pagination if needed
+          let heightLeft = detailsImgHeight;
+          let position = 20; // Start position
+          let pageNum = 1;
+          
+          pdf.addPage(); // Add a new page for details
+          
+          while (heightLeft > 0) {
+            pdf.addImage(detailsDataUrl, 'PNG', 20, position, detailsImgWidth, detailsImgHeight, undefined, 'FAST');
+            heightLeft -= (pageHeight - 40); // Account for margins
+            position -= (pageHeight - 40);
+            
+            if (heightLeft > 0) {
+              pdf.addPage();
+              pageNum++;
+            }
+          }
+        }
+
+        
+        // Save the PDF with the workflow name
+        pdf.save(`${workflowName}.pdf`);
+        
+      } catch (error) {
+        console.error('Error generating PDF:', error);
+        showMessage('Error generating PDF. Please try again.', 'error');
+      }
+    }
+
+    // Function to embed all icons in the SVG
+    async function embedIconsInSvg(svgElement) {
+      const svgClone = svgElement.cloneNode(true);
+      const images = svgClone.querySelectorAll('image, img');
+      
+      for (const img of images) {
+        const src = img.getAttribute('xlink:href') || img.src;
+        if (!src) continue;
+        
+        try {
+          const response = await fetch(src);
+          if (!response.ok) throw new Error('Failed to fetch image');
+          
+          const blob = await response.blob();
+          const reader = new FileReader();
+          
+          await new Promise((resolve, reject) => {
+            reader.onload = (e) => {
+              try {
+                const dataUrl = e.target.result;
+                if (img.tagName.toLowerCase() === 'image') {
+                  img.setAttribute('xlink:href', dataUrl);
+                } else {
+                  img.src = dataUrl;
+                }
+                resolve();
+              } catch (e) {
+                reject(e);
+              }
+            };
+            reader.onerror = reject;
+            reader.readAsDataURL(blob);
+          });
+        } catch (error) {
+          console.warn(`Could not embed image: ${src}`, error);
+        }
+      }
+      
+      return svgClone;
+    }
+
+    // Function to embed all SVG icons as data URLs
+    async function embedSvgIcons(element) {
+      const images = element.querySelectorAll('img[src$=".svg"]');
+      
+      for (const img of images) {
+        try {
+          const response = await fetch(img.src);
+          if (!response.ok) continue;
+          
+          const svgText = await response.text();
+          const svgDataUrl = `data:image/svg+xml;base64,${btoa(unescape(encodeURIComponent(svgText)))}`;
+          img.src = svgDataUrl;
+        } catch (error) {
+          console.warn('Failed to embed SVG:', img.src, error);
+        }
+      }
+    }
+
+    // Function to download the page as HTML with proper filename and styling
+    async function downloadAsHTML() {
+      try {
+        // Clone the document and modify it for saving
+        const doc = document.cloneNode(true);
+        
+        // Remove the top bar and title
+        const topBar = doc.querySelector('.top-bar');
+        if (topBar) topBar.remove();
+        
+        // Embed SVG icons
+        await embedSvgIcons(doc);
+        
+        // Clean up the workflow name for the filename
+        const cleanName = (workflowName || 'workflow').trim()
+          .replace(/[^\w\s-]/g, '')  // Remove special characters
+          .replace(/\s+/g, '-')       // Replace spaces with hyphens
+          .toLowerCase()
+          .replace(/-+/g, '-')         // Replace multiple hyphens with single
+          .replace(/^-+|-+$/g, '');    // Remove leading/trailing hyphens
+        
+        const fileName = `${cleanName || 'workflow'}.html`;
+        
+        // Create a blob with the HTML content
+        const htmlContent = '<!DOCTYPE html>\n' + doc.documentElement.outerHTML;
+        const blob = new Blob([htmlContent], { type: 'text/html;charset=utf-8' });
+        
+        // Create a download link
+        const link = document.createElement('a');
+        const url = URL.createObjectURL(blob);
+        
+        // Set the download attributes
+        link.href = url;
+        link.download = fileName;
+        
+        // Append to body, trigger download, and clean up
+        document.body.appendChild(link);
+        link.click();
+        
+        // Clean up
+        setTimeout(() => {
+          document.body.removeChild(link);
+          URL.revokeObjectURL(url);
+        }, 100);
+        
+      } catch (error) {
+        console.error('Error saving HTML:', error);
+        // Fall back to browser's save as
+        const win = window.open('', '_blank');
+        win.document.open();
+        win.document.write(`
+          <!DOCTYPE html>
+          <html>
+          <head>
+            <title>Save Workflow Documentation</title>
+            <style>
+              body { font-family: Arial, sans-serif; line-height: 1.6; padding: 20px; max-width: 800px; margin: 0 auto; }
+              .container { background: #f9f9f9; padding: 20px; border-radius: 5px; margin-top: 20px; }
+              code { background: #f0f0f0; padding: 2px 5px; border-radius: 3px; }
+            </style>
+          </head>
+          <body>
+            <h1>Save Workflow Documentation</h1>
+            <div class="container">
+              <p>To save this workflow documentation:</p>
+              <ol>
+                <li>Right-click anywhere on this page</li>
+                <li>Select <strong>Save As...</strong> (or <strong>Save Page As...</strong>)</li>
+                <li>Choose "Webpage, Complete" as the format</li>
+                <li>Save as <strong>${workflowName || 'workflow'}_documentation.html</strong></li>
+              </ol>
+              <p>Or use the keyboard shortcut:</p>
+              <ul>
+                <li>Windows/Linux: Press <kbd>Ctrl</kbd> + <kbd>S</kbd></li>
+                <li>Mac: Press <kbd>Cmd</kbd> + <kbd>S</kbd></li>
+              </ul>
+            </div>
+          </body>
+          </html>
+        `);
+        win.document.close();
+      }
+    }
+
+    // Add event listeners for download buttons
+    document.getElementById('downloadSvgBtn').addEventListener('click', downloadDiagram);
+    document.getElementById('downloadHtmlBtn').addEventListener('click', () => {
+      downloadAsHTML().catch(error => {
+        console.error('Error in downloadAsHTML:', error);
+        showMessage('Failed to generate HTML. Please try again.', 'error');
+      });
+    });
+
+    // Add SVG download functionality
+    async function downloadDiagram() {
+      const svgElement = document.querySelector('svg');
+      if (!svgElement) {
+        showMessage('No diagram content found to download.', 'error');
+        return;
+      }
+
+      try {
+        // Create a temporary container to hold the SVG
+        const container = document.createElement('div');
+        container.style.position = 'fixed';
+        container.style.top = '-9999px';
+        container.style.background = 'white';
+        container.style.padding = '20px';
+        
+        // Clone the SVG and its parent to maintain styles
+        const svgClone = svgElement.cloneNode(true);
+        container.appendChild(svgClone);
+        document.body.appendChild(container);
+
+        // Function to convert images to data URLs
+        async function convertImagesToDataUrls(element) {
+          const images = element.querySelectorAll('image, img');
+          const promises = [];
+          
+          for (const img of images) {
+            const src = img.getAttribute('xlink:href') || img.src;
+            if (!src) continue;
+            
+            const promise = new Promise((resolve) => {
+              const imgEl = new Image();
+              imgEl.crossOrigin = 'Anonymous';
+              imgEl.onload = () => {
+                try {
+                  const canvas = document.createElement('canvas');
+                  canvas.width = imgEl.width || 24;
+                  canvas.height = imgEl.height || 24;
+                  const ctx = canvas.getContext('2d');
+                  ctx.drawImage(imgEl, 0, 0);
+                  const dataUrl = canvas.toDataURL('image/png');
+                  if (img.tagName.toLowerCase() === 'image') {
+                    img.setAttribute('xlink:href', dataUrl);
+                  } else {
+                    img.src = dataUrl;
+                  }
+                } catch (e) {
+                  console.error('Error converting image:', e);
+                }
+                resolve();
+              };
+              imgEl.onerror = () => {
+                console.warn('Failed to load image:', src);
+                resolve();
+              };
+              imgEl.src = src;
+            });
+            
+            promises.push(promise);
+          }
+          
+          return Promise.all(promises);
+        }
+
+        // Convert all images to data URLs
+        await convertImagesToDataUrls(svgClone);
+
+        // Use html2canvas to convert SVG to canvas
+        const canvas = await html2canvas(container, {
+          scale: 2,
+          useCORS: true,
+          logging: true,
+          allowTaint: true,
+          backgroundColor: 'white',
+          onclone: (clonedDoc) => {
+            // Ensure the SVG is visible and properly sized
+            const clonedSvg = clonedDoc.querySelector('svg');
+            if (clonedSvg) {
+              clonedSvg.style.display = 'block';
+              clonedSvg.style.overflow = 'visible';
+            }
+            
+            // Ensure all foreignObject content is visible
+            const foreignObjects = clonedDoc.querySelectorAll('foreignObject');
+            foreignObjects.forEach(fo => {
+              fo.style.overflow = 'visible';
+              const content = fo.querySelector('div');
+              if (content) {
+                content.style.display = 'block';
+                content.style.overflow = 'visible';
+              }
+            });
+          }
+        });
+
+        // Convert canvas to PNG
+        const pngData = canvas.toDataURL('image/png');
+        
+        // Create download link
+        const link = document.createElement('a');
+        link.href = pngData;
+        link.download = `${workflowName}.png`;
+        
+        // Add link to body and trigger click
+        document.body.appendChild(link);
+        link.click();
+        
+        // Clean up
+        document.body.removeChild(link);
+        document.body.removeChild(container);
+        
+      } catch (error) {
+        console.error('Error creating diagram:', error);
+        showMessage('Error creating diagram image. Please try again.', 'error');
+      }
+    }
+
+    // Add event listener for diagram download button
+    document.getElementById('downloadSvgBtn').addEventListener('click', downloadDiagram);
 
     // Zoom controls logic
     let currentZoom = 1.0;
