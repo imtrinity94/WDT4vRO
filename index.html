@@ -797,8 +797,6 @@
               if (pathData) {
                 svgContent += `
                 <path d="${pathData}" stroke="${arrowColor}" stroke-width="1.5" fill="none" marker-end="url(#${markerId})"/>`;
-                
-
               }
             }
 
@@ -812,8 +810,6 @@
               if (pathData) {
                 svgContent += `
                 <path d="${pathData}" stroke="red" stroke-width="2" stroke-dasharray="5,5" fill="none" marker-end="url(#arrow-red)"/>`;
-                
-
               }
             }
 
@@ -827,8 +823,6 @@
               if (pathData) {
                 svgContent += `
                 <path d="${pathData}" stroke="red" stroke-width="1.5" fill="none" stroke-dasharray="4,4" marker-end="url(#catchArrow)"/>`;
-                
-
               }
             }
           });
@@ -845,55 +839,44 @@
             svgContent += `<path d="${pathData}" stroke="#0079ad" stroke-width="1.5" fill="none" marker-end="url(#arrow)"/>`;
           });
 
-          // Find all node names
-          const allNodeNames = workflowItems.map(item => item.getAttribute("name"));
-          // Find all targets (nodes that are the destination of an arrow)
-          const targets = new Set();
-          workflowItems.forEach(item => {
-            const outName = item.getAttribute("out-name");
-            const altOutName = item.getAttribute("alt-out-name");
-            if (outName) targets.add(outName);
-            if (altOutName) targets.add(altOutName);
-          });
-          // Find all error handler targets
-          const errorHandlerTargets = new Set(errorHandlerNodes.map(eh => eh.target));
-          // True start nodes: those with no incoming arrows
-          const startCandidates = allNodeNames.filter(name => !targets.has(name) && !errorHandlerTargets.has(name));
-
-          // Build up start node SVGs and arrows
-          let startNodesSVG = '';
-          let startArrowsSVG = '';
-          startCandidates.forEach((startNodeName, idx) => {
-            const pos = positions[startNodeName];
-            const startNodeX = pos.x - 180;
-            const startNodeY = pos.y;
-            startNodesSVG += `
-              <g transform="translate(${startNodeX},${startNodeY})">
-                <foreignObject width="120" height="100">
-                  <div xmlns="http://www.w3.org/1999/xhtml" style="
-                    display: inline-block;
-                    text-align: center;
-                    font-family: 'Metropolis', Arial, sans-serif;
-                    font-size: 12px;
-                    width: 100%;
-                    height: 100%;
-                  ">
-                    <img src="icons/start.svg" width="40" height="40" style="display: block; margin: 0 auto;"/>
-                    <div style="margin-top: 5px; font-weight: bold;">Start</div>
-                  </div>
-                </foreignObject>
-              </g>
+          // Add start node before root-name item
+          const rootName = xmlDoc.querySelector("workflow").getAttribute("root-name");
+          if (rootName && positions[rootName]) {
+            const rootPos = positions[rootName];
+            const startNodeX = rootPos.x - 180;
+            const startNodeY = rootPos.y;
+            
+            // Add start node
+            svgContent += `
+            <g transform="translate(${startNodeX},${startNodeY})">
+              <foreignObject width="120" height="100">
+                <div xmlns="http://www.w3.org/1999/xhtml" style="
+                  display: inline-block;
+                  text-align: center;
+                  font-family: 'Metropolis', Arial, sans-serif;
+                  font-size: 12px;
+                  width: 100%;
+                  height: 100%;
+                ">
+                  <img src="icons/start.svg" width="40" height="40" style="display: block; margin: 0 auto;"/>
+                  <div style="margin-top: 5px; font-weight: bold;">Start</div>
+                </div>
+              </foreignObject>
+            </g>
             `;
-            // Draw an arrow from center of start node to center of target node using createArrowPath
-            const fromX = startNodeX + 60; // center x of start node (120/2)
-            const fromY = startNodeY + 50; // center y of start node (100/2)
-            const toX = pos.x + pos.width / 2;
-            const toY = pos.y + pos.height / 2;
+            
+            // Add arrow from start node to root node
+            const fromX = startNodeX + 60;
+            const fromY = startNodeY + 50;
+            const toX = rootPos.x + rootPos.width / 2;
+            const toY = rootPos.y + rootPos.height / 2;
             const pathData = createArrowPath(fromX, fromY, toX, toY);
-            startArrowsSVG += `<path d="${pathData}" stroke="#0079ad" stroke-width="1.5" fill="none" marker-end="url(#arrow)"/>`;
-          });
-          // Insert start nodes/arrows right after the <svg ...> tag
-          svgContent = svgContent.replace(/(<svg[^>]*>)/, `$1${startNodesSVG}${startArrowsSVG}`);
+            svgContent += `<path d="${pathData}" stroke="#0079ad" stroke-width="1.5" fill="none" marker-end="url(#arrow)"/>`;
+          }
+
+          // Add switch arrows
+          const switchArrows = createSwitchArrows(workflowItems, positions);
+          svgContent += switchArrows;
 
           svgContent += '</svg>';
 
@@ -901,7 +884,7 @@
           document.querySelector('.welcome-box').style.display = 'none';
           const graphZoomContainer = document.getElementById("graphZoomContainer");
           graphZoomContainer.style.display = '';
-              const graphDiv = document.getElementById("graph");
+          const graphDiv = document.getElementById("graph");
           graphDiv.style.display = '';
           const detailsDiv = document.querySelector('.details');
           detailsDiv.style.display = '';
@@ -1167,26 +1150,28 @@
     function createSwitchArrows(workflowItems, positions) {
       let arrows = '';
 
-      workflowItems.forEach(item => {
-        if (item.getAttribute('type') === 'switch') {
-          const switchName = item.getAttribute('name');
-          const condition = item.querySelector('condition');
-          if (condition) {
-            const targetName = condition.getAttribute('label');
-            if (positions[switchName] && positions[targetName]) {
-              const from = positions[switchName];
-              const to = positions[targetName];
-              console.log(`Creating arrow from ${switchName} to ${targetName}:`, from, to); // Debugging log
-              const path = createArrowPath(
-                from.x + from.width / 2,
-                from.y + from.height / 2,
-                to.x + to.width / 2,
-                to.y + to.height / 2
-              );
-              arrows += `<path d="${path}" stroke="#0079ad" stroke-width="1.5" fill="none" marker-end="url(#arrow)" />`;
-            } else {
-              console.warn(`Missing positions for switch: ${switchName} or target: ${targetName}`); // Debugging log
-            }
+      // Find all switch nodes
+      const switchNodes = workflowItems.filter(item => item.getAttribute('type') === 'switch');
+      
+      switchNodes.forEach(switchNode => {
+        const switchName = switchNode.getAttribute('name');
+        const condition = switchNode.querySelector('condition');
+        
+        if (condition) {
+          const targetName = condition.getAttribute('label');
+          if (positions[switchName] && positions[targetName]) {
+            const from = positions[switchName];
+            const to = positions[targetName];
+            
+            // Create arrow from switch to target
+            const path = createArrowPath(
+              from.x + from.width / 2,
+              from.y + from.height / 2,
+              to.x + to.width / 2,
+              to.y + to.height / 2
+            );
+            
+            arrows += `<path d="${path}" stroke="#0079ad" stroke-width="1.5" fill="none" marker-end="url(#arrow)" />`;
           }
         }
       });
