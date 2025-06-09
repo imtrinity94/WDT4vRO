@@ -58,7 +58,23 @@
       font-size: 14px;
       word-wrap: break-word;
       overflow-wrap: break-word;
-      /* overflow: auto; */
+    }
+
+    .details h2 {
+      margin-bottom: 20px;
+    }
+
+    .details h4 {
+      font-weight: bold;
+      margin-bottom: 20px;
+    }
+
+    .details table {
+      /* margin-top: 10px; */
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 14px;
+      table-layout: fixed;
     }
 
     table {
@@ -1031,7 +1047,7 @@
             
             const lineCount = script.split('\n').length;
             // Calculate height based on line count and average line height
-            const avgLineHeight = 18.2; // Average line height in pixels
+            const avgLineHeight = 18.05; // Average line height in pixels
             const editorHeight = lineCount * avgLineHeight;
             monaco.editor.create(el, {
               value: script,
