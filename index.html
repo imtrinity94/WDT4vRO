@@ -336,13 +336,18 @@
       </ul>
     </div>
     <div class="welcome-graphic">
-      <div class="dot-bg"></div>
+      <!-- <div class="dot-bg"></div> -->
       <img src="assets/welcome-note-image.png" alt="Workflow Graphic" />
     </div>
-    <div class="welcome-upload-bottom">
-      <label for="fileUpload" class="btn btn-primary" style="margin-right: 0; cursor:pointer;">
-        Upload Workflow XML
-      </label>
+    <div class="welcome-upload-bottom" style="display: flex; flex-direction: column; align-items: center; gap: 15px;">
+      <div style="display: flex; gap: 10px; align-items: center;">
+        <label for="fileUpload" class="btn btn-primary" style="margin: 0; cursor:pointer;">
+          Upload Workflow XML
+        </label>
+        <button id="helpBtn" class="btn btn-outline" style="margin: 0;">
+          <clr-icon shape="help" style="margin-right: 6px;"></clr-icon>How to get workflow XML?
+        </button>
+      </div>
       <input type="file" id="fileUpload" accept=".xml" class="themed-input">
     </div>
   </div>
@@ -357,11 +362,221 @@
     </div>
   </div>
 
+  <!-- Help Modal -->
+  <div id="helpModal" style="display: none; font-family: 'Metropolis', Arial, sans-serif; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.5); z-index: 1000; justify-content: center; align-items: center;">
+    <div style="background: white; padding: 2rem; border-radius: 8px; max-width: 700px; width: 90%; max-height: 80vh; overflow-y: auto; position: relative;">
+      <button id="closeHelp" style="position: absolute; top: 1rem; right: 1rem; background: none; border: none; font-size: 1.5rem; cursor: pointer;">&times;</button>
+      <h2 style="margin-top: 0; color: #007cbb;">How to Get Workflow XML</h2>
+      
+      <div style="margin: 1.5rem 0;">
+        <h3 style="color: #007cbb;">Method 1: From vRO Package</h3>
+        <ol style="margin-top: 0.5rem; padding-left: 1.2rem;">
+          <li>In Orchestrator, Add your workflow to a package</li>
+          <li><strong>Export</strong> the .package file to your computer</li>
+          <li>Rename the file extension from .package to .zip</li>
+          <li>Extract the ZIP file</li>
+          <li>Navigate to the workflow's folder inside the extracted contents</li>
+          <li>Go to elements folder and open folder named like 66b864a7-c7d9-4807-803a-a08cb6499b70</li>
+          <li>Look for a file named <strong>data</strong> (no extension) inside this folder</li>
+          <li>Rename this file to <strong>workflow.xml</strong></li>
+          <li>Upload the file using the "Upload Workflow XML" button</li>
+        </ol>
+      </div>
+      
+      <div style="margin: 1.5rem 0;">
+        <h3 style="color: #007cbb;">Method 2: From GitHub Repository</h3>
+        <ol style="margin-top: 0.5rem; padding-left: 1.2rem;">
+          <li>Navigate to your GitHub repository containing vRO workflows</li>
+          <li>Go to Workflow directories</li>
+          <li>Look for files named <strong>workflow.xml</strong> inside any folder named as workflow name</li>
+          <li>Click on the file to view it</li>
+          <li>Click the <strong>Raw</strong> button to view the raw XML</li>
+          <li>Right-click and select <strong>Save As...</strong> to save the file</li>
+          <li>Upload the saved file using the "Upload Workflow XML" button</li>
+        </ol>
+      </div>
+      
+      <div style="margin-top: 2rem; font-size: 0.9em; color: #666; border-top: 1px solid #eee; padding-top: 1rem;">
+        <p>Note: Make sure the XML file follows the standard vRO workflow XML format for proper parsing.</p>
+      </div>
+    </div>
+  </div>
+
   <footer class="footer-note">
     Developed by Mayank Goyal (mayankgoyalmax@gmail.com) &bull; Made with <span style="color:#e25555;">&hearts;</span>
   </footer>
 
+  <!-- Floating Buttons Container -->
+  <div id="floatingButtons" style="position: fixed; right: 30px; bottom: 30px; display: flex; flex-direction: column; gap: 12px; z-index: 99;">
+    <!-- Go to Top Button -->
+    <button id="goToTopBtn" title="Go to top" style="
+      display: none !important;
+      border: none;
+      outline: none;
+      background-color: #007cbb;
+      color: white;
+      cursor: pointer;
+      padding: 0;
+      border-radius: 50%;
+      font-size: 24px;
+      transition: all 0.3s ease;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+      width: 50px;
+      height: 50px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0.8;
+      font-weight: bold;
+      line-height: 1;
+    ">
+      ↑
+    </button>
+
+    <!-- Home Button -->
+    <button id="homeBtn" title="Return to Home" style="
+      display: none;
+      border: none;
+      outline: none;
+      background-color: #007cbb;
+      color: white;
+      cursor: pointer;
+      padding: 0;
+      border-radius: 50%;
+      font-size: 24px;
+      transition: all 0.3s ease;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+      width: 50px;
+      height: 50px;
+      align-items: center;
+      justify-content: center;
+      opacity: 0.8;
+      font-weight: bold;
+    ">
+      🏠
+    </button>
+  </div>
+
+  <!-- Progress bar container -->
+  <div id="progressContainer" class="progress-block" style="display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: white; padding: 2rem; border-radius: 0.5rem; box-shadow: 0 0 20px rgba(0,0,0,0.2); z-index: 1000; max-width: 90%; width: 400px; text-align: center;">
+    <h3 style="font-family: 'Metropolis', Arial, sans-serif;">Generating HTML File</h3>
+    <div class="progress">
+      <progress value="0" max="100" class="progress-bar" style="width: 100%;"></progress>
+    </div>
+    <div class="progress-status" style="margin-top: 1rem; font-size: 0.9rem; font-family: 'Metropolis', Arial, sans-serif; color: #666;">Preparing download...</div>
+  </div>
+  <div id="overlay" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 999;"></div>
+
   <script>
+    // Help modal functionality
+    document.addEventListener('DOMContentLoaded', function() {
+      const helpBtn = document.getElementById('helpBtn');
+      const helpModal = document.getElementById('helpModal');
+      const closeHelp = document.getElementById('closeHelp');
+      
+      if (helpBtn && helpModal) {
+        helpBtn.addEventListener('click', function() {
+          helpModal.style.display = 'flex';
+        });
+      }
+      
+      if (closeHelp) {
+        closeHelp.addEventListener('click', function() {
+          helpModal.style.display = 'none';
+        });
+      }
+      
+      // Close modal when clicking outside the content
+      window.addEventListener('click', function(event) {
+        if (event.target === helpModal) {
+          helpModal.style.display = 'none';
+        }
+      });
+    });
+
+    // Floating buttons functionality
+    document.addEventListener('DOMContentLoaded', function() {
+      const goToTopBtn = document.getElementById('goToTopBtn');
+      const homeBtn = document.getElementById('homeBtn');
+      let isWorkflowLoaded = false;
+
+      // Function to show/hide workflow-related UI elements
+      window.toggleWorkflowUI = function(show) {
+        isWorkflowLoaded = show;
+        
+        // Show/hide the home button (always visible when workflow is loaded)
+        if (homeBtn) {
+          homeBtn.style.display = show ? 'flex' : 'none';
+        }
+        
+        // Show/hide the go-to-top button based on scroll position
+        if (goToTopBtn) {
+          if (show) {
+            window.onscroll(); // Trigger scroll handler to update button state
+          } else {
+            goToTopBtn.style.display = 'none';
+          }
+        }
+      };
+      
+      // Show/hide button on scroll (only if workflow is loaded)
+      window.onscroll = function() {
+        if (!isWorkflowLoaded) {
+          if (goToTopBtn) goToTopBtn.style.display = 'none';
+          return;
+        }
+        
+        if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+          if (goToTopBtn) {
+            goToTopBtn.style.display = 'flex';
+            goToTopBtn.style.opacity = '1';
+          }
+        } else {
+          if (goToTopBtn) {
+            goToTopBtn.style.opacity = '0.8';
+          }
+        }
+      };
+      
+      // Scroll to top when button is clicked
+      if (goToTopBtn) {
+        goToTopBtn.addEventListener('click', function() {
+          window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+          });
+        });
+      }
+      
+      // Handle home button click
+      if (homeBtn) {
+        homeBtn.addEventListener('click', function() {
+          // Show welcome screen and hide workflow view
+          document.querySelector('.welcome-box').style.display = '';
+          document.getElementById('graphZoomContainer').style.display = 'none';
+          document.querySelector('.details').style.display = 'none';
+          
+          // Hide download buttons when returning to welcome screen
+          const downloadButtons = ['downloadSvgBtn', 'downloadHtmlBtn'];
+          downloadButtons.forEach(btnId => {
+            const btn = document.getElementById(btnId);
+            if (btn) btn.style.display = 'none';
+          });
+          
+          // Hide zoom controls when returning to welcome screen
+          const zoomControls = document.getElementById('zoomControls');
+          if (zoomControls) zoomControls.style.display = 'none';
+          
+          // Hide floating buttons
+          window.toggleWorkflowUI(false);
+          
+          // Reset file input
+          const fileInput = document.getElementById('fileUpload');
+          if (fileInput) fileInput.value = '';
+        });
+      }
+    });
+
     // Icon mapping for different workflow item types and prototype-ids
     const iconMapping = {
       "end": "icons/end.svg",
@@ -619,7 +834,7 @@
         showMessage('Please upload a file first.', 'error');
         return;
       }
-      showMessage('Processing workflow...', 'success');
+      // showMessage('Processing workflow...', 'success');
       const reader = new FileReader();
       reader.onload = function(event) {
         try {
@@ -926,11 +1141,15 @@
           // Show zoom controls after workflow upload
           const zoomControls = document.getElementById('zoomControls');
           if (zoomControls) zoomControls.style.display = '';
-          showMessage('Workflow loaded successfully!', 'success');
           graphDiv.innerHTML = svgContent;
+          
+          // Show floating buttons after workflow is processed
+          if (window.toggleWorkflowUI) {
+            window.toggleWorkflowUI(true);
+          }
           // Update details section
           updateDetails(xmlDoc, workflowItems, inputs, outputs);
-          showMessage('Workflow processed successfully!', 'success');
+          //showMessage('Workflow processed successfully!', 'success');
           // Reset zoom on new diagram
           currentZoom = 1.0;
           const svg = graphDiv.querySelector('svg');
@@ -1089,20 +1308,9 @@
       const title = document.getElementById('mainTitle');
       if (title) {
         title.addEventListener('click', function() {
-          document.querySelector('.welcome-box').style.display = '';
-          document.getElementById('graphZoomContainer').style.display = 'none';
-          document.querySelector('.details').style.display = 'none';
-          
-          // Hide all download buttons when returning to welcome screen
-          const downloadButtons = ['downloadSvgBtn', 'downloadHtmlBtn'];
-          downloadButtons.forEach(btnId => {
-            const btn = document.getElementById(btnId);
-            if (btn) btn.style.display = 'none';
-          });
-          
-          // Hide zoom controls when returning to welcome screen
-          const zoomControls = document.getElementById('zoomControls');
-          if (zoomControls) zoomControls.style.display = 'none';
+          // Use the same logic as home button
+          const homeBtn = document.getElementById('homeBtn');
+          if (homeBtn) homeBtn.click();
         });
       }
     });
@@ -1332,34 +1540,69 @@
       }
     }
 
+    // Function to update progress
+    function updateProgress(progress, message) {
+      const progressBar = document.querySelector('#progressContainer .progress-bar');
+      const statusElement = document.querySelector('#progressContainer .progress-status');
+      if (progressBar) progressBar.value = progress;
+      if (statusElement && message) statusElement.textContent = message;
+    }
+
+    // Function to show/hide progress
+    function showProgress(show) {
+      const container = document.getElementById('progressContainer');
+      const overlay = document.getElementById('overlay');
+      if (show) {
+        container.style.display = 'block';
+        overlay.style.display = 'block';
+      } else {
+        container.style.display = 'none';
+        overlay.style.display = 'none';
+      }
+    }
+
     // Function to download the page as HTML with proper filename and styling
     async function downloadAsHTML() {
       try {
+        // Show progress
+        showProgress(true);
+        updateProgress(10, 'Preparing HTML content...');
+        await new Promise(resolve => setTimeout(resolve, 300)); // Small delay for UI update
         // Clone the document and modify it for saving
+        updateProgress(20, 'Cloning document...');
+        
+        // Create a deep clone of the document but exclude the progress elements
         const doc = document.cloneNode(true);
         
+        // Remove UI elements that shouldn't be in the downloaded HTML
+        const elementsToRemove = ['progressContainer', 'overlay', 'goToTopBtn', 'homeBtn'];
+        elementsToRemove.forEach(id => {
+          const element = doc.getElementById(id);
+          if (element && element.parentNode) {
+            element.parentNode.removeChild(element);
+          }
+        });
+        
         // Remove the top bar and title
+        updateProgress(30, 'Cleaning up content...');
         const topBar = doc.querySelector('.top-bar');
         if (topBar) topBar.remove();
         
         // Embed SVG icons
+        updateProgress(50, 'Processing images and icons...');
         await embedSvgIcons(doc);
         
-        // Clean up the workflow name for the filename
-        const cleanName = (workflowName || 'workflow').trim()
-          .replace(/[^\w\s-]/g, '')  // Remove special characters
-          .replace(/\s+/g, '-')       // Replace spaces with hyphens
-          .toLowerCase()
-          .replace(/-+/g, '-')         // Replace multiple hyphens with single
-          .replace(/^-+|-+$/g, '');    // Remove leading/trailing hyphens
-        
-        const fileName = `${cleanName || 'workflow'}.html`;
+        updateProgress(70, 'Preparing download...');
+        // Use the workflow name directly for HTML files
+        const fileName = `${workflowName || 'workflow'}.html`;
         
         // Create a blob with the HTML content
+        updateProgress(80, 'Generating file...');
         const htmlContent = '<!DOCTYPE html>\n' + doc.documentElement.outerHTML;
         const blob = new Blob([htmlContent], { type: 'text/html;charset=utf-8' });
         
         // Create a download link
+        updateProgress(90, 'Creating download link...');
         const link = document.createElement('a');
         const url = URL.createObjectURL(blob);
         
@@ -1371,14 +1614,18 @@
         document.body.appendChild(link);
         link.click();
         
-        // Clean up
+        // Clean up and complete
+        updateProgress(100, 'Download starting...');
         setTimeout(() => {
           document.body.removeChild(link);
           URL.revokeObjectURL(url);
-        }, 100);
+          showProgress(false);
+        }, 300);
         
       } catch (error) {
+        showProgress(false);
         console.error('Error saving HTML:', error);
+        showMessage('Error generating HTML: ' + error.message, 'error');
         // Fall back to browser's save as
         const win = window.open('', '_blank');
         win.document.open();

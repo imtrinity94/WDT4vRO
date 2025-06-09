@@ -1,0 +1,499 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<workflow xmlns="http://vmware.com/vco/workflow" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://vmware.com/vco/workflow http://vmware.com/vco/workflow/Workflow-v4.xsd" root-name="item39" object-name="workflow:name=generic" id="5817b44f-f493-4dc0-b002-ea8d476a73c5" version="0.0.0" api-version="6.0.0" allowed-operations="vfe" editor-version="2.0" restartMode="1" resumeFromFailedMode="0">
+  <display-name><![CDATA[Workflow for WDT4vRO]]></display-name>
+  <error-handler name="item38">
+    <position y="175.0" x="50.0"/>
+  </error-handler>
+  <position y="120.0" x="50.0"/>
+  <output>
+    <param name="actionResult" type="string"/>
+  </output>
+  <workflow-item name="item0" type="end" end-mode="0">
+    <in-binding/>
+    <position y="10.0" x="2000.0"/>
+  </workflow-item>
+  <workflow-item name="item1" out-name="item3" type="task">
+    <display-name><![CDATA[Scriptable task]]></display-name>
+    <in-binding/>
+    <out-binding/>
+    <description><![CDATA[Simple task with custom script capability.]]></description>
+    <position y="130.0" x="1595.0"/>
+  </workflow-item>
+  <workflow-item name="item2" type="end" end-mode="0">
+    <in-binding/>
+    <position y="65.0" x="1870.0"/>
+  </workflow-item>
+  <workflow-item name="item3" out-name="item8" type="custom-condition" alt-out-name="item17">
+    <display-name><![CDATA[Decision]]></display-name>
+    <script encoded="false"><![CDATA[return true;]]></script>
+    <in-binding/>
+    <out-binding/>
+    <description><![CDATA[Custom decision based on a custom script.]]></description>
+    <position y="120.0" x="1725.0"/>
+  </workflow-item>
+  <workflow-item name="item5" type="end" end-mode="0">
+    <in-binding/>
+    <position y="230.0" x="1765.0"/>
+  </workflow-item>
+  <workflow-item name="item7" out-name="item28" type="input">
+    <display-name><![CDATA[User interaction]]></display-name>
+    <in-binding>
+      <bind name="security.group" type="LdapGroup">
+        <description><![CDATA[Any user member of this group will be authorized to fill in this form.]]></description>
+      </bind>
+      <bind name="security.assignees" type="Array/LdapUser">
+        <description><![CDATA[Any user from this array of users will be authorized to fill in this form]]></description>
+      </bind>
+      <bind name="security.assignee.groups" type="Array/LdapGroup">
+        <description><![CDATA[Any user member of any of the groups will be authorized to fill in this form.]]></description>
+      </bind>
+      <bind name="timeout.date" type="Date">
+        <description><![CDATA[If not null, this input item will wait until date and will continue workflow execution.]]></description>
+      </bind>
+    </in-binding>
+    <out-binding/>
+    <presentation/>
+    <description><![CDATA[Use this element to set up a user interaction.]]></description>
+    <position y="240.0" x="10.0"/>
+  </workflow-item>
+  <workflow-item name="item8" out-name="item9" type="waiting-timer">
+    <display-name><![CDATA[Waiting timer]]></display-name>
+    <in-binding>
+      <bind name="timer.date" type="Date">
+        <description><![CDATA[This timer item will wait until date and will continue workflow execution.]]></description>
+      </bind>
+    </in-binding>
+    <out-binding/>
+    <position y="10.0" x="1740.0"/>
+  </workflow-item>
+  <workflow-item name="item9" out-name="item0" type="waiting-event">
+    <display-name><![CDATA[Waiting event]]></display-name>
+    <in-binding>
+      <bind name="trigger.ref" type="Trigger">
+        <description><![CDATA[Trigger waiting for a specific event before continuing workflow run.]]></description>
+      </bind>
+    </in-binding>
+    <out-binding/>
+    <position y="10.0" x="1870.0"/>
+  </workflow-item>
+  <workflow-item name="item10" out-name="item24" type="task" script-module="">
+    <display-name><![CDATA[Action element]]></display-name>
+    <in-binding/>
+    <out-binding/>
+    <description><![CDATA[Add a note to the workflow schema.]]></description>
+    <position y="130.0" x="815.0"/>
+  </workflow-item>
+  <workflow-item name="item11" out-name="item1" type="link">
+    <display-name><![CDATA[Workflow element]]></display-name>
+    <in-binding/>
+    <out-binding/>
+    <description><![CDATA[ ]]></description>
+    <position y="130.0" x="1465.0"/>
+  </workflow-item>
+  <workflow-item name="item12" out-name="item11" type="foreach">
+    <display-name><![CDATA[Foreach element]]></display-name>
+    <in-binding/>
+    <out-binding/>
+    <position y="130.0" x="1335.0"/>
+  </workflow-item>
+  <workflow-item name="item13" out-name="item12" type="task" launched-workflow-id="">
+    <display-name><![CDATA[Workflow element]]></display-name>
+    <in-binding/>
+    <out-binding>
+      <bind name="wfToken" type="WorkflowToken"/>
+    </out-binding>
+    <description><![CDATA[Start an asynchronous workflow.]]></description>
+    <position y="130.0" x="1205.0"/>
+  </workflow-item>
+  <workflow-item name="item15" out-name="item23" type="multiple">
+    <display-name><![CDATA[Nested workflows]]></display-name>
+    <in-binding/>
+    <out-binding/>
+    <workflow-subelements-list/>
+    <position y="130.0" x="555.0"/>
+  </workflow-item>
+  <workflow-item name="item16" type="end" end-mode="0">
+    <in-binding/>
+    <position y="120.0" x="2025.0"/>
+  </workflow-item>
+  <workflow-item name="item17" out-name="item2" type="decision-activity" alt-out-name="item16">
+    <display-name><![CDATA[Decision activity]]></display-name>
+    <script encoded="false"><![CDATA[return true;]]></script>
+    <in-binding/>
+    <out-binding/>
+    <description><![CDATA[Decision activity based on a workflow or an action.]]></description>
+    <position y="120.0" x="1855.0"/>
+  </workflow-item>
+  <workflow-item name="item19" type="end" end-mode="1">
+    <in-binding/>
+    <position y="175.0" x="855.0"/>
+  </workflow-item>
+  <workflow-item name="item20" type="switch">
+    <display-name><![CDATA[Switch]]></display-name>
+    <script encoded="false"><![CDATA[// Generated by the system, cannot be edited
+if (true) {
+  return "item19";
+}
+]]></script>
+    <in-binding/>
+    <out-binding/>
+    <condition name="" type="boolean" comparator="6" label="item19"/>
+    <description><![CDATA[Basic switch activity based on a workflow attribute or parameter.]]></description>
+    <position y="185.0" x="685.0"/>
+  </workflow-item>
+  <workflow-item name="item21" prototype-id="change-credential" out-name="item22" content-mode="x" type="task">
+    <display-name><![CDATA[Change credential]]></display-name>
+    <script encoded="false"><![CDATA[//Auto-generated script
+if (newCredential != null) {
+  if (String(newCredential) !== String(Server.getCredential())) {
+    workflow.changeCredential(newCredential) ;
+  }
+  else {
+    System.log("Change credential is same as current user!");
+  }
+}
+else  {
+  throw "'newCredential' is NULL";
+}
+]]></script>
+    <in-binding>
+      <bind name="newCredential" type="Credential">
+        <description><![CDATA[New credential]]></description>
+      </bind>
+    </in-binding>
+    <out-binding/>
+    <description><![CDATA[Change current execution credential.]]></description>
+    <position y="130.0" x="295.0"/>
+  </workflow-item>
+  <workflow-item name="item22" prototype-id="sleep" out-name="item15" content-mode="x" type="task">
+    <display-name><![CDATA[Sleep]]></display-name>
+    <script encoded="false"><![CDATA[//Auto-generated script
+if ( sleepTime !== null )  {
+	System.sleep(sleepTime * 1000);
+}else  {
+	throw "'sleepTime' is NULL"; 
+}]]></script>
+    <in-binding>
+      <bind name="sleepTime" type="number">
+        <description><![CDATA[Time to sleep in seconds]]></description>
+      </bind>
+    </in-binding>
+    <out-binding/>
+    <description><![CDATA[Sleep a given number of seconds.]]></description>
+    <position y="130.0" x="425.0"/>
+  </workflow-item>
+  <workflow-item name="item23" prototype-id="wait-until-date" out-name="item10" content-mode="x" type="task">
+    <display-name><![CDATA[Wait until date]]></display-name>
+    <script encoded="false"><![CDATA[//Auto-generated script 
+if (waitDate !== null) { 
+	System.waitUntil(waitDate,1000);
+}
+else  { 
+	throw "'waitDate' is NULL"; 
+}
+]]></script>
+    <in-binding>
+      <bind name="waitDate" type="Date">
+        <description><![CDATA[Wait date]]></description>
+      </bind>
+    </in-binding>
+    <out-binding/>
+    <description><![CDATA[Wait until date.]]></description>
+    <position y="130.0" x="685.0"/>
+  </workflow-item>
+  <workflow-item name="item24" prototype-id="wait-custom-event" out-name="item40" content-mode="x" type="task">
+    <display-name><![CDATA[Wait for custom event]]></display-name>
+    <script encoded="false"><![CDATA[// Auto-generated script
+var eventType = isExternalEvent ? 'external' : 'internal';
+var eventCustom = null;
+if (eventName != null) {
+	eventCustom = System.waitCustomEventUntil(eventType,eventName,endDate);
+}
+success = (eventCustom != null) ;]]></script>
+    <in-binding>
+      <bind name="isExternalEvent" type="boolean">
+        <description><![CDATA[External custom event]]></description>
+      </bind>
+      <bind name="eventName" type="string">
+        <description><![CDATA[Custom event name]]></description>
+      </bind>
+      <bind name="endDate" type="Date">
+        <description><![CDATA[Expiration date]]></description>
+      </bind>
+    </in-binding>
+    <out-binding>
+      <bind name="success" type="boolean">
+        <description><![CDATA[Return true if the custom event was received before 'endDate' is reached.]]></description>
+      </bind>
+    </out-binding>
+    <description><![CDATA[Wait for custom event.]]></description>
+    <position y="130.0" x="945.0"/>
+  </workflow-item>
+  <workflow-item name="item25" prototype-id="send-custom-event" out-name="item26" content-mode="r" type="task">
+    <display-name><![CDATA[Send custom event]]></display-name>
+    <script encoded="false"><![CDATA[// Auto-generated script
+if (eventName != null) {
+	System.sendCustomEvent(eventName);
+} else  {
+	throw "'eventName' is NULL";
+}
+]]></script>
+    <in-binding>
+      <bind name="eventName" type="string">
+        <description><![CDATA[Custom event name]]></description>
+      </bind>
+    </in-binding>
+    <out-binding/>
+    <description><![CDATA[Send a custom event.]]></description>
+    <position y="240.0" x="1075.0"/>
+  </workflow-item>
+  <workflow-item name="item26" prototype-id="increase-counter" out-name="item34" content-mode="x" type="task">
+    <display-name><![CDATA[Increase counter]]></display-name>
+    <script encoded="false"><![CDATA[//Auto-generated script
+counter = counter + 1;]]></script>
+    <in-binding>
+      <bind name="counter" type="number">
+        <description><![CDATA[Item to increase]]></description>
+      </bind>
+    </in-binding>
+    <out-binding>
+      <bind name="counter" type="number">
+        <description><![CDATA[Increased item]]></description>
+      </bind>
+    </out-binding>
+    <description><![CDATA[Increment a counter by one.]]></description>
+    <position y="240.0" x="1205.0"/>
+  </workflow-item>
+  <workflow-item name="item27" prototype-id="decrease-counter" out-name="item20" content-mode="x" type="task">
+    <display-name><![CDATA[Decrease counter]]></display-name>
+    <script encoded="false"><![CDATA[//Auto-generated script
+counter = counter - 1;]]></script>
+    <in-binding>
+      <bind name="counter" type="number">
+        <description><![CDATA[Item to decrease]]></description>
+      </bind>
+    </in-binding>
+    <out-binding>
+      <bind name="counter" type="number">
+        <description><![CDATA[Decreased item]]></description>
+      </bind>
+    </out-binding>
+    <description><![CDATA[Decrement a counter by one.]]></description>
+    <position y="185.0" x="555.0"/>
+  </workflow-item>
+  <workflow-item name="item28" prototype-id="system-log" out-name="item29" type="task" interaction="l">
+    <display-name><![CDATA[System log]]></display-name>
+    <script encoded="false"><![CDATA[//Auto-generated script
+System.log(text);]]></script>
+    <in-binding>
+      <bind name="text" type="string">
+        <description><![CDATA[The text to log]]></description>
+      </bind>
+    </in-binding>
+    <out-binding/>
+    <description><![CDATA[Log the input text to the console log with the level "log".]]></description>
+    <position y="240.0" x="295.0"/>
+  </workflow-item>
+  <workflow-item name="item29" prototype-id="system-warning" out-name="item30" type="task" interaction="l">
+    <display-name><![CDATA[System warning]]></display-name>
+    <script encoded="false"><![CDATA[//Auto-generated script
+System.warn(text);]]></script>
+    <in-binding>
+      <bind name="text" type="string">
+        <description><![CDATA[The text to log]]></description>
+      </bind>
+    </in-binding>
+    <out-binding/>
+    <description><![CDATA[Log the input text to the console log with the level "warn".]]></description>
+    <position y="240.0" x="425.0"/>
+  </workflow-item>
+  <workflow-item name="item30" prototype-id="system-error" out-name="item31" type="task" interaction="l">
+    <display-name><![CDATA[System error]]></display-name>
+    <script encoded="false"><![CDATA[//Auto-generated script
+System.error(text);]]></script>
+    <in-binding>
+      <bind name="text" type="string">
+        <description><![CDATA[The text to log]]></description>
+      </bind>
+    </in-binding>
+    <out-binding/>
+    <description><![CDATA['Log the input text to the console log with the level "error".']]></description>
+    <position y="240.0" x="555.0"/>
+  </workflow-item>
+  <workflow-item name="item31" prototype-id="server-log" out-name="item32" type="task" interaction="l">
+    <display-name><![CDATA[Server log]]></display-name>
+    <script encoded="false"><![CDATA[//Auto-generated script
+Server.log(text, object);]]></script>
+    <in-binding>
+      <bind name="text" type="string">
+        <description><![CDATA[The text to log]]></description>
+      </bind>
+      <bind name="object" type="Any">
+        <description><![CDATA[The text to log and additional info]]></description>
+      </bind>
+    </in-binding>
+    <out-binding/>
+    <description><![CDATA[Log the input text to the server log with the level "log".]]></description>
+    <position y="240.0" x="685.0"/>
+  </workflow-item>
+  <workflow-item name="item32" prototype-id="server-warning" out-name="item33" type="task" interaction="l">
+    <display-name><![CDATA[Server warning]]></display-name>
+    <script encoded="false"><![CDATA[//Auto-generated script
+Server.warn(text, object);]]></script>
+    <in-binding>
+      <bind name="text" type="string">
+        <description><![CDATA[The text to log]]></description>
+      </bind>
+      <bind name="object" type="Any">
+        <description><![CDATA[The text to log and additional info]]></description>
+      </bind>
+    </in-binding>
+    <out-binding/>
+    <description><![CDATA[Log the input text to the server log with the level "warn".]]></description>
+    <position y="240.0" x="815.0"/>
+  </workflow-item>
+  <workflow-item name="item33" prototype-id="server-error" out-name="item25" type="task" interaction="l">
+    <display-name><![CDATA[Server error]]></display-name>
+    <script encoded="false"><![CDATA[//Auto-generated script
+Server.error(text, object);]]></script>
+    <in-binding>
+      <bind name="text" type="string">
+        <description><![CDATA[The text to log]]></description>
+      </bind>
+      <bind name="object" type="Any">
+        <description><![CDATA[The text to log and additional info]]></description>
+      </bind>
+    </in-binding>
+    <out-binding/>
+    <description><![CDATA[Log the input text to the server log with the level "error".]]></description>
+    <position y="240.0" x="945.0"/>
+  </workflow-item>
+  <workflow-item name="item34" prototype-id="system-server-log" out-name="item35" type="task" interaction="l">
+    <display-name><![CDATA[System and Server log]]></display-name>
+    <script encoded="false"><![CDATA[//Auto-generated script
+System.log(text + "-" + object);
+Server.log(text, object);]]></script>
+    <in-binding>
+      <bind name="text" type="string">
+        <description><![CDATA[The text to log]]></description>
+      </bind>
+      <bind name="object" type="Any">
+        <description><![CDATA[The text to log and additional info]]></description>
+      </bind>
+    </in-binding>
+    <out-binding/>
+    <description><![CDATA[Log the input text to the console and the server log with the level "log".]]></description>
+    <position y="240.0" x="1335.0"/>
+  </workflow-item>
+  <workflow-item name="item35" prototype-id="system-server-warning" out-name="item36" type="task" interaction="l">
+    <display-name><![CDATA[System and Server warning]]></display-name>
+    <script encoded="false"><![CDATA[//Auto-generated script
+System.warn(text + "-" + object);
+Server.warn(text, object);]]></script>
+    <in-binding>
+      <bind name="text" type="string">
+        <description><![CDATA[The text to log]]></description>
+      </bind>
+      <bind name="object" type="Any">
+        <description><![CDATA[The text to log and additional info]]></description>
+      </bind>
+    </in-binding>
+    <out-binding/>
+    <description><![CDATA[Log the input text to the console and the server log with the level "warn".]]></description>
+    <position y="240.0" x="1465.0"/>
+  </workflow-item>
+  <workflow-item name="item36" prototype-id="system-server-error" out-name="item5" type="task" interaction="l">
+    <display-name><![CDATA[System and Server error]]></display-name>
+    <script encoded="false"><![CDATA[//Auto-generated script
+System.error(text + "-" + object);
+Server.error(text, object);]]></script>
+    <in-binding>
+      <bind name="text" type="string">
+        <description><![CDATA[The text to log]]></description>
+      </bind>
+      <bind name="object" type="Any">
+        <description><![CDATA[The text to log and additional info]]></description>
+      </bind>
+    </in-binding>
+    <out-binding/>
+    <description><![CDATA[Log the input text to the console and the server log with the level "error".]]></description>
+    <position y="240.0" x="1595.0"/>
+  </workflow-item>
+  <workflow-item name="item37" prototype-id="http-post" out-name="item27" content-mode="r" type="task" interaction="io">
+    <display-name><![CDATA[HTTP post]]></display-name>
+    <script encoded="false"><![CDATA[//Auto-generated script
+var urlObject = new URL(url);
+result = urlObject.postContent(content);]]></script>
+    <in-binding>
+      <bind name="url" type="string">
+        <description><![CDATA[Target url]]></description>
+      </bind>
+      <bind name="content" type="string">
+        <description><![CDATA[Data to post]]></description>
+      </bind>
+    </in-binding>
+    <out-binding>
+      <bind name="result" type="string">
+        <description><![CDATA[Operation result]]></description>
+      </bind>
+    </out-binding>
+    <description><![CDATA[Post content via HTTP.]]></description>
+    <position y="185.0" x="425.0"/>
+  </workflow-item>
+  <workflow-item name="item38" prototype-id="http-get" out-name="item37" content-mode="r" type="task" interaction="o">
+    <display-name><![CDATA[HTTP get]]></display-name>
+    <script encoded="false"><![CDATA[//Auto-generated script
+var urlObject = new URL(url);
+result = urlObject.getContent() ;]]></script>
+    <in-binding>
+      <bind name="url" type="string">
+        <description><![CDATA[Target url]]></description>
+      </bind>
+    </in-binding>
+    <out-binding>
+      <bind name="result" type="string">
+        <description><![CDATA[Operation result]]></description>
+      </bind>
+    </out-binding>
+    <description><![CDATA[Get content from HTTP.]]></description>
+    <position y="185.0" x="295.0"/>
+  </workflow-item>
+  <workflow-item name="item39" out-name="item41" type="task" script-module="actions.mayank.goyal/listNodeJsModules">
+    <display-name><![CDATA[listNodeJsModules]]></display-name>
+    <script encoded="false"><![CDATA[//Auto generated script, cannot be modified !
+actionResult = System.getModule("actions.mayank.goyal").listNodeJsModules();
+]]></script>
+    <in-binding/>
+    <out-binding>
+      <bind name="actionResult" type="string" export-name="actionResult"/>
+    </out-binding>
+    <description><![CDATA[Add a note to the workflow schema.]]></description>
+    <position y="130.0" x="95.0"/>
+  </workflow-item>
+  <workflow-item name="item40" out-name="item13" type="task" launched-workflow-id="">
+    <display-name><![CDATA[Workflow element]]></display-name>
+    <in-binding>
+      <bind name="workflowScheduleDate" type="Date"/>
+    </in-binding>
+    <out-binding>
+      <bind name="scheduledTask" type="Task"/>
+    </out-binding>
+    <description><![CDATA[Schedule a workflow and create a task.]]></description>
+    <position y="130.0" x="1045.0"/>
+  </workflow-item>
+  <workflow-item name="item41" out-name="item21" type="task" script-module="actions.mayank.goyal/yamlParser">
+    <display-name><![CDATA[yamlParser]]></display-name>
+    <script encoded="false"><![CDATA[//Auto generated script, cannot be modified !
+actionResult = System.getModule("actions.mayank.goyal").yamlParser(yamlInput);
+]]></script>
+    <in-binding>
+      <bind name="yamlInput" type="string" export-name=""/>
+    </in-binding>
+    <out-binding>
+      <bind name="actionResult" type="string" export-name="actionResult"/>
+    </out-binding>
+    <description><![CDATA[Add a note to the workflow schema.]]></description>
+    <position y="130.0" x="182.5"/>
+  </workflow-item>
+  <presentation/>
+</workflow>
