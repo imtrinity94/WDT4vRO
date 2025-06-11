@@ -1,6 +1,12 @@
 # Workflow Documentation Tool for Aria Automation Orchestrator (WDT4vRO)
 
+[![Open in Browser](https://img.shields.io/badge/Open%20in-Browser-4285F4?style=for-the-badge&logo=googlechrome&logoColor=white)](https://wdt4vro.onrender.com/)
+
 A comprehensive visualization and documentation tool that converts XML-based workflow definitions from VMware Aria Automation Orchestrator into intuitive, interactive diagrams. This tool helps teams understand, document, and maintain complex workflows with ease.
+
+🌐 **Access Online**: [https://wdt4vro.onrender.com/](https://wdt4vro.onrender.com/)
+
+📂 **GitHub Repository**: [https://github.com/imtrinity94/WDT4vRO](https://github.com/imtrinity94/WDT4vRO)
 
 ![Workflow Visualization Example](assets/wdt4vro-screenshot.png)
 
@@ -33,9 +39,14 @@ A comprehensive visualization and documentation tool that converts XML-based wor
 
 ### Quick Start
 
+#### Option 1: Use Online Version (Recommended)
+1. Go to [https://wdt4vro.onrender.com/](https://wdt4vro.onrender.com/)
+2. Click "Upload Workflow" and select your XML file
+
+#### Option 2: Run Locally
 1. **Clone the repository**
    ```bash
-   git clone https://github.com/yourusername/WDT4vRO.git
+   git clone https://github.com/imtrinity94/WDT4vRO.git
    cd WDT4vRO
    ```
 
