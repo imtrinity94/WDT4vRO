@@ -1,1 +1,7 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 40"><title>decrease counter</title><g id="a213a1dc-b408-4561-9740-9046d40ad7b4" data-name="icon"><path d="M20,2.06A18,18,0,0,0,2.64,15.33H4.7a15.94,15.94,0,1,1,.54,10.81H3.11A18,18,0,1,0,20,2.06Z" fill="var(--cds-alias-utility-gray)"></path><path d="M22.23,11.24a1.2,1.2,0,0,0-1.15-.09l-3.87,1.75a1.2,1.2,0,0,0,1,2.19l2.18-1V28.5a1.2,1.2,0,0,0,2.4,0V12.25A1.2,1.2,0,0,0,22.23,11.24Z" fill="var(--cds-alias-utility-red)"></path><path d="M11,19.6H3.46a1.2,1.2,0,0,0,0,2.4H11a1.2,1.2,0,1,0,0-2.4Z" fill="var(--cds-alias-utility-red)"></path></g></svg>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 40">
+  <title>decrease counter</title>
+  <g id="decrease-counter" data-name="icon">
+    <path fill="hsl(200, 10%, 47%)" d="M20 2.06A18 18 0 0 0 2.64 15.33H4.7a15.94 15.94 0 1 1 .54 10.81H3.11A18 18 0 1 0 20 2.06"/>
+    <path fill="hsl(9, 100%, 44%)" d="M22.23 11.24a1.2 1.2 0 0 0-1.15-.09l-3.87 1.75a1.2 1.2 0 0 0 1 2.19l2.18-1V28.5a1.2 1.2 0 0 0 2.4 0V12.25a1.2 1.2 0 0 0-.56-1.01M11 19.6H3.46a1.2 1.2 0 0 0 0 2.4H11a1.2 1.2 0 1 0 0-2.4"/>
+  </g>
+</svg>

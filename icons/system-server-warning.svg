@@ -1,1 +1,8 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 40"><title>system server warning</title><g id="1c686b6c-27ce-41fe-b104-77ae0404feac" data-name="icon"><path d="M20,27.9a1.21,1.21,0,0,1-1.2-1.23V12.33a1.2,1.2,0,1,1,2.4,0V26.67A1.21,1.21,0,0,1,20,27.9Z" fill="var(--cds-alias-status-warning)"></path><path d="M36,40H4A4,4,0,0,1,.43,34.16l16-32A4,4,0,0,1,20,0h0a4,4,0,0,1,3.58,2.21l16,32A4,4,0,0,1,36,40ZM20,2a2,2,0,0,0-1.79,1.1l-16,32A2,2,0,0,0,4,38H36a2,2,0,0,0,1.79-2.9l-16-32A2,2,0,0,0,20,2Z" fill="var(--cds-alias-status-warning)"></path><circle cx="20" cy="32.64" r="1.6" fill="var(--cds-alias-status-warning)"></circle></g></svg>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 40">
+  <title>system server warning</title>
+  <g id="system-server-warning" data-name="icon">
+    <path fill="hsl(39, 100%, 59%)" d="M20 27.9a1.21 1.21 0 0 1-1.2-1.23V12.33a1.2 1.2 0 1 1 2.4 0v14.34A1.21 1.21 0 0 1 20 27.9"/>
+    <path fill="hsl(39, 100%, 59%)" d="M36 40H4a4 4 0 0 1-3.57-5.84l16-32A4 4 0 0 1 20 0a4 4 0 0 1 3.58 2.21l16 32A4 4 0 0 1 36 40M20 2a2 2 0 0 0-1.79 1.1l-16 32A2 2 0 0 0 4 38h32a2 2 0 0 0 1.79-2.9l-16-32A2 2 0 0 0 20 2"/>
+    <circle cx="20" cy="32.64" r="1.6" fill="hsl(39, 100%, 59%)"/>
+  </g>
+</svg>

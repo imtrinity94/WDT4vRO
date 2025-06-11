@@ -1,1 +1,7 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 40"><title>system server error</title><g id="389c5438-a043-4d1f-9267-dcada5c38ce5" data-name="icon"><path d="M28.93,11.49a1.2,1.2,0,0,0-1.7,0l-7.18,7.18-7.18-7.18a1.2,1.2,0,0,0-1.7,1.7l7.18,7.18-7.18,7.18a1.2,1.2,0,1,0,1.7,1.7l7.18-7.18,7.18,7.18a1.2,1.2,0,1,0,1.7-1.7l-7.18-7.18,7.18-7.18A1.2,1.2,0,0,0,28.93,11.49Z" fill="var(--cds-alias-utility-red)"></path><path d="M20,40A20,20,0,1,1,40,20,20,20,0,0,1,20,40ZM20,2A18,18,0,1,0,38,20,18,18,0,0,0,20,2Z" fill="var(--cds-alias-utility-red)"></path></g></svg>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 40">
+  <title>system server error</title>
+  <g id="system-server-error" data-name="icon">
+    <path fill="hsl(9, 100%, 44%)" d="M28.93 11.49a1.2 1.2 0 0 0-1.7 0l-7.18 7.18-7.18-7.18a1.2 1.2 0 0 0-1.7 1.7l7.18 7.18-7.18 7.18a1.2 1.2 0 1 0 1.7 1.7l7.18-7.18 7.18 7.18a1.2 1.2 0 1 0 1.7-1.7l-7.18-7.18 7.18-7.18a1.2 1.2 0 0 0 0-1.7"/>
+    <path fill="hsl(9, 100%, 44%)" d="M20 40a20 20 0 1 1 20-20 20 20 0 0 1-20 20m0-38a18 18 0 1 0 18 18A18 18 0 0 0 20 2"/>
+  </g>
+</svg>

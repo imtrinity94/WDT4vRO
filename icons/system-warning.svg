@@ -1,17 +1,15 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 36 36">
-    <title>system-warning</title>
-    <g id="System-warning" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-        <g id="window" transform="translate(2.000000, 3.000000)" fill-rule="nonzero">
-            <rect id="Rectangle-path" fill="#6a7a81" x="3" y="3" width="2" height="2"></rect>
-            <rect id="Rectangle-path" fill="#6a7a81" x="7" y="3" width="2" height="2"></rect>
-            <rect id="Rectangle-path" fill="#6a7a81" x="11" y="3" width="2" height="2"></rect>
-            <path d="M30,0 L2,0 C0.8954305,0 0,0.959389822 0,2.14285714 L0,27.8571429 C0,29.0406102 0.8954305,30 2,30 L30,30 C31.1045695,30 32,29.0406102 32,27.8571429 L32,2.14285714 C32,0.959389822 31.1045695,0 30,0 Z M2,2 L30,2 L30,7 L2,7 L2,2 Z M2,28 L2,8.8 L30,8.8 L30,28 L2,28 Z" id="Shape" fill="#6a7a81"></path>
-            <g id="warning" transform="translate(7.000000, 11.000000)">
-                <path d="M7.67647059,0.650920414 L0.352941176,13.0515731 C0.116439472,13.4535989 0.116520309,13.9489337 0.353153221,14.3508851 C0.589786133,14.7528364 1.02699688,15.0002975 1.5,14.9999997 L16.1470588,14.9999997 C16.6200619,15.0002975 17.0572727,14.7528364 17.2939056,14.3508851 C17.5305385,13.9489337 17.5306194,13.4535989 17.2941176,13.0515731 L9.97058824,0.650920414 C9.73438554,0.248209524 9.2969881,0 8.82352941,0 C8.35007072,0 7.91267328,0.248209524 7.67647059,0.650920414 Z" id="Shape" fill="yellow"></path>
-                <path d="M8.82352941,9.90882353 C8.33621934,9.90882353 7.94117647,9.51378066 7.94117647,9.02647059 L7.94117647,3.73235294 C7.94117647,3.24504287 8.33621934,2.85 8.82352941,2.85 C9.31083949,2.85 9.70588235,3.24504287 9.70588235,3.73235294 L9.70588235,9.02647059 C9.70588235,9.51378066 9.31083949,9.90882353 8.82352941,9.90882353 Z" id="Shape" fill="white"></path>
-                <circle id="Oval" fill="white" cx="8.82352941" cy="12.3529412" r="1.11176471"></circle>
-            </g>
-        </g>
-        <rect id="Rectangle" x="0" y="0" width="36" height="36"></rect>
+  <title>system-warning</title>
+  <g id="System-warning" fill="none" fill-rule="evenodd" stroke="none" stroke-width="1">
+    <g id="window" fill-rule="nonzero" transform="translate(2 3)">
+      <path id="Rectangle-path" fill="hsl(198, 10%, 46%)" d="M3 3h2v2H3zm4 0h2v2H7zm4 0h2v2h-2z"/>
+      <path id="Shape" fill="hsl(198, 10%, 46%)" d="M30 0H2C.895 0 0 .96 0 2.143v25.714C0 29.041.895 30 2 30h28c1.105 0 2-.96 2-2.143V2.143C32 .959 31.105 0 30 0M2 2h28v5H2zm0 26V8.8h28V28z"/>
+      <g id="warning" transform="translate(7 11)">
+        <path id="Shape" fill="hsl(40, 100%, 59%)" d="M7.676.65.353 13.053a1.28 1.28 0 0 0 0 1.299c.237.402.674.65 1.147.649h14.647c.473 0 .91-.247 1.147-.65a1.28 1.28 0 0 0 0-1.298L9.971.65A1.33 1.33 0 0 0 8.824 0a1.33 1.33 0 0 0-1.148.65"/>
+        <path id="Shape" fill="hsl(0, 0%, 0%)" d="M8.824 9.909a.88.88 0 0 1-.883-.883V3.732a.882.882 0 0 1 1.765 0v5.294a.88.88 0 0 1-.882.883"/>
+        <circle id="Oval" cx="8.824" cy="12.353" r="1.112" fill="hsl(0, 0%, 0%)"/>
+      </g>
     </g>
+    <path id="Rectangle" d="M0 0h36v36H0z"/>
+  </g>
 </svg>

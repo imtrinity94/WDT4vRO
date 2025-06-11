@@ -1,1 +1,8 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 40"><title>system server log</title><g id="135301e6-0484-412a-9d54-03a085e2d8dd" data-name="icon"><circle cx="20.21" cy="10.47" r="2.11" fill="var(--cds-alias-status-info)"></circle><path d="M23.59,29.3h-2V15.93H18.1a1.27,1.27,0,0,0,0,2.53H19V29.3h-1.9a1.27,1.27,0,1,0,0,2.53h6.47a1.27,1.27,0,0,0,0-2.53Z" fill="var(--cds-alias-status-info)"></path><path d="M20,40A20,20,0,1,1,40,20,20,20,0,0,1,20,40ZM20,2A18,18,0,1,0,38,20,18,18,0,0,0,20,2Z" fill="var(--cds-alias-status-info)"></path></g></svg>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 40">
+  <title>system server log</title>
+  <g id="system-server-log" data-name="icon">
+    <circle cx="20.21" cy="10.47" r="2.11" fill="hsl(198, 100%, 34%)"/>
+    <path fill="hsl(198, 100%, 34%)" d="M23.59 29.3h-2V15.93H18.1a1.27 1.27 0 0 0 0 2.53h.9V29.3h-1.9a1.27 1.27 0 1 0 0 2.53h6.47a1.27 1.27 0 0 0 0-2.53Z"/>
+    <path fill="hsl(198, 100%, 34%)" d="M20 40a20 20 0 1 1 20-20 20 20 0 0 1-20 20m0-38a18 18 0 1 0 18 18A18 18 0 0 0 20 2"/>
+  </g>
+</svg>
