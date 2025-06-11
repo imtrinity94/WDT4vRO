@@ -4,9 +4,7 @@
 
 A comprehensive visualization and documentation tool that converts XML-based workflow definitions from VMware Aria Automation Orchestrator into intuitive, interactive diagrams. This tool helps teams understand, document, and maintain complex workflows with ease.
 
-🌐 **Access Online**: [https://wdt4vro.onrender.com/](https://wdt4vro.onrender.com/)
-
-📂 **GitHub Repository**: [https://github.com/imtrinity94/WDT4vRO](https://github.com/imtrinity94/WDT4vRO)
+🌐 **Try Online**: [https://wdt4vro.onrender.com/](https://wdt4vro.onrender.com/)
 
 ![Workflow Visualization Example](assets/wdt4vro-screenshot.png)
 
@@ -144,4 +142,8 @@ For support, please:
 
 <div align="center">
   Made with ❤️ by the WDT4vRO Team
+  
+  ---
+  
+  <sub>VMware Aria Automation Orchestrator™ is a trademark of Broadcom Inc. This project is not affiliated with or endorsed by Broadcom Inc. or its subsidiaries.</sub>
 </div>
