@@ -6,7 +6,7 @@ A comprehensive visualization and documentation tool that converts XML-based wor
 
 🌐 **Try Online**: [https://wdt4vro.onrender.com/](https://wdt4vro.onrender.com/)
 
-![Workflow Visualization Example](assets/wdt4vro-screenshot.png)
+![Workflow Visualization Example](assets/wofklow_sample_diagram.png)
 
 ## 🌟 Features
 
