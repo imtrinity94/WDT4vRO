@@ -629,39 +629,109 @@
 
     // Helper to get icon for a node
     function getIconForNode(item) {
+      const itemName = item.getAttribute("name");
+      console.log('getIconForNode called for item:', itemName, 'node type:', item.nodeName);
+      
       const type = item.getAttribute("type");
       const prototypeId = item.getAttribute("prototype-id");
       const scriptModule = item.getAttribute("script-module");
+      
+      console.log('Item attributes:', {
+        name: itemName,
+        type: type,
+        prototypeId: prototypeId,
+        scriptModule: scriptModule
+      });
       
       // Special case: End node with end-mode="1" should use exception icon
       if (type === "end" && item.getAttribute("end-mode") === "1") {
         return "icons/exception.svg";
       }
 
+      // Special case: Async workflow task
+      if (type === "task") {
+        // Check for async workflow conditions:
+        // 1. Must have launched-workflow-id attribute (can be empty)
+        // 2. Must have out-binding with type="WorkflowToken" and name="wfToken"
+        const hasLaunchedWorkflowId = item.hasAttribute("launched-workflow-id");
+        const outBinds = item.getElementsByTagName("out-binding")[0]?.getElementsByTagName("bind") || [];
+        
+        const hasCorrectWorkflowToken = Array.from(outBinds).some(bind => 
+          bind.getAttribute("type") === "WorkflowToken" && 
+          bind.getAttribute("name") === "wfToken"
+        );
+        
+        // All conditions must be met
+        const isAsyncWorkflow = hasLaunchedWorkflowId && hasCorrectWorkflowToken;
+        
+        if (isAsyncWorkflow) {
+          const itemName = item.getAttribute("name");
+          console.log(`Async workflow detected for item ${itemName}`, {
+            hasLaunchedWorkflowId,
+            hasCorrectWorkflowToken,
+            outBindings: Array.from(outBinds).map(b => b.outerHTML)
+          });
+          return "icons/workflow-async.svg";
+        }
+      }
+      
       // Special case: Task with script-module should use action icon
-      if ((type === "task" && scriptModule) || (type === "task" && scriptModule === "")) {
+      if ((type === "task" || type === "scriptable-task") && (scriptModule || scriptModule === "")) {
         return "icons/action.svg";
       }
       
-      // Special case: Schedule workflow
-      if (type === "task") {
-        // Check for input binding named workflowScheduleDate and output binding named scheduledTask
-        const inBinds = Array.from(item.getElementsByTagName("in-binding")[0]?.getElementsByTagName("bind") || []);
-        const outBinds = Array.from(item.getElementsByTagName("out-binding")[0]?.getElementsByTagName("bind") || []);
-        const hasScheduleInput = inBinds.some(b => b.getAttribute("name") === "workflowScheduleDate");
-        const hasScheduleOutput = outBinds.some(b => b.getAttribute("name") === "scheduledTask");
+      // Special case: Schedule workflow - check for both task and scriptable-task types
+      if (type === "task" || type === "scriptable-task") {
+        const itemName = item.getAttribute("name");
+        const displayName = item.getElementsByTagName("display-name")[0]?.textContent;
+        
+        // Get bindings
+        const inBinds = item.getElementsByTagName("in-binding")[0]?.getElementsByTagName("bind") || [];
+        const outBinds = item.getElementsByTagName("out-binding")[0]?.getElementsByTagName("bind") || [];
+        
+        // Log details for debugging
+        console.log(`Checking schedule workflow for item: ${itemName} (${displayName || 'no display name'})`);
+        
+        let hasScheduleInput = false;
+        let hasScheduleOutput = false;
+        
+        // Check for workflowScheduleDate in input bindings
+        for (let bind of inBinds) {
+          if (bind.getAttribute("name") === "workflowScheduleDate") {
+            hasScheduleInput = true;
+            break;
+          }
+        }
+        
+        // Check for scheduledTask in output bindings
+        for (let bind of outBinds) {
+          if (bind.getAttribute("name") === "scheduledTask") {
+            hasScheduleOutput = true;
+            break;
+          }
+        }
+        
+        // If both required bindings are present, it's a schedule workflow
         if (hasScheduleInput && hasScheduleOutput) {
-          return "icons/schedule-workflow.svg";
+          console.log(`Schedule workflow detected for item ${itemName} (${displayName || 'no display name'})`);
+          console.log('Found schedule workflow by bindings:', {itemName, displayName});
+          return "icons/workflow-schedule.svg";
+        }
+        
+        // Also check display name as a fallback
+        if (displayName && displayName.includes("Schedule")) {
+          console.log('Found schedule workflow by display name:', displayName);
+          return "icons/workflow-schedule.svg";
         }
       }
 
       if (prototypeId && iconMapping[type + ":prototype-id=" + prototypeId]) {
         return iconMapping[type + ":prototype-id=" + prototypeId];
       }
-      if (iconMapping[type]) {
-        return iconMapping[type];
-      }
-      return iconMapping["default"];
+      // Debug: Log the final icon selection
+      const finalIcon = iconMapping[type] || iconMapping["default"];
+      console.log('Final icon selection for', type, ':', finalIcon);
+      return finalIcon;
     }
 
     // Function to show messages to user
@@ -857,12 +927,22 @@
           }
           // Patch: treat type=task with no prototype-id and no script-module as scriptable-task
           workflowItems.forEach(item => {
-            if (
-              item.getAttribute("type") === "task" &&
-              !item.hasAttribute("prototype-id") &&
-              !item.hasAttribute("script-module")
-            ) {
-              item.setAttribute("type", "scriptable-task");
+            const type = item.getAttribute("type");
+            if (type === "task" && !item.hasAttribute("prototype-id") && !item.hasAttribute("script-module")) {
+              // Check if this is an async workflow task before converting
+              const hasLaunchedWorkflowId = item.hasAttribute("launched-workflow-id");
+              const outBinds = item.getElementsByTagName("out-binding")[0]?.getElementsByTagName("bind") || [];
+              const hasCorrectWorkflowToken = Array.from(outBinds).some(bind => 
+                bind.getAttribute("type") === "WorkflowToken" && 
+                bind.getAttribute("name") === "wfToken"
+              );
+              
+              // Only convert to scriptable-task if it's not an async workflow
+              if (!(hasLaunchedWorkflowId && hasCorrectWorkflowToken)) {
+                item.setAttribute("type", "scriptable-task");
+              } else {
+                console.log('Preserving task type for async workflow item:', item.getAttribute("name"));
+              }
             }
           });
           // Calculate positions for nodes
