@@ -1,64 +1,136 @@
-# Workflow Documentation Tool for Aria Automation Orchestrator
+# Workflow Documentation Tool for Aria Automation Orchestrator (WDT4vRO)
 
-A powerful visualization tool that converts XML-based workflow definitions into intuitive, interactive diagrams using Graphviz. This tool helps teams understand and document complex workflows in Aria Automation Orchestrator.
+A comprehensive visualization and documentation tool that converts XML-based workflow definitions from VMware Aria Automation Orchestrator into intuitive, interactive diagrams. This tool helps teams understand, document, and maintain complex workflows with ease.
 
-## Features
+![Workflow Visualization Example](assets/wdt4vro-screenshot.png)
 
-- 📝 **XML Workflow Import**: Upload XML workflow files to automatically generate visual diagrams
-- 🎨 **Beautiful Visualization**: Uses Graphviz to create clear, professional-looking workflow diagrams
-- 📊 **Interactive Interface**: Zoom, pan, and explore workflow details with ease
-- 📄 **Detailed Documentation**: Automatically extracts and displays workflow metadata
-- 📱 **Responsive Design**: Works perfectly on both desktop and mobile devices
-- 📱 **PDF Export**: Export workflows as PDF documents for sharing and documentation
+## 🌟 Features
 
-## Getting Started
+- **📝 XML Workflow Import**
+  - Directly upload XML workflow files
+  - Supports all standard vRO workflow elements
+  - Automatic detection of workflow types and relationships
 
-1. Open the application in your web browser
-2. Click the "Upload Workflow" button
-3. Select your XML workflow file
-4. The tool will automatically:
-   - Generate a visual workflow diagram
-   - Extract and display workflow metadata
-   - Create an interactive visualization
+- **🎨 Intelligent Visualization**
+  - Automatic layout of workflow elements
+  - Color-coded nodes for different element types
+  - Custom icons for different workflow actions
+  - Support for async workflows and scheduled tasks
 
-## Usage
+- **🔍 Interactive Interface**
+  - Zoom and pan functionality
+  - Detailed tooltips on hover
+  - Responsive design for all devices
+  - Full-screen mode for better visibility
 
-- **Zoom**: Use the zoom controls or pinch-to-zoom on mobile devices
-- **Pan**: Click and drag to move the workflow diagram
-- **Export**: Click the PDF download button to save your workflow as a PDF document
-- **Details**: View workflow metadata and documentation in the sidebar
+- **📄 Comprehensive Documentation**
+  - Automatic metadata extraction
+  - Input/output parameter documentation
+  - Workflow element details panel
+  - Export functionality for sharing
 
-## Technical Details
+## 🚀 Getting Started
 
-- Built with modern web technologies
-- Uses Graphviz for workflow visualization
-- Supports PDF export using jsPDF
-- Responsive design for all devices
-- Clean, modern UI with Clarity Design System
+### Quick Start
 
-## Project Structure
+1. **Clone the repository**
+   ```bash
+   git clone https://github.com/yourusername/WDT4vRO.git
+   cd WDT4vRO
+   ```
 
-- `index.html`: Main application file
-- `assets/`: Contains application assets and icons
-- `Sample Workflow XMLs/`: Example workflow files
-- `icons/`: Custom icons for workflow elements
-- `full.render.js`: Graphviz rendering library
-- `Dockerfile`: Container configuration for deployment
+2. **Run a local server**
+   - Python 3:
+     ```bash
+     python -m http.server 8000
+     ```
+   - Or use any other local web server
 
-## Requirements
+3. **Open in browser**
+   - Navigate to `http://localhost:8000`
+   - Click "Upload Workflow" and select your XML file
 
-- Modern web browser (Chrome, Firefox, Safari, Edge)
-- JavaScript enabled
-- SVG support
+## 🛠️ Usage Guide
 
-## Contributing
+### Uploading Workflows
+1. Click the "Upload Workflow" button
+2. Select your XML workflow file
+3. The tool will automatically process and display the workflow
 
-Contributions are welcome! Please feel free to submit a Pull Request.
+### Navigation
+- **Zoom**: Use the +/- buttons or mouse wheel
+- **Pan**: Click and drag the canvas
+- **Reset View**: Click the home button
 
-## License
+### Export Options
+- **PNG**: Download as high-resolution image
+- **HTML**: Self-contained HTML export
 
-This project is licensed under the MIT License - see the LICENSE file for details.
+## 🏗️ Project Structure
 
-## Support
+```
+WDT4vRO/
+├── assets/               # Static assets and images
+│   ├── wdt4vro_icon.svg   # Application icon
+│   └── wdt4vro-screenshot.png # Screenshot
+├── icons/                 # Workflow element icons
+│   ├── action.svg         # Action icon
+│   ├── workflow-async.svg # Async workflow icon
+│   ├── workflow-schedule.svg # Schedule workflow icon
+│   └── ...
+├── Sample Workflow XMLs/  # Example workflow files
+│   └── all-workflow-element-polyglot.xml
+├── index.html            # Main application file
+├── full.render.js        # Graphviz renderer
+├── README.md             # This file
+└── LICENSE               # License information
+```
 
-For support, please contact the development team or create an issue in the repository.
+## 🤝 Contributing
+
+We welcome contributions! Here's how you can help:
+
+1. **Report Issues**
+   - Found a bug? Open an issue with steps to reproduce
+   - Have a feature request? Let us know!
+
+2. **Submit Pull Requests**
+   - Fork the repository
+   - Create a feature branch
+   - Commit your changes
+   - Push to your fork
+   - Submit a pull request
+
+3. **Improve Documentation**
+   - Update README
+   - Add code comments
+   - Write tutorials or guides
+
+## 📄 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## 📞 Support
+
+For support, please:
+1. Check the [Issues](https://github.com/imtrinity94/WDT4vRO/issues) page
+2. If your issue isn't listed, create a new one
+3. For direct contact, email support@example.com
+
+## 📚 Resources
+
+- [vRO Documentation](https://docs.vmware.com/en/vRealize-Orchestrator/)
+- [Graphviz Documentation](https://graphviz.org/documentation/)
+- [SVG Reference](https://developer.mozilla.org/en-US/docs/Web/SVG)
+
+## 🌟 Special Thanks
+
+- VMware for vRealize Orchestrator
+- The Graphviz team
+- All contributors and users
+
+---
+
+<div align="center">
+  Made with ❤️ by the WDT4vRO Team
+</div>
