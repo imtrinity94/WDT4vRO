@@ -334,6 +334,18 @@
         <li>Monaco-powered code viewer for scripts</li>
         <li>Clarity based UI</li>
       </ul>
+      <div class="changelog" style="margin-top: 30px; background: #f5f5f5; border-radius: 8px; padding: 15px; border-left: 4px solid #007cbb;">
+        <h3 style="margin-top: 0; color: #007cbb; display: flex; align-items: center;">
+          <clr-icon shape="history" style="margin-right: 8px;"></clr-icon>
+          What's New in v1.1
+        </h3>
+        <ul style="margin-bottom: 0; padding-left: 20px;">
+          <li>Fixed switch case visualization with proper arrow connections</li>
+          <li>Improved default case visualization with green arrows</li>
+          <li>Removed footers from generated HTML exports</li>
+          <li>Enhanced overall stability and performance</li>
+        </ul>
+      </div>
     </div>
     <div class="welcome-graphic">
       <!-- <div class="dot-bg"></div> -->
@@ -1655,7 +1667,7 @@
         const doc = document.cloneNode(true);
         
         // Remove UI elements that shouldn't be in the downloaded HTML
-        const elementsToRemove = ['progressContainer', 'overlay', 'goToTopBtn', 'homeBtn'];
+        const elementsToRemove = ['progressContainer', 'overlay', 'goToTopBtn', 'homeBtn', 'footer'];
         elementsToRemove.forEach(id => {
           const element = doc.getElementById(id);
           if (element && element.parentNode) {
@@ -1663,10 +1675,18 @@
           }
         });
         
-        // Remove the top bar and title
+        // Remove the top bar, title, and footers
         updateProgress(30, 'Cleaning up content...');
         const topBar = doc.querySelector('.top-bar');
         if (topBar) topBar.remove();
+        
+        // Remove footer elements
+        const footers = doc.querySelectorAll('footer, .footer-note');
+        footers.forEach(footer => {
+          if (footer && footer.parentNode) {
+            footer.parentNode.removeChild(footer);
+          }
+        });
         
         // Embed SVG icons
         updateProgress(50, 'Processing images and icons...');
