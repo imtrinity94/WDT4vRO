@@ -1,10 +1,10 @@
 # Workflow Documentation Tool for Aria Automation Orchestrator (WDT4vRO)
 
-[![Open in Browser](https://img.shields.io/badge/Open%20in-Browser-4285F4?style=for-the-badge&logo=googlechrome&logoColor=white)](https://wdt4vro.onrender.com/)
+[![Open in Browser](https://img.shields.io/badge/Open%20in-Browser-4285F4?style=for-the-badge&logo=googlechrome&logoColor=white)](https://wdt4vro.vercel.app/)
 
 A comprehensive visualization and documentation tool that converts XML-based workflow definitions from VMware Aria Automation Orchestrator into intuitive, interactive diagrams. This tool helps teams understand, document, and maintain complex workflows with ease.
 
-🌐 **Try Online**: [https://wdt4vro.onrender.com/](https://wdt4vro.onrender.com/)
+🌐 **Try Online**: [https://wdt4vro.onrender.com/](https://wdt4vro.onrender.com/) or [https://wdt4vro.vercel.app/](https://wdt4vro.vercel.app/)
 
 ## Homescreen
 <img width="816" alt="image" src="https://github.com/user-attachments/assets/8041e1e3-3286-4caa-9a84-c87e3e19d801" />
