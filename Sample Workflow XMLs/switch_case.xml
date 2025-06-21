@@ -1,0 +1,619 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<ns2:workflow xmlns:ns2="http://vmware.com/vco/workflow" root-name="item1" object-name="workflow:name=generic" id="df889c3a-8bee-4826-adf1-787f9bc166b2" editor-version="2.0" version="0.0.1" api-version="6.0.0" restartMode="1" resumeFromFailedMode="0">
+    <display-name>Test</display-name>
+    <description>This is a test workflow that has each type of element on the canvas</description>
+    <error-handler name="item4" throw-bind-name="errCode">
+        <position y="240.0" x="50.0"/>
+    </error-handler>
+    <position y="130.0" x="50.0"/>
+    <input/>
+    <output/>
+    <attrib name="variableString" type="string">
+        <value encoded="n"></value>
+    </attrib>
+    <attrib name="query" type="string">
+        <value encoded="n"></value>
+    </attrib>
+    <attrib name="vraHost" type="VRA:Host">
+        <value encoded="n"/>
+    </attrib>
+    <attrib name="errCode" type="string">
+        <value encoded="n"></value>
+    </attrib>
+    <attrib name="object" type="Any">
+        <value encoded="n"/>
+    </attrib>
+    <attrib name="array" type="Array/string">
+        <value encoded="n"/>
+    </attrib>
+    <attrib name="wfToken" type="WorkflowToken">
+        <value encoded="n"/>
+    </attrib>
+    <attrib name="security_group" type="LdapGroup">
+        <value encoded="n"></value>
+    </attrib>
+    <attrib name="security_assignees" type="Array/LdapUser">
+        <value encoded="n">[]</value>
+    </attrib>
+    <attrib name="security_assignee_groups" type="Array/LdapGroup">
+        <value encoded="n">[]</value>
+    </attrib>
+    <attrib name="timeout_date" type="Date">
+        <value encoded="n"/>
+    </attrib>
+    <attrib name="newCredential" type="Credential">
+        <value encoded="n"/>
+    </attrib>
+    <attrib name="trigger_ref" type="Trigger">
+        <value encoded="n"/>
+    </attrib>
+    <attrib name="sleepTime" type="number">
+        <value encoded="n"/>
+    </attrib>
+    <attrib name="isExternalEvent" type="boolean">
+        <value encoded="n">false</value>
+    </attrib>
+    <attrib name="eventName" type="string">
+        <value encoded="n"></value>
+    </attrib>
+    <attrib name="endDate" type="Date">
+        <value encoded="n"/>
+    </attrib>
+    <attrib name="success" type="boolean">
+        <value encoded="n">false</value>
+    </attrib>
+    <attrib name="user" type="AD:User">
+        <value encoded="n"/>
+    </attrib>
+    <attrib name="group" type="AD:UserGroup">
+        <value encoded="n"/>
+    </attrib>
+    <attrib name="counter" type="number">
+        <value encoded="n"/>
+    </attrib>
+    <attrib name="url" type="string">
+        <value encoded="n"></value>
+    </attrib>
+    <attrib name="content" type="string">
+        <value encoded="n"></value>
+    </attrib>
+    <attrib name="result" type="string">
+        <value encoded="n"></value>
+    </attrib>
+    <attrib name="workflowScheduleDate" type="Date">
+        <value encoded="n"/>
+    </attrib>
+    <attrib name="scheduledTask" type="Task">
+        <value encoded="n"/>
+    </attrib>
+    <attrib name="resourceElement" type="ResourceElement">
+        <value encoded="n">dunes://service.dunes.ch/ResourceElement?id='3808259c-7d5f-4a4f-b10b-eaa1c4a9b756'&amp;dunesName='ResourceElement'</value>
+    </attrib>
+    <workflow-item name="item0" type="end" end-mode="0" comparator="0">
+        <in-binding/>
+        <out-binding/>
+        <position y="10.0" x="1220.0"/>
+    </workflow-item>
+    <workflow-item name="item1" out-name="item2" throw-bind-name="errCode" type="task" comparator="0">
+        <display-name>Scriptable task</display-name>
+        <script encoded="false">// Do Nothing
+variableString = variableString</script>
+        <in-binding>
+            <bind name="variableString" type="string" export-name="variableString"/>
+        </in-binding>
+        <out-binding>
+            <bind name="variableString" type="string" export-name="variableString"/>
+        </out-binding>
+        <description>Simple task with custom script capability.</description>
+        <position y="140.0" x="140.0"/>
+    </workflow-item>
+    <workflow-item name="item2" out-name="item15" throw-bind-name="errCode" type="task" script-module="com.broadcom.pso.vra.host/getHost" comparator="0">
+        <display-name>getHost</display-name>
+        <script encoded="false">//Auto generated script, cannot be modified !
+actionResult = System.getModule("com.broadcom.pso.vra.host").getHost(query);
+</script>
+        <in-binding>
+            <bind name="query" type="string" export-name="query">
+                <description>(Optional) Use only if you have multiple VRA Connections</description>
+            </bind>
+        </in-binding>
+        <out-binding>
+            <bind name="actionResult" type="VRA:Host" export-name="vraHost"/>
+        </out-binding>
+        <description>Add a note to the workflow schema.</description>
+        <position y="140.0" x="270.0"/>
+    </workflow-item>
+    <workflow-item name="item3" throw-bind-name="errCode" type="end" end-mode="1" comparator="0">
+        <display-name>End workflow</display-name>
+        <in-binding/>
+        <out-binding/>
+        <position y="240.0" x="1350.0"/>
+    </workflow-item>
+    <workflow-item name="item4" out-name="item5" type="task" prototype-id="system-log" interaction="l" comparator="0">
+        <display-name>System log</display-name>
+        <script encoded="false">//Auto-generated script
+System.log(text);</script>
+        <in-binding>
+            <bind name="text" type="string" export-name="errCode">
+                <description>The text to log</description>
+            </bind>
+        </in-binding>
+        <out-binding/>
+        <description>Log the input text to the console log with the level "log".</description>
+        <position y="250.0" x="140.0"/>
+    </workflow-item>
+    <workflow-item name="item5" out-name="item6" type="task" prototype-id="server-log" interaction="l" comparator="0">
+        <display-name>Server log</display-name>
+        <script encoded="false">//Auto-generated script
+Server.log(text, object);</script>
+        <in-binding>
+            <bind name="text" type="string" export-name="errCode">
+                <description>The text to log</description>
+            </bind>
+            <bind name="object" type="Any" export-name="object">
+                <description>The text to log and additional info</description>
+            </bind>
+        </in-binding>
+        <out-binding/>
+        <description>Log the input text to the server log with the level "log".</description>
+        <position y="250.0" x="270.0"/>
+    </workflow-item>
+    <workflow-item name="item6" out-name="item7" type="task" prototype-id="system-server-log" interaction="l" comparator="0">
+        <display-name>System and Server log</display-name>
+        <script encoded="false">//Auto-generated script
+System.log(text + "-" + object);
+Server.log(text, object);</script>
+        <in-binding>
+            <bind name="text" type="string" export-name="errCode">
+                <description>The text to log</description>
+            </bind>
+            <bind name="object" type="Any" export-name="object">
+                <description>The text to log and additional info</description>
+            </bind>
+        </in-binding>
+        <out-binding/>
+        <description>Log the input text to the console and the server log with the level "log".</description>
+        <position y="250.0" x="400.0"/>
+    </workflow-item>
+    <workflow-item name="item7" out-name="item13" type="task" prototype-id="system-warning" interaction="l" comparator="0">
+        <display-name>System warning</display-name>
+        <script encoded="false">//Auto-generated script
+System.warn(text);</script>
+        <in-binding>
+            <bind name="text" type="string" export-name="errCode">
+                <description>The text to log</description>
+            </bind>
+        </in-binding>
+        <out-binding/>
+        <description>Log the input text to the console log with the level "warn".</description>
+        <position y="250.0" x="530.0"/>
+    </workflow-item>
+    <workflow-item name="item9" out-name="item10" type="task" prototype-id="system-server-warning" interaction="l" comparator="0">
+        <display-name>System and Server warning</display-name>
+        <script encoded="false">//Auto-generated script
+System.warn(text + "-" + object);
+Server.warn(text, object);</script>
+        <in-binding>
+            <bind name="text" type="string" export-name="errCode">
+                <description>The text to log</description>
+            </bind>
+            <bind name="object" type="Any" export-name="object">
+                <description>The text to log and additional info</description>
+            </bind>
+        </in-binding>
+        <out-binding/>
+        <description>Log the input text to the console and the server log with the level "warn".</description>
+        <position y="250.0" x="790.0"/>
+    </workflow-item>
+    <workflow-item name="item10" out-name="item11" type="task" prototype-id="system-error" interaction="l" comparator="0">
+        <display-name>System error</display-name>
+        <script encoded="false">//Auto-generated script
+System.error(text);</script>
+        <in-binding>
+            <bind name="text" type="string" export-name="errCode">
+                <description>The text to log</description>
+            </bind>
+        </in-binding>
+        <out-binding/>
+        <description>'Log the input text to the console log with the level "error".'</description>
+        <position y="250.0" x="920.0"/>
+    </workflow-item>
+    <workflow-item name="item11" out-name="item12" type="task" prototype-id="server-error" interaction="l" comparator="0">
+        <display-name>Server error</display-name>
+        <script encoded="false">//Auto-generated script
+Server.error(text, object);</script>
+        <in-binding>
+            <bind name="text" type="string" export-name="errCode">
+                <description>The text to log</description>
+            </bind>
+            <bind name="object" type="Any" export-name="object">
+                <description>The text to log and additional info</description>
+            </bind>
+        </in-binding>
+        <out-binding/>
+        <description>Log the input text to the server log with the level "error".</description>
+        <position y="250.0" x="1050.0"/>
+    </workflow-item>
+    <workflow-item name="item12" out-name="item3" type="task" prototype-id="system-server-error" interaction="l" comparator="0">
+        <display-name>System and Server error</display-name>
+        <script encoded="false">//Auto-generated script
+System.error(text + "-" + object);
+Server.error(text, object);</script>
+        <in-binding>
+            <bind name="text" type="string" export-name="errCode">
+                <description>The text to log</description>
+            </bind>
+            <bind name="object" type="Any" export-name="object">
+                <description>The text to log and additional info</description>
+            </bind>
+        </in-binding>
+        <out-binding/>
+        <description>Log the input text to the console and the server log with the level "error".</description>
+        <position y="250.0" x="1180.0"/>
+    </workflow-item>
+    <workflow-item name="item13" out-name="item9" type="task" prototype-id="server-warning" interaction="l" comparator="0">
+        <display-name>Server warning</display-name>
+        <script encoded="false">//Auto-generated script
+Server.warn(text, object);</script>
+        <in-binding>
+            <bind name="text" type="string" export-name="errCode">
+                <description>The text to log</description>
+            </bind>
+            <bind name="object" type="Any" export-name="object">
+                <description>The text to log and additional info</description>
+            </bind>
+        </in-binding>
+        <out-binding/>
+        <description>Log the input text to the server log with the level "warn".</description>
+        <position y="250.0" x="660.0"/>
+    </workflow-item>
+    <workflow-item name="item14" type="end" end-mode="0" comparator="0">
+        <in-binding/>
+        <out-binding/>
+        <position y="65.0" x="1740.0"/>
+    </workflow-item>
+    <workflow-item name="item15" out-name="item16" alt-out-name="item21" type="custom-condition" comparator="0">
+        <display-name>Decision</display-name>
+        <script encoded="false">return true;</script>
+        <in-binding/>
+        <out-binding/>
+        <description>Custom decision based on a custom script.</description>
+        <position y="130.0" x="400.0"/>
+    </workflow-item>
+    <workflow-item name="item16" out-name="item17" throw-bind-name="errCode" type="link" linked-workflow-id="df889c3a-8bee-4826-adf1-787f9bc166b2" comparator="0">
+        <display-name>Test Normal</display-name>
+        <script encoded="false"></script>
+        <in-binding/>
+        <out-binding/>
+        <description> </description>
+        <position y="20.0" x="530.0"/>
+    </workflow-item>
+    <workflow-item name="item17" out-name="item18" throw-bind-name="errCode" type="foreach" comparator="0">
+        <display-name>Test ForEach</display-name>
+        <in-binding>
+            <bind name="" type="Array/string" export-name="*array"/>
+        </in-binding>
+        <out-binding/>
+        <reference id="df889c3a-8bee-4826-adf1-787f9bc166b2" type="Workflow"/>
+        <position y="20.0" x="660.0"/>
+    </workflow-item>
+    <workflow-item name="item18" out-name="item36" throw-bind-name="errCode" type="task" launched-workflow-id="df889c3a-8bee-4826-adf1-787f9bc166b2" comparator="0">
+        <display-name>Test Async</display-name>
+        <script encoded="false">//Auto generated script, cannot be modified !
+var workflowToLaunch = Server.getWorkflowWithId("df889c3a-8bee-4826-adf1-787f9bc166b2");
+if (workflowToLaunch == null) {
+	throw "Workflow not found";
+}
+
+var workflowParameters = new Properties();
+wfToken = workflowToLaunch.execute(workflowParameters);
+</script>
+        <in-binding/>
+        <out-binding>
+            <bind name="wfToken" type="WorkflowToken" export-name="wfToken"/>
+        </out-binding>
+        <description>Start an asynchronous workflow.</description>
+        <position y="20.0" x="790.0"/>
+    </workflow-item>
+    <workflow-item name="item20" out-name="item0" throw-bind-name="errCode" type="multiple" comparator="0">
+        <display-name>Nested workflows</display-name>
+        <script></script>
+        <in-binding/>
+        <out-binding/>
+        <workflow-subelements-list>
+            <workflow-subelement name="item0" linked-workflow-id="df889c3a-8bee-4826-adf1-787f9bc166b2">
+                <display-name>Test</display-name>
+                <in-binding/>
+                <out-binding/>
+            </workflow-subelement>
+            <workflow-subelement name="item1" linked-workflow-id="df889c3a-8bee-4826-adf1-787f9bc166b2">
+                <display-name>Test</display-name>
+                <in-binding/>
+                <out-binding/>
+            </workflow-subelement>
+        </workflow-subelements-list>
+        <position y="20.0" x="1050.0"/>
+    </workflow-item>
+    <workflow-item name="item21" out-name="item22" throw-bind-name="errCode" type="input" comparator="0">
+        <display-name>User interaction</display-name>
+        <in-binding>
+            <bind name="security.group" type="LdapGroup" export-name="security_group">
+                <description>Any user member of this group will be authorized to fill in this form.</description>
+            </bind>
+            <bind name="security.assignees" type="Array/LdapUser" export-name="security_assignees">
+                <description>Any user from this array of users will be authorized to fill in this form</description>
+            </bind>
+            <bind name="security.assignee.groups" type="Array/LdapGroup" export-name="security_assignee_groups">
+                <description>Any user member of any of the groups will be authorized to fill in this form.</description>
+            </bind>
+            <bind name="timeout.date" type="Date" export-name="timeout_date">
+                <description>If not null, this input item will wait until date and will continue workflow execution.</description>
+            </bind>
+        </in-binding>
+        <out-binding/>
+        <description>Use this element to set up a user interaction.</description>
+        <presentation/>
+        <position y="140.0" x="530.0"/>
+    </workflow-item>
+    <workflow-item name="item22" out-name="item24" throw-bind-name="errCode" type="task" prototype-id="change-credential" content-mode="x" comparator="0">
+        <display-name>Change credential</display-name>
+        <script encoded="false">//Auto-generated script
+if (newCredential != null) {
+  if (String(newCredential) !== String(Server.getCredential())) {
+    workflow.changeCredential(newCredential) ;
+  }
+  else {
+    System.log("Change credential is same as current user!");
+  }
+}
+else  {
+  throw "'newCredential' is NULL";
+}
+</script>
+        <in-binding>
+            <bind name="newCredential" type="Credential" export-name="newCredential">
+                <description>New credential</description>
+            </bind>
+        </in-binding>
+        <out-binding/>
+        <description>Change current execution credential.</description>
+        <position y="140.0" x="660.0"/>
+    </workflow-item>
+    <workflow-item name="item23" type="end" end-mode="0" comparator="0">
+        <in-binding/>
+        <out-binding/>
+        <position y="185.0" x="1350.0"/>
+    </workflow-item>
+    <workflow-item name="item24" out-name="item25" alt-out-name="item31" type="decision-activity" comparator="0">
+        <display-name>Decision activity</display-name>
+        <script encoded="false">// Generated by the system, cannot be edited
+return (results !== null);</script>
+        <in-binding>
+            <bind name="user" type="AD:User" export-name="user">
+                <description>AD User you want to add to a group</description>
+            </bind>
+            <bind name="group" type="AD:UserGroup" export-name="group">
+                <description>User Group you want the user added to</description>
+            </bind>
+        </in-binding>
+        <out-binding/>
+        <description>Decision activity based on a workflow or an action.</description>
+        <condition name="results" type="string" comparator="3" label="null"></condition>
+        <reference id="57c2229a-c3d9-4fd3-85f0-1539d41514f0" type="Workflow"/>
+        <position y="130.0" x="790.0"/>
+    </workflow-item>
+    <workflow-item name="item25" out-name="item26" throw-bind-name="errCode" type="waiting-timer" comparator="0">
+        <display-name>Waiting timer</display-name>
+        <script></script>
+        <in-binding>
+            <bind name="timer.date" type="Date" export-name="timeout_date">
+                <description>This timer item will wait until date and will continue workflow execution.</description>
+            </bind>
+        </in-binding>
+        <out-binding/>
+        <position y="65.0" x="960.0"/>
+    </workflow-item>
+    <workflow-item name="item26" out-name="item27" throw-bind-name="errCode" type="waiting-event" comparator="0">
+        <display-name>Waiting event</display-name>
+        <in-binding>
+            <bind name="trigger.ref" type="Trigger" export-name="trigger_ref">
+                <description>Trigger waiting for a specific event before continuing workflow run.</description>
+            </bind>
+        </in-binding>
+        <out-binding/>
+        <position y="65.0" x="1090.0"/>
+    </workflow-item>
+    <workflow-item name="item27" out-name="item28" throw-bind-name="errCode" type="task" prototype-id="sleep" content-mode="x" comparator="0">
+        <display-name>Sleep</display-name>
+        <script encoded="false">//Auto-generated script
+if ( sleepTime !== null )  {
+	System.sleep(sleepTime * 1000);
+}else  {
+	throw "'sleepTime' is NULL"; 
+}</script>
+        <in-binding>
+            <bind name="sleepTime" type="number" export-name="sleepTime">
+                <description>Time to sleep in seconds</description>
+            </bind>
+        </in-binding>
+        <out-binding/>
+        <description>Sleep a given number of seconds.</description>
+        <position y="75.0" x="1180.0"/>
+    </workflow-item>
+    <workflow-item name="item28" out-name="item29" throw-bind-name="errCode" type="task" prototype-id="wait-until-date" content-mode="x" comparator="0">
+        <display-name>Wait until date</display-name>
+        <script encoded="false">//Auto-generated script 
+if (waitDate !== null) { 
+	System.waitUntil(waitDate,1000);
+}
+else  { 
+	throw "'waitDate' is NULL"; 
+}
+</script>
+        <in-binding>
+            <bind name="waitDate" type="Date" export-name="timeout_date">
+                <description>Wait date</description>
+            </bind>
+        </in-binding>
+        <out-binding/>
+        <description>Wait until date.</description>
+        <position y="75.0" x="1310.0"/>
+    </workflow-item>
+    <workflow-item name="item29" out-name="item30" throw-bind-name="errCode" type="task" prototype-id="wait-custom-event" content-mode="x" comparator="0">
+        <display-name>Wait for custom event</display-name>
+        <script encoded="false">// Auto-generated script
+var eventType = isExternalEvent ? 'external' : 'internal';
+var eventCustom = null;
+if (eventName != null) {
+	eventCustom = System.waitCustomEventUntil(eventType,eventName,endDate);
+}
+success = (eventCustom != null) ;</script>
+        <in-binding>
+            <bind name="isExternalEvent" type="boolean" export-name="isExternalEvent">
+                <description>External custom event</description>
+            </bind>
+            <bind name="eventName" type="string" export-name="eventName">
+                <description>Custom event name</description>
+            </bind>
+            <bind name="endDate" type="Date" export-name="endDate">
+                <description>Expiration date</description>
+            </bind>
+        </in-binding>
+        <out-binding>
+            <bind name="success" type="boolean" export-name="success">
+                <description>Return true if the custom event was received before 'endDate' is reached.</description>
+            </bind>
+        </out-binding>
+        <description>Wait for custom event.</description>
+        <position y="75.0" x="1440.0"/>
+    </workflow-item>
+    <workflow-item name="item30" out-name="item14" throw-bind-name="errCode" type="task" prototype-id="send-custom-event" content-mode="r" comparator="0">
+        <display-name>Send custom event</display-name>
+        <script encoded="false">// Auto-generated script
+if (eventName != null) {
+	System.sendCustomEvent(eventName);
+} else  {
+	throw "'eventName' is NULL";
+}
+</script>
+        <in-binding>
+            <bind name="eventName" type="string" export-name="eventName">
+                <description>Custom event name</description>
+            </bind>
+        </in-binding>
+        <out-binding/>
+        <description>Send a custom event.</description>
+        <position y="75.0" x="1570.0"/>
+    </workflow-item>
+    <workflow-item name="item31" out-name="item23" type="switch" comparator="0">
+        <display-name>Switch</display-name>
+        <script encoded="false">// Generated by the system, cannot be edited
+if (vraHost !== null) {
+  return "item33";
+} else if (true) {
+  return "item32";
+}
+</script>
+        <in-binding>
+            <bind name="vraHost" type="VRA:Host" export-name="vraHost"/>
+        </in-binding>
+        <out-binding/>
+        <description>Basic switch activity based on a workflow attribute or parameter.</description>
+        <condition name="vraHost" type="VRA:Host" comparator="0" label="item33"></condition>
+        <condition name="" type="boolean" comparator="6" label="item32"></condition>
+        <position y="140.0" x="920.0"/>
+    </workflow-item>
+    <workflow-item name="item32" out-name="item35" throw-bind-name="errCode" type="task" prototype-id="increase-counter" content-mode="x" comparator="0">
+        <display-name>Increase counter</display-name>
+        <script encoded="false">//Auto-generated script
+counter = counter + 1;</script>
+        <in-binding>
+            <bind name="counter" type="number" export-name="counter">
+                <description>Item to increase</description>
+            </bind>
+        </in-binding>
+        <out-binding>
+            <bind name="counter" type="number" export-name="counter">
+                <description>Increased item</description>
+            </bind>
+        </out-binding>
+        <description>Increment a counter by one.</description>
+        <position y="195.0" x="1050.0"/>
+    </workflow-item>
+    <workflow-item name="item33" out-name="item34" throw-bind-name="errCode" type="task" prototype-id="decrease-counter" content-mode="x" comparator="0">
+        <display-name>Decrease counter</display-name>
+        <script encoded="false">//Auto-generated script
+counter = counter - 1;</script>
+        <in-binding>
+            <bind name="counter" type="number" export-name="counter">
+                <description>Item to decrease</description>
+            </bind>
+        </in-binding>
+        <out-binding>
+            <bind name="counter" type="number" export-name="counter">
+                <description>Decreased item</description>
+            </bind>
+        </out-binding>
+        <description>Decrement a counter by one.</description>
+        <position y="140.0" x="1050.0"/>
+    </workflow-item>
+    <workflow-item name="item34" out-name="item23" throw-bind-name="errCode" type="task" prototype-id="http-post" content-mode="r" interaction="io" comparator="0">
+        <display-name>HTTP post</display-name>
+        <script encoded="false">//Auto-generated script
+var urlObject = new URL(url);
+result = urlObject.postContent(content);</script>
+        <in-binding>
+            <bind name="url" type="string" export-name="url">
+                <description>Target url</description>
+            </bind>
+            <bind name="content" type="string" export-name="content">
+                <description>Data to post</description>
+            </bind>
+        </in-binding>
+        <out-binding>
+            <bind name="result" type="string" export-name="result">
+                <description>Operation result</description>
+            </bind>
+        </out-binding>
+        <description>Post content via HTTP.</description>
+        <position y="140.0" x="1180.0"/>
+    </workflow-item>
+    <workflow-item name="item35" out-name="item23" throw-bind-name="errCode" type="task" prototype-id="http-get" content-mode="r" interaction="o" comparator="0">
+        <display-name>HTTP get</display-name>
+        <script encoded="false">//Auto-generated script
+var urlObject = new URL(url);
+result = urlObject.getContent() ;</script>
+        <in-binding>
+            <bind name="url" type="string" export-name="url">
+                <description>Target url</description>
+            </bind>
+        </in-binding>
+        <out-binding>
+            <bind name="result" type="string" export-name="result">
+                <description>Operation result</description>
+            </bind>
+        </out-binding>
+        <description>Get content from HTTP.</description>
+        <position y="195.0" x="1180.0"/>
+    </workflow-item>
+    <workflow-item name="item36" out-name="item20" throw-bind-name="errCode" type="task" launched-workflow-id="df889c3a-8bee-4826-adf1-787f9bc166b2" comparator="0">
+        <display-name>Test</display-name>
+        <script encoded="false">//Auto generated script, cannot be modified !
+var workflowToLaunch = Server.getWorkflowWithId("df889c3a-8bee-4826-adf1-787f9bc166b2");
+if (workflowToLaunch == null) {
+	throw "Workflow not found";
+}
+
+var workflowParameters = new Properties();
+scheduledTask = workflowToLaunch.schedule(workflowParameters, workflowScheduleDate);
+</script>
+        <in-binding>
+            <bind name="workflowScheduleDate" type="Date" export-name="workflowScheduleDate"/>
+        </in-binding>
+        <out-binding>
+            <bind name="scheduledTask" type="Task" export-name="scheduledTask"/>
+        </out-binding>
+        <description>Schedule a workflow and create a task.</description>
+        <position y="20.0" x="920.0"/>
+    </workflow-item>
+</ns2:workflow>

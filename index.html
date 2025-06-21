@@ -1902,9 +1902,13 @@
       
       switchNodes.forEach(switchNode => {
         const switchName = switchNode.getAttribute('name');
-        const condition = switchNode.querySelector('condition');
+        const conditions = switchNode.querySelectorAll('condition');
         
-        if (condition) {
+        // Get the default target if specified in the switch node's out-name attribute
+        const defaultTarget = switchNode.getAttribute('out-name');
+        
+        // Process all conditions
+        conditions.forEach(condition => {
           const targetName = condition.getAttribute('label');
           if (positions[switchName] && positions[targetName]) {
             const from = positions[switchName];
@@ -1920,6 +1924,23 @@
             
             arrows += `<path d="${path}" stroke="#0079ad" stroke-width="1.5" fill="none" marker-end="url(#arrow)" />`;
           }
+        });
+        
+        // Handle default case if it exists and points to a valid target
+        if (defaultTarget && defaultTarget !== 'null' && positions[switchName] && positions[defaultTarget]) {
+          const from = positions[switchName];
+          const to = positions[defaultTarget];
+          
+          // Create arrow from switch to default target
+          const path = createArrowPath(
+            from.x + from.width / 2,
+            from.y + from.height / 2,
+            to.x + to.width / 2,
+            to.y + to.height / 2
+          );
+          
+          // Use green color for the default case
+          arrows += `<path d="${path}" stroke="#4CAF50" stroke-width="1.5" fill="none" marker-end="url(#arrow)" />`;
         }
       });
 
