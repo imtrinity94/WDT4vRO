@@ -170,70 +170,104 @@
     .welcome-box, .welcome-notes, .welcome-box ul, .welcome-box li {
       font-family: 'Metropolis', Arial, sans-serif;
     }
+    .btn {
+      font-family: 'Metropolis', Arial, sans-serif;
+      font-size: 14px;
+      font-weight: 600;
+      border-radius: 6px;
+      padding: 12px 24px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      text-align: center;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      white-space: nowrap;
+    }
+    
     .btn.btn-primary {
       background: #007cbb !important;
       color: #fff !important;
       border: none !important;
-      font-family: 'Metropolis', Arial, sans-serif;
-      font-size: 12px;
-      font-weight: bold;
-      border-radius: 6px;
-      padding: 12px 32px;
-      box-shadow: 0 2px 8px rgba(0,124,187,0.08);
-      transition: background 0.2s;
+      box-shadow: 0 2px 8px rgba(0,124,187,0.15);
     }
     .btn.btn-primary:hover {
-      background: #005b8a !important;
+      background: #0069a3 !important;
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(0,124,187,0.2);
+    }
+    
+    .btn.btn-outline {
+      background: transparent;
+      border: 1px solid #007cbb;
+      color: #007cbb;
+    }
+    
+    .btn.btn-outline:hover {
+      background: rgba(0, 124, 187, 0.05);
+      transform: translateY(-1px);
+    }
+    
+    .github-link {
+      opacity: 0.9;
+      transition: opacity 0.2s ease, transform 0.2s ease;
+    }
+    
+    .github-link:hover {
+      opacity: 1;
+      transform: translateY(-1px);
+      color: #fff !important;
     }
     .welcome-box {
       background: #fff;
-      border-radius: 2px;
-      box-shadow: 0 0 2px rgba(0,0,0,0.48);
+      border-radius: 8px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.1);
       max-width: 1400px;
-      min-width: 900px;
-      min-height: 420px;
-      margin: 40px auto 32px auto;
+      width: calc(100% - 40px);
+      margin: 20px auto;
       display: flex;
-      padding: 48px 60px;
-      gap: 48px;
-      position: relative;
+      flex-wrap: wrap;
+      padding: 2rem;
+      gap: 2rem;
+      box-sizing: border-box;
     }
     .welcome-notes {
-      flex: 1;
+      flex: 1 1 300px;
       display: flex;
       flex-direction: column;
       justify-content: flex-start;
       align-items: flex-start;
       text-align: left;
-      height: 100%;
-      margin-top: 0;
+      min-width: 0;
     }
     .welcome-notes h2 {
-      font-size: 1.5rem;
-      font-weight: bold;
-      margin-bottom: 12px;
+      font-size: clamp(1rem, 2.5vw, 1.3rem);
+      font-weight: 600;
+      margin: 0 0 0.6rem 0;
+      color: #1f2328;
     }
     .welcome-notes .welcome-desc {
-      font-size: 0.6rem;
-      font-weight: 400;
-      margin-bottom: 10px;
+      font-size: clamp(0.7rem, 1.2vw, 0.8rem);
+      line-height: 1.5;
+      margin: 0 0 0.8rem 0;
+      color: #4a5568;
     }
     .welcome-notes ul {
-      font-size: 0.6rem;
-      margin-top: 0;
-      margin-bottom: 0;
-      padding-left: 20px;
+      font-size: clamp(0.65rem, 1.1vw, 0.75rem);
+      margin: 0 0 1rem 0;
+      padding-left: 1rem;
+      line-height: 1.6;
+      color: #4a5568;
     }
     .welcome-graphic {
-      flex-shrink: 0;
-      width: 40%;
-      min-height: 320px;
-      height: 100%;
+      flex: 1 1 300px;
+      min-height: 280px;
       display: flex;
-      align-items: flex-start;
-      justify-content: flex-end;
+      align-items: center;
+      justify-content: center;
       position: relative;
       overflow: hidden;
+      padding: 1rem;
     }
     .dot-bg {
       position: absolute;
@@ -253,15 +287,31 @@
       z-index: 1;
     }
     .welcome-upload-bottom {
-      position: absolute;
-      left: 60px;
-      bottom: 48px;
+      width: 100%;
+      margin-top: 1.2rem;
       z-index: 2;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      position: relative;
+      left: 0;
+      bottom: 0;
+      padding-top: 1rem;
+      border-top: 1px solid #eaeef2;
     }
     .upload-section {
-      margin-top: 24px;
+      margin-top: 16px;
       display: flex;
       justify-content: flex-start;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 12px;
+      width: 100%;
+    }
+    
+    .upload-section .btn {
+      margin: 0;
+      white-space: nowrap;
     }
     .no-script {
       padding: 10px;
@@ -302,6 +352,48 @@
       margin-bottom: 18px;
       letter-spacing: 0.01em;
     }
+    
+    @media (max-width: 768px) {
+      .welcome-box {
+        padding: 1.2rem;
+        margin: 8px;
+        width: calc(100% - 16px);
+      }
+      
+      .welcome-notes h2 {
+        font-size: 1.3rem;
+        margin-bottom: 0.5rem;
+      }
+      
+      .welcome-notes .welcome-desc,
+      .welcome-notes ul {
+        font-size: 0.85rem;
+        line-height: 1.5;
+      }
+      
+      .welcome-upload-bottom {
+        margin-top: 1.2rem;
+        padding-top: 1rem;
+      }
+      
+      .upload-section {
+        flex-direction: column;
+        gap: 10px;
+        width: 100%;
+        margin-top: 12px;
+      }
+      
+      .upload-section .btn {
+        width: 100%;
+        padding: 12px 16px;
+        margin: 0;
+        font-size: 14px;
+      }
+      
+      .btn.btn-outline {
+        margin-top: 0;
+      }
+    }
   </style>
   <script src="https://cdn.jsdelivr.net/npm/monaco-editor@0.44.0/min/vs/loader.js"></script>
   <script src="https://unpkg.com/@clr/icons/clr-icons.min.js"></script>
@@ -311,7 +403,18 @@
   <div class="top-bar">
     <img src="assets/wdt4vro_icon.svg" class="icon" alt="Workflow Icon" />
     <span class="title" id="mainTitle">Workflow Documentation Tool for Aria Automation Orchestrator™</span>
-    <div id="topBarActions" style="margin-left:auto; display:flex; align-items:center;">
+    <div id="topBarActions" style="margin-left:auto; display:flex; align-items:center; gap: 12px;">
+      <a href="https://github.com/imtrinity94/WDT4vRO" target="_blank" rel="noopener noreferrer" class="github-link" style="display: flex; align-items: center; justify-content: center; width: 32px; height: 32px; color: #fff; text-decoration: none; border-radius: 4px; transition: all 0.2s;" title="View on GitHub">
+        <svg height="20" viewBox="0 0 16 16" width="20" fill="currentColor">
+          <path fill-rule="evenodd" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"></path>
+        </svg>
+      </a>
+      <a href="https://github.com/imtrinity94/WDT4vRO/issues/new" target="_blank" rel="noopener noreferrer" class="btn btn-sm btn-outline open-issue-btn" style="color: #fff; border-color: rgba(255,255,255,0.6); height: 32px; display: inline-flex; align-items: center; padding: 0 12px; font-size: 13px; font-weight: 500; transition: all 0.2s;" title="Open an issue">
+        <svg height="16" viewBox="0 0 16 16" width="16" fill="currentColor" style="margin-right: 6px;">
+          <path fill-rule="evenodd" d="M8 1.5a6.5 6.5 0 100 13 6.5 6.5 0 000-13zM0 8a8 8 0 1116 0A8 8 0 010 8zm9 3a1 1 0 11-2 0 1 1 0 012 0zm-.25-6.25a.75.75 0 00-1.5 0v3.5a.75.75 0 001.5 0v-3.5z"></path>
+        </svg>
+        <span>Open Issue</span>
+      </a>
       <span id="zoomControls" style="display:none; margin-right: 12px;">
         <button id="zoomInBtn" class="btn btn-primary" style="padding: 6px 10px; margin-right: 4px; min-width: 0; width: 36px; height: 36px; display: inline-flex; align-items: center; justify-content: center;">
           <span style="font-size: 20px; color: #fff;">&#x2b;</span> <!-- Plus sign for zoom in -->
@@ -320,7 +423,7 @@
           <span style="font-size: 20px; color: #fff;">&#x2212;</span> <!-- Minus sign for zoom out -->
         </button>
       </span>
-      <button id="downloadSvgBtn" class="btn btn-primary" style="display:none; margin-left: 24px;">Download Diagram</button>
+      <button id="downloadSvgBtn" class="btn btn-primary" style="display:none; margin-left: 8px;">Download Diagram</button>
       <button id="downloadHtmlBtn" class="btn btn-primary" style="display:none; margin-left: 8px;">Download as HTML</button>
     </div>
   </div>
@@ -334,29 +437,17 @@
         <li>Monaco-powered code viewer for scripts</li>
         <li>Clarity based UI</li>
       </ul>
-      <div class="changelog" style="margin-top: 30px; background: #f5f5f5; border-radius: 8px; padding: 15px; border-left: 4px solid #007cbb;">
-        <h3 style="margin-top: 0; color: #007cbb; display: flex; align-items: center;">
-          <clr-icon shape="history" style="margin-right: 8px;"></clr-icon>
-          What's New in v1.1
-        </h3>
-        <ul style="margin-bottom: 0; padding-left: 20px;">
-          <li>Fixed switch case visualization with proper arrow connections</li>
-          <li>Improved default case visualization with green arrows</li>
-          <li>Removed footers from generated HTML exports</li>
-          <li>Enhanced overall stability and performance</li>
-        </ul>
-      </div>
     </div>
     <div class="welcome-graphic">
       <!-- <div class="dot-bg"></div> -->
       <img src="assets/welcome-note-image.png" alt="Workflow Graphic" />
     </div>
-    <div class="welcome-upload-bottom" style="display: flex; flex-direction: column; align-items: center; gap: 15px;">
-      <div style="display: flex; gap: 10px; align-items: center;">
-        <label for="fileUpload" class="btn btn-primary" style="margin: 0; cursor:pointer;">
+    <div class="welcome-upload-bottom">
+      <div class="upload-section">
+        <label for="fileUpload" class="btn btn-primary">
           Upload Workflow XML
         </label>
-        <button id="helpBtn" class="btn btn-outline" style="margin: 0;">
+        <button id="helpBtn" class="btn btn-outline">
           <clr-icon shape="help" style="margin-right: 6px;"></clr-icon>How to get workflow XML?
         </button>
       </div>
@@ -519,6 +610,17 @@
         // Show/hide the home button (always visible when workflow is loaded)
         if (homeBtn) {
           homeBtn.style.display = show ? 'flex' : 'none';
+        }
+        
+        // Show/hide GitHub and Open Issue buttons
+        const githubLink = document.querySelector('.github-link');
+        const openIssueBtn = document.querySelector('.open-issue-btn');
+        
+        if (githubLink) {
+          githubLink.style.display = show ? 'none' : 'flex';
+        }
+        if (openIssueBtn) {
+          openIssueBtn.style.display = show ? 'none' : 'inline-flex';
         }
         
         // Show/hide the go-to-top button based on scroll position
@@ -1774,9 +1876,10 @@
 
     // Add SVG download functionality
     async function downloadDiagram() {
-      const svgElement = document.querySelector('svg');
+      // Target the SVG inside the graph container specifically
+      const svgElement = document.querySelector('#graph svg');
       if (!svgElement) {
-        showMessage('No diagram content found to download.', 'error');
+        showMessage('No diagram content found to download. Please load a workflow first.', 'error');
         return;
       }
 
@@ -1790,6 +1893,13 @@
         
         // Clone the SVG and its parent to maintain styles
         const svgClone = svgElement.cloneNode(true);
+        
+        // Ensure the cloned SVG has proper dimensions
+        const bbox = svgElement.getBBox();
+        svgClone.setAttribute('width', bbox.width);
+        svgClone.setAttribute('height', bbox.height);
+        svgClone.setAttribute('viewBox', `${bbox.x} ${bbox.y} ${bbox.width} ${bbox.height}`);
+        
         container.appendChild(svgClone);
         document.body.appendChild(container);
 
