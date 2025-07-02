@@ -9,7 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 - Initial changelog file
 
-## [1.0.0] - 2024-06-23
+## [1.1.0] - 2025-06-23
 ### Added
 - GitHub icon and "Open Issue" button in the top navigation
 - Dynamic visibility toggling for GitHub and Open Issue buttons
@@ -30,4 +30,4 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Improved security by ensuring proper cleanup of temporary DOM elements
 
 ---
-*Note: This changelog was started on 2024-06-23. Previous changes before this date are not documented in this file.*
+*Note: This changelog was started on 2025-06-23. Previous changes before this date are not documented in this file.*
