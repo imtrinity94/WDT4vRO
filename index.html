@@ -194,6 +194,77 @@
       align-items: center;
       box-shadow: 0 2px 4px rgba(0,0,0,0.03);
       margin-bottom: 0;
+      position: relative;
+    }
+    
+    .hamburger {
+      display: none;
+      background: none;
+      border: none;
+      color: white;
+      font-size: 24px;
+      cursor: pointer;
+      padding: 5px;
+    }
+    
+    .hamburger:hover {
+      opacity: 0.8;
+    }
+    
+    @media (max-width: 1024px) {
+      .hamburger {
+        display: block;
+      }
+      
+      .top-bar .title {
+        /* font-size: 1rem; */
+        margin-right: 10px;
+      }
+      
+      #topBarActions {
+        position: fixed;
+        top: 70px;
+        right: -300px;
+        width: 280px;
+        background: #0d233a;
+        flex-direction: column;
+        padding: 15px 20px;
+        gap: 12px;
+        border-radius: 0 0 0 8px;
+        box-shadow: -2px 4px 10px rgba(0,0,0,0.2);
+        transition: right 0.3s ease;
+        z-index: 1000;
+        max-height: calc(100vh - 80px);
+        overflow-y: auto;
+      }
+      
+      #topBarActions.mobile-menu-open {
+        right: 0;
+      }
+      
+      .top-bar .title {
+        font-size: 0.9rem;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        max-width: 200px;
+      }
+    }
+    
+    @media (max-width: 768px) {
+      .top-bar {
+        padding: 10px 12px;
+      }
+      
+      #topBarActions {
+        width: 250px;
+      }
+      
+      .top-bar .title {
+        font-size: 0.8rem;
+        margin: 0 8px;
+        max-width: none;
+      }
     }
     .top-bar .icon {
       width: 32px;
@@ -205,13 +276,15 @@
     .top-bar .title {
       font-family: 'Metropolis', Arial, sans-serif;
       font-size: 1rem;
-      font-weight: 200;
+      font-weight: 500;
       color: #fff;
-      letter-spacing: 0.5px;
-      text-align: left;
-      display: inline-block;
-      vertical-align: middle;
-      cursor: pointer;
+      margin: 0 15px 0 10px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      flex: 1;
+      min-width: 0;
+      line-height: 1.3;
     }
     .themed-input[type="file"] {
       display: none;
@@ -273,12 +346,14 @@
       box-shadow: 0 2px 12px rgba(0,0,0,0.1);
       max-width: 1400px;
       width: calc(100% - 40px);
-      margin: 12px auto;
+      margin: 20px auto;
       display: flex;
       flex-wrap: wrap;
-      padding: 1.2rem 1.5rem;
+      padding: 2rem 2.5rem 1.5rem;
       gap: 1.2rem;
       box-sizing: border-box;
+      position: relative;
+      overflow: visible;
     }
     .welcome-notes {
       flex: 1 1 300px;
@@ -294,14 +369,17 @@
       box-sizing: border-box;
     }
     .welcome-notes h2 {
-      font-size: clamp(1.1rem, 2.4vw, 1.4rem);
+      font-size: 1.6rem;
       font-weight: 600;
-      margin: 0 0 1.2rem 0;
+      margin: 0.5rem 0 1.5rem 0;
+      padding: 0;
       color: #1f2328;
+      line-height: 1.3;
       width: 100%;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
+      white-space: normal;
+      overflow: visible;
+      text-overflow: clip;
+      transition: all 0.3s ease;
     }
     .welcome-notes .welcome-desc {
       font-size: clamp(0.7rem, 1.2vw, 0.8rem);
@@ -466,6 +544,9 @@
   <div class="top-bar">
     <img src="assets/wdt4vro_icon.svg" class="icon" alt="Workflow Icon" />
     <span class="title" id="mainTitle">Workflow Documentation Tool for VCF Operations Orchestrator™</span>
+    <div style="margin-left: auto; display: flex; align-items: center;">
+      <button class="hamburger" id="menuToggle" style="margin-left: 15px;">☰</button>
+    </div>
     <div id="topBarActions" style="margin-left:auto; display:flex; align-items:center; gap: 12px;">
       <a href="https://github.com/imtrinity94/WDT4vRO" target="_blank" rel="noopener noreferrer" class="btn btn-sm btn-outline" style="color: #fff; border-color: rgba(255,255,255,0.6); height: 32px; display: inline-flex; align-items: center; padding: 0 12px; font-size: 13px; font-weight: 500; transition: all 0.2s; margin-right: 8px;" title="View on GitHub">
         <svg height="16" viewBox="0 0 16 16" width="16" fill="currentColor" style="margin-right: 6px;">
@@ -499,7 +580,56 @@
   </div>
   <div class="welcome-box">
     <div class="welcome-notes">
-      <h2>👋 Welcome to WDT4vRO v2.0.0</h2>
+      <h2 class="responsive-heading">
+        <span style="display: inline-block; animation: wave 2s ease-in-out infinite;">👋</span> Welcome to WDT4vRO <span class="version-badge" style="
+          display: inline-block;
+          background: linear-gradient(45deg, #007cbb, #00a8e8, #00c9ff, #00a8e8, #007cbb);
+          background-size: 300% 300%;
+          -webkit-background-clip: text;
+          background-clip: text;
+          color: transparent;
+          font-weight: 800;
+          padding: 0 10px;
+          position: relative;
+          animation: gradientShift 3s ease infinite, float 4s ease-in-out infinite;
+          text-shadow: 0 0 10px rgba(0, 200, 255, 0.3);
+        ">v2.0.0</span>
+      </h2>
+      <style>
+        @keyframes gradientShift {
+          0% { background-position: 0% 50%; }
+          50% { background-position: 100% 50%; }
+          100% { background-position: 0% 50%; }
+        }
+        @keyframes float {
+          0%, 100% { transform: translateY(0); }
+          50% { transform: translateY(-5px); }
+        }
+        
+        /* Responsive heading adjustments */
+        @media (min-width: 768px) and (max-width: 1200px) {
+          .welcome-notes h2 {
+            font-size: 1.4rem;
+            margin: 0.4rem 0 1.2rem 0;
+          }
+        }
+        
+        @media (max-width: 767px) {
+          .welcome-notes h2 {
+            font-size: 1.2rem;
+            margin: 0.3rem 0 1rem 0;
+            line-height: 1.35;
+          }
+        }
+        
+        @media (max-width: 480px) {
+          .welcome-notes h2 {
+            font-size: 1.1rem;
+            margin: 0.2rem 0 0.8rem 0;
+            line-height: 1.4;
+          }
+        }
+      </style>
       <p class="welcome-desc">This tool helps you visualize, document, and understand Orchestrator workflows with clarity. Upload your Orchestrator workflow XML and instantly see a diagram that matches the real Orchestrator Workflow designer, complete with icons, arrows, and details for every node.</p>
       <ul>
         <li>Converts Workflow XMLs into beautiful SVG diagrams</li>
@@ -2251,5 +2381,25 @@
   <footer style="font-family: 'Metropolis', Arial, sans-serif; text-align: center; padding: 1rem; margin-top: 2rem; font-size: 0.8rem; color: #666; border-top: 1px solid #eee;">
     <p>VMware VCF Operations Orchestrator™ is a trademark of Broadcom Inc. This tool is not affiliated with or endorsed by Broadcom Inc. or its subsidiaries.</p>
   </footer>
+  <script>
+    // Mobile menu toggle
+    document.addEventListener('DOMContentLoaded', function() {
+      const menuToggle = document.getElementById('menuToggle');
+      const topBarActions = document.getElementById('topBarActions');
+      
+      if (menuToggle && topBarActions) {
+        menuToggle.addEventListener('click', function() {
+          topBarActions.classList.toggle('mobile-menu-open');
+        });
+        
+        // Close menu when clicking outside
+        document.addEventListener('click', function(event) {
+          if (!event.target.closest('#topBarActions') && event.target !== menuToggle) {
+            topBarActions.classList.remove('mobile-menu-open');
+          }
+        });
+      }
+    });
+  </script>
 </body>
 </html>
