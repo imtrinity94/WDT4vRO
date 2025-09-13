@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>WDT4vRO v2.0.0 - Workflow Documentation Tool for vRO</title>
+  <title>WDT4vRO</title>
   <link rel="stylesheet" href="https://unpkg.com/@clr/ui/clr-ui.min.css" />
   <link rel="stylesheet" href="https://unpkg.com/@clr/icons/clr-icons.min.css" />
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
@@ -681,12 +681,16 @@
           homeBtn.style.display = show ? 'flex' : 'none';
         }
         
-        // Show/hide GitHub and Open Issue buttons
-        const githubLink = document.querySelector('.github-link');
+        // Show/hide GitHub, Documentation, and Open Issue buttons
+        const githubLink = document.querySelector('a[href*="github.com"]:not(.open-issue-btn)');
+        const docBtn = document.querySelector('a[href*="cloudblogger"]');
         const openIssueBtn = document.querySelector('.open-issue-btn');
         
         if (githubLink) {
-          githubLink.style.display = show ? 'none' : 'flex';
+          githubLink.style.display = show ? 'none' : 'inline-flex';
+        }
+        if (docBtn) {
+          docBtn.style.display = show ? 'none' : 'inline-flex';
         }
         if (openIssueBtn) {
           openIssueBtn.style.display = show ? 'none' : 'inline-flex';
