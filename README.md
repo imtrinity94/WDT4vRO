@@ -1,10 +1,28 @@
-# Workflow Documentation Tool for Aria Automation Orchestrator (WDT4vRO)
+# Workflow Documentation Tool for Aria Automation Orchestrator (WDT4vRO) v2.0.0
 
 [![Open in Browser](https://img.shields.io/badge/Open%20in-Browser-4285F4?style=for-the-badge&logo=googlechrome&logoColor=white)](https://wdt4vro.vercel.app/)
+[![Version](https://img.shields.io/badge/version-2.0.0-blue.svg?style=for-the-badge)](https://github.com/imtrinity94/WDT4vRO/releases/tag/v2.0.0)
 
-A comprehensive visualization and documentation tool that converts XML-based workflow definitions from VMware Aria Automation Orchestrator into intuitive, interactive diagrams. This tool helps teams understand, document, and maintain complex workflows with ease.
+A comprehensive visualization and documentation tool that converts XML-based workflow definitions from VMware VCF Operations Orchestrator (aka Aria Automation Orchestrator or vRealize Orchestrator) into intuitive, interactive diagrams. This tool helps teams understand, document, and maintain complex workflows with ease.
 
 🌐 **Try Online**: [https://wdt4vro.onrender.com/](https://wdt4vro.onrender.com/) or [https://wdt4vro.vercel.app/](https://wdt4vro.vercel.app/)
+
+## 🚀 What's New in v2.0.0
+
+- **Enhanced Script Display**
+  - Improved script viewing with syntax highlighting
+  - Better handling of script content in custom conditions
+  - More reliable script extraction from workflow items
+
+- **Improved Workflow Item Handling**
+  - Better support for custom conditions
+  - More accurate display of workflow item properties
+  - Fixed issues with Windows OS condition display
+
+- **UI/UX Improvements**
+  - Updated welcome screen with version information
+  - Better error handling and user feedback
+  - Improved layout for workflow details
 
 ## Homescreen
 <img width="816" alt="image" src="https://github.com/user-attachments/assets/8041e1e3-3286-4caa-9a84-c87e3e19d801" />
@@ -16,7 +34,7 @@ A comprehensive visualization and documentation tool that converts XML-based wor
 <img width="851" alt="image" src="https://github.com/user-attachments/assets/286e7cc5-570c-4f63-8510-a4ab7975f772" />
 
 
-## 🌟 Features
+## 🌟 Key Features
 
 - **📝 XML Workflow Import**
   - Directly upload XML workflow files

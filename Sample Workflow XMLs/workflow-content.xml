@@ -1,0 +1,294 @@
+﻿<?xml version="1.0" encoding="ISO-8859-1" standalone="yes"?>
+<workflow xmlns="http://vmware.com/vco/workflow" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://vmware.com/vco/workflow http://vmware.com/vco/workflow/Workflow-v4.xsd" root-name="item1" object-name="workflow:name=generic" id="7D808080808080808080808080808080BC818080013141141566711a974a8fef8"  version="1.0.0" api-version="3.1.0" allowed-operations="vef" restartMode="0" >
+<display-name><![CDATA[Change Guest OS Type]]></display-name>
+<description><![CDATA[Author: William Lam
+www.virtuallyghetto.com
+
+Change Guest OS Type for a Virtual Machine
+
+]]></description>
+<position x='100.0' y='50.0'/>
+<input><param name='vm' type='VC:VirtualMachine' >
+<description><![CDATA[Virtual Machine to change guestOS type]]></description>
+</param>
+<param name='guestOSLinux' type='string' >
+</param>
+<param name='guestOSWindows' type='string' >
+</param>
+<param name='guestOSOther' type='string' >
+</param>
+<param name='guestOSFamily' type='string' >
+</param>
+</input><output><param name='actionResult' type='Any' >
+</param>
+</output><attrib name='errorCode' type='string' read-only='false' ><value encoded='n'><![CDATA[VM must be powered off]]></value>
+</attrib>
+<attrib name='OSFamily' type='Array/string' read-only='false' ><value encoded='n'><![CDATA[#{#string#Windows#;#string#Linux#;#string#Other#}#]]></value>
+<description><![CDATA[Guest OS Family]]></description>
+</attrib>
+<attrib name='OSWindows' type='Array/string' read-only='false' ><value encoded='n'><![CDATA[#{#string#Microsoft Windows Server 2012 (64-bit)#;#string#Microsoft Windows Server 2008 R2 (64-bit)#;#string#Microsoft Windows Server 2008 (64-bit)#;#string#Microsoft Windows Server 2008 (32-bit)#;#string#Microsoft Windows Server 2003 (64-bit)#;#string#Microsoft Windows Server 2003 (32-bit)#;#string#Microsoft Windows Server 2003 Datacenter (64-bit)#;#string#Microsoft Windows Server 2003 Datacenter (32-bit)#;#string#Microsoft Windows Server 2003 Standard (64-bit)#;#string#Microsoft Windows Server 2003 Standard (32-bit)#;#string#Microsoft Windows Server 2003 Web Edition (32-bit)#;#string#Microsoft Small Business Server 2003#;#string#Microsoft Windows 8 (64-bit)#;#string#Microsoft Windows 8 (32-bit)#;#string#Microsoft Windows 7 (64-bit)#;#string#Microsoft Windows 7 (32-bit)#;#string#Microsoft Windows Vista (64-bit)#;#string#Microsoft Windows Vista (32-bit)#;#string#Microsoft Windows XP Professional (64-bit)#;#string#Microsoft Windows XP Professional (32-bit)#;#string#Microsoft Windows 2000#;#string#Microsoft Windows 2000 Server#;#string#Microsoft Windows 2000 Professional#;#string#Microsoft Windows NT#;#string#Microsoft Windows 98#;#string#Microsoft Windows 95#;#string#Microsoft Windows 3.1#;#string#Microsoft MS-DOS#}#]]></value>
+<description><![CDATA[Windows OSes]]></description>
+</attrib>
+<attrib name='OSLinux' type='Array/string' read-only='false' ><value encoded='n'><![CDATA[#{#string#Red Hat Enterprise Linux 6 (64-bit)#;#string#Red Hat Enterprise Linux 6 (32-bit)#;#string#Red Hat Enterprise Linux 5 (64-bit)#;#string#Red Hat Enterprise Linux 5 (32-bit)#;#string#Red Hat Enterprise Linux 4 (64-bit)#;#string#Red Hat Enterprise Linux 4 (32-bit)#;#string#Red Hat Enterprise Linux 3 (64-bit)#;#string#Red Hat Enterprise Linux 3 (32-bit)#;#string#Red Hat Enterprise Linux 2.1#;#string#Red Hat Fedora Linux (64 bit)#;#string#Red Hat Fedora Linux (32 bit)#;#string#SUSE Linux Enterprise 11 (64-bit)#;#string#SUSE Linux Enterprise 11 (32-bit)#;#string#SUSE Linux Enterprise 10 (64-bit)#;#string#SUSE Linux Enterprise 10 (32-bit#;#string#SUSE Linux Enterprise 8/9 (64-bit)#;#string#SUSE Linux Enterprise 8/9 (32-bit)#;#string#OpenSUSE Linux (64 bit)#;#string#OpenSUSE Linux (32 bit)#;#string#CentOS 4/5/6 (64-bit)#;#string#CentOS 4/5/6 (32-bit)#;#string#Debian GNU/Linux 6 (64-bit)#;#string#Debian GNU/Linux 6 (32-bit)#;#string#Debian GNU/Linux 5 (64-bit)#;#string#Debian GNU/Linux 5 (32-bit)#;#string#Debian GNU/Linux 4 (64-bit)#;#string#Debian GNU/Linux 4 (32-bit)#;#string#Asianux 4 (64-bit)#;#string#Asianux 4 (32-bit)#;#string#Asianux 3 (64-bit)#;#string#Asianux 3 (32-bit)#;#string#Novel Open Enterprise Server#;#string#Oracle Linux 4/5/6 (64-bit)#;#string#Oracle Linux 4/5/6 (32-bit)#;#string#Ubuntu Linux (64-bit)#;#string#Ubuntu Linux (32-bit)#;#string#Other 2.6.x Linux (64-bit)#;#string#Other 2.6.x Linux (32-bit)#;#string#Other 2.4.x Linux (64-bit)#;#string#Other 2.4.x Linux (32-bit)#;#string#Other Linux (64-bit)#;#string#Other Linux (32-bit)#}#]]></value>
+<description><![CDATA[Linux OSes]]></description>
+</attrib>
+<attrib name='OSOther' type='Array/string' read-only='false' ><value encoded='n'><![CDATA[#{#string#Apple Mac OS X 10.7 (64-bit)#;#string#Apple Mac OS X 10.7 (32-bit)#;#string#Apple Mac OS X 10.6 (64-bit)#;#string#Apple Mac OS X 10.6 (32-bit)#;#string#Apple Mac OS X 10.5 (64-bit)#;#string#Apple Mac OS X 10.5 (32-bit)#;#string#FreeBSD (64-bit)#;#string#FreeBSD (32-bit)#;#string#IBM OS/2#;#string#Novell NetWare 6.x#;#string#Novell NetWare 5.1#;#string#Oracle Solaris 11 (64-bit)#;#string#Oracle Solaris 10 (64-bit)#;#string#Oracle Solaris 10 (32-bit)#;#string#Sun Microsystems Solaris 9 (experimental)#;#string#Sun Microsystems Solaris 8 (experimental)#;#string#SCO OpenServer 6#;#string#SCO OpenServer 5#;#string#SCO UnixWare 7#;#string#Serentiy Systems eComStation 2#;#string#Serentiy Systems eComStation 1#;#string#Other (64-bit)#;#string#Other (32-bit)#;#string#VMware ESXi 5.x#;#string#VMware ESX 4.x#}#]]></value>
+<description><![CDATA[Other OSes]]></description>
+</attrib>
+<attrib name='task' type='VC:Task' read-only='false' ><value encoded='n'><![CDATA[__NULL__]]></value>
+</attrib>
+<attrib name='progress' type='boolean' read-only='false' ><value encoded='n'><![CDATA[true]]></value>
+<description><![CDATA[Log progess while waiting for the task ]]></description>
+</attrib>
+<attrib name='pollRate' type='number' read-only='false' ><value encoded='n'><![CDATA[3.0]]></value>
+<description><![CDATA[Polling rate for the task state [seconds]]]></description>
+</attrib>
+<attrib name='os' type='string' read-only='false' ><value encoded='n'><![CDATA[]]></value>
+</attrib>
+<workflow-note x='640.0' y='36.36363636363636' w='140.0' h='190.9090909090909' ><description><![CDATA[OS Version List]]></description>
+</workflow-note>
+<workflow-note x='440.0' y='36.363636363636346' w='140.0' h='263.6363636363636' ><description><![CDATA[Select OS Family]]></description>
+</workflow-note>
+<workflow-item name='item1' out-name='item0' type='custom-condition' alt-out-name='item4' >
+<display-name><![CDATA[Is Powered Off]]></display-name>
+<script encoded='false'><![CDATA[var vmState = vm.runtime.powerState.value;
+return vmState == "poweredOff";]]></script>
+<in-binding><bind name='vm' type='VC:VirtualMachine' export-name="vm" ></bind>
+</in-binding><position x='244.5' y='45.40909090909091'/>
+</workflow-item>
+<workflow-item name='item2' throw-bind-name='errorCode' type='end' end-mode='1' >
+<position x='285.0' y='163.59090909090907'/>
+</workflow-item>
+<workflow-item name='item4' out-name='item2' type='task' interaction='l' >
+<display-name><![CDATA[Server warning]]></display-name>
+<script encoded='false'><![CDATA[//Auto-generated script
+var text = object.name + " is still powered on!";
+Server.warn(text, object);
+]]></script>
+<in-binding><bind name='object' type='Any' export-name="vm" ><description><![CDATA[The text to log and additional info]]></description>
+</bind>
+</in-binding><out-binding></out-binding><description><![CDATA[Log the input text to the server log with level 'warn']]></description>
+<position x='245.0' y='109.95454545454544'/>
+</workflow-item>
+<workflow-item name='item0' out-name='item10' type='custom-condition' alt-out-name='item3' >
+<display-name><![CDATA[WindowsOS]]></display-name>
+<script encoded='false'><![CDATA[
+return guestOSFamily == "Windows";]]></script>
+<in-binding><bind name='guestOSFamily' type='string' export-name="guestOSFamily" ></bind>
+<bind name='OSFamily' type='Array/string' export-name="OSFamily" ></bind>
+</in-binding><position x='445.0' y='45.40909090909091'/>
+</workflow-item>
+<workflow-item name='item3' out-name='item11' type='custom-condition' alt-out-name='item6' >
+<display-name><![CDATA[LinuxOS]]></display-name>
+<script encoded='false'><![CDATA[
+return guestOSFamily == "Linux";]]></script>
+<in-binding><bind name='OSFamily' type='Array/string' export-name="OSFamily" ></bind>
+<bind name='guestOSFamily' type='string' export-name="guestOSFamily" ></bind>
+</in-binding><position x='445.0' y='109.04545454545453'/>
+</workflow-item>
+<workflow-item name='item6' out-name='item12' type='custom-condition' alt-out-name='item8' >
+<display-name><![CDATA[OtherOS]]></display-name>
+<script encoded='false'><![CDATA[
+return guestOSFamily == "Other";]]></script>
+<in-binding><bind name='OSFamily' type='Array/string' export-name="OSFamily" ></bind>
+<bind name='guestOSFamily' type='string' export-name="guestOSFamily" ></bind>
+</in-binding><position x='445.0' y='172.68181818181816'/>
+</workflow-item>
+<workflow-item name='item8' type='end' end-mode='0' >
+<position x='484.5' y='245.40909090909088'/>
+</workflow-item>
+<workflow-item name='item10' out-name='item5' type='task' >
+<display-name><![CDATA[Windows OSes]]></display-name>
+<script encoded='false'><![CDATA[var windowsVersions = new Properties();
+
+// Windows OSes
+windowsVersions.put("Microsoft Windows Server 2012 (64-bit)", "windows8server64Guest");
+windowsVersions.put("Microsoft Windows Server 2008 R2 (64-bit)","windows7server64Guest");
+windowsVersions.put("Microsoft Windows Server 2008 (64-bit)","winlonghorn64Guest");
+windowsVersions.put("Microsoft Windows Server 2008 (32-bit)","winlonghornGuest");
+windowsVersions.put("Microsoft Windows Server 2003 (64-bit)","winNetEnterprise64Guest");
+windowsVersions.put("Microsoft Windows Server 2003 (32-bit)","winNetEnterpriseGuest");
+windowsVersions.put("Microsoft Windows Server 2003 Datacenter (64-bit)","winNetDatacenter64Guest");
+windowsVersions.put("Microsoft Windows Server 2003 Datacenter (32-bit)","winNetDatacenterGuest");
+windowsVersions.put("Microsoft Windows Server 2003 Standard (64-bit)","winNetStandard64Guest");
+windowsVersions.put("Microsoft Windows Server 2003 Standard (32-bit)","winNetStandardGuest");
+windowsVersions.put("Microsoft Windows Server 2003 Web Edition (32-bit)","winNetWebGuest");
+windowsVersions.put("Microsoft Small Business Server 2003","winNetBusinessGuest");
+windowsVersions.put("Microsoft Windows 8 (64-bit)","windows8_64Guest");
+windowsVersions.put("Microsoft Windows 8 (32-bit)","windows8Guest");
+windowsVersions.put("Microsoft Windows 7 (64-bit)","windows7_64Guest");
+windowsVersions.put("Microsoft Windows 7 (32-bit)","windows7Guest");
+windowsVersions.put("Microsoft Windows Vista (64-bit)","winVista64Guest");
+windowsVersions.put("Microsoft Windows Vista (32-bit)","winVistaGuest");
+windowsVersions.put("Microsoft Windows XP Professional (64-bit)","winXPPro64Guest");
+windowsVersions.put("Microsoft Windows XP Professional (32-bit)","winXPProGuest");
+windowsVersions.put("Microsoft Windows 2000","win2000AdvServGuest");
+windowsVersions.put("Microsoft Windows 2000 Server","win2000ServGuest");
+windowsVersions.put("Microsoft Windows 2000 Professional","win2000ProGuest");
+windowsVersions.put("Microsoft Windows NT","winNTGuest");
+windowsVersions.put("Microsoft Windows 98","win98Guest");
+windowsVersions.put("Microsoft Windows 95","win95Guest");
+windowsVersions.put("Microsoft Windows 3.1","win31Guest");
+windowsVersions.put("Microsoft MS-DOS","dosGuest");
+
+os = windowsVersions.get(guestOSWindows);
+System.log("WindowsOS: " + guestOSWindows + " Selected");
+Server.log("WindowsOS: " + guestOSWindows + " Selected");]]></script>
+<in-binding><bind name='guestOSWindows' type='string' export-name="guestOSWindows" ></bind>
+<bind name='vm' type='VC:VirtualMachine' export-name="vm" ></bind>
+<bind name='OSVersion' type='Array/string' export-name="OSWindows" ></bind>
+</in-binding><out-binding><bind name='os' type='string' export-name="os" ></bind>
+</out-binding><position x='644.5' y='55.40909090909091'/>
+</workflow-item>
+<workflow-item name='item11' out-name='item5' type='task' >
+<display-name><![CDATA[Linux OSes]]></display-name>
+<script encoded='false'><![CDATA[var linuxVersions = new Properties();
+
+// Linux OSes
+linuxVersions.put("Red Hat Enterprise Linux 6 (64-bit)","rhel6_64Guest");
+linuxVersions.put("Red Hat Enterprise Linux 6 (32-bit)","rhel6Guest");
+linuxVersions.put("Red Hat Enterprise Linux 5 (64-bit)","rhel5_64Guest");
+linuxVersions.put("Red Hat Enterprise Linux 5 (32-bit)","rhel5Guest");
+linuxVersions.put("Red Hat Enterprise Linux 4 (64-bit)","rhel4_64Guest");
+linuxVersions.put("Red Hat Enterprise Linux 4 (32-bit)","rhel4Guest");
+linuxVersions.put("Red Hat Enterprise Linux 3 (64-bit)","rhel3_64Guest");
+linuxVersions.put("Red Hat Enterprise Linux 3 (32-bit)","rhel3Guest");
+linuxVersions.put("Red Hat Enterprise Linux 2.1","rhel2Guest");
+linuxVersions.put("Red Hat Fedora Linux (64 bit)","fedora64Guest");
+linuxVersions.put("Red Hat Fedora Linux (32 bit)","fedoraGuest");
+linuxVersions.put("SUSE Linux Enterprise 11 (64-bit)","sles11_64Guest");
+linuxVersions.put("SUSE Linux Enterprise 11 (32-bit)","sles11Guest");
+linuxVersions.put("SUSE Linux Enterprise 10 (64-bit)","sles10_64Guest");
+linuxVersions.put("SUSE Linux Enterprise 10 (32-bit)","sles10Guest");
+linuxVersions.put("SUSE Linux Enterprise 8/9 (64-bit)","sles64Guest");
+linuxVersions.put("SUSE Linux Enterprise 8/9 (32-bit)","slesGuest");
+linuxVersions.put("OpenSUSE Linux 11.x (64 bit)","opensuse64Guest");
+linuxVersions.put("OpenSUSE Linux (32 bit)","opensuseGuest");
+linuxVersions.put("CentOS 4/5/6 (64-bit)","centos64Guest");
+linuxVersions.put("CentOS 4/5/6 (32-bit)","centosGuest");
+linuxVersions.put("Debian GNU/Linux 6 (64-bit)","debian6_64Guest");
+linuxVersions.put("Debian GNU/Linux 6 (32-bit)","debian6Guest");
+linuxVersions.put("Debian GNU/Linux 5 (64-bit)","debian5_64Guest");
+linuxVersions.put("Debian GNU/Linux 5 (32-bit)","debian5Guest");
+linuxVersions.put("Debian GNU/Linux 4 (64-bit)","debian4_64Guest");
+linuxVersions.put("Debian GNU/Linux 4 (32-bit)","debian4Guest");
+linuxVersions.put("Asianux 4 (64-bit)","asianux4_64Guest");
+linuxVersions.put("Asianux 4 (32-bit)","asianux4Guest");
+linuxVersions.put("Asianux 3 (64-bit)","asianux3_64Guest");
+linuxVersions.put("Asianux 3 (32-bit)","asianux3Guest");
+linuxVersions.put("Novel Open Enterprise Server","oesGuest");
+linuxVersions.put("Oracle Linux 4/5/6 (64-bit)","oraclelinux64Guest");
+linuxVersions.put("Oracle Linux 4/5/6 (32-bit)","oraclelinuxGuest");
+linuxVersions.put("Ubuntu Linux (64-bit)","ubuntu64Guest");
+linuxVersions.put("Ubuntu Linux (32-bit)","ubuntuGuest");
+linuxVersions.put("Other 2.6.x Linux (64-bit)","other26xlinux64Guest");
+linuxVersions.put("Other 2.6.x Linux (32-bit)","other26xlinuxGuest");
+linuxVersions.put("Other 2.4.x Linux (64-bit)","other24xlinux64Guest");
+linuxVersions.put("Other 2.4.x Linux (32-bit)","other24xlinuxGuest");
+linuxVersions.put("Other Linux (64-bit)","otherlinux64Guest");
+linuxVersions.put("Other Linux (32-bit)","otherlinuxGuest");
+
+os = linuxVersions.get(guestOSLinux);
+System.log("LinuxOS: " + guestOSLinux + " Selected");
+Server.log("LinuxOS: " + guestOSLinux + " Selected");]]></script>
+<in-binding><bind name='OSVersion' type='Array/string' export-name="OSLinux" ></bind>
+<bind name='guestOSLinux' type='string' export-name="guestOSLinux" ></bind>
+<bind name='vm' type='VC:VirtualMachine' export-name="vm" ></bind>
+</in-binding><out-binding><bind name='os' type='string' export-name="os" ></bind>
+</out-binding><position x='644.5' y='119.04545454545453'/>
+</workflow-item>
+<workflow-item name='item12' out-name='item5' type='task' >
+<display-name><![CDATA[Other OSes]]></display-name>
+<script encoded='false'><![CDATA[var otherVersions = new Properties();
+
+// Other OSes
+otherVersions.put("Apple Mac OS X 10.7 (64-bit)","darwin11_64Guest");
+otherVersions.put("Apple Mac OS X 10.7 (32-bit)","darwin11Guest");
+otherVersions.put("Apple Mac OS X 10.6 (64-bit)","darwin10_64Guest");
+otherVersions.put("Apple Mac OS X 10.6 (32-bit)","darwin10Guest");
+otherVersions.put("Apple Mac OS X 10.5 (64-bit)","darwin64Guest");
+otherVersions.put("Apple Mac OS X 10.5 (32-bit)","darwinGuest");
+otherVersions.put("FreeBSD (64-bit)","freebsd64Guest");
+otherVersions.put("FreeBSD (32-bit)","freebsdGuest");
+otherVersions.put("IBM OS/2","os2Guest");
+otherVersions.put("Novell NetWare 6.x","netware6Guest");
+otherVersions.put("Novell NetWare 5.1","netware5Guest");
+otherVersions.put("Oracle Solaris 11 (64-bit)","solaris11_64Guest");
+otherVersions.put("Oracle Solaris 10 (64-bit)","solaris10_64Guest");
+otherVersions.put("Oracle Solaris 10 (32-bit)","solaris10Guest");
+otherVersions.put("Sun Microsystems Solaris 9 (experimental)","solaris9Guest");
+otherVersions.put("Sun Microsystems Solaris 8 (experimental)","solaris8Guest");
+otherVersions.put("SCO OpenServer 6","openserver6Guest");
+otherVersions.put("SCO OpenServer 5","openserver5Guest");
+otherVersions.put("SCO UnixWare 7","unixware7Guest");
+otherVersions.put("Serentiy Systems eComStation 2","eComStation2Guest");
+otherVersions.put("Serentiy Systems eComStation 1","eComStationGuest");
+otherVersions.put("Other (64-bit)","otherGuest64");
+otherVersions.put("Other (32-bit)","otherGuest");
+otherVersions.put("VMware ESXi 5.x","vmkernel5Guest");
+otherVersions.put("VMware ESX 4.x","vmkernelGuest");
+
+os = otherVersions.get(guestOSOther);
+System.log("OtherOS: " + guestOSOther + " Selected");
+Server.log("OtherOS: " + guestOSOther + " Selected");
+]]></script>
+<in-binding><bind name='OSVersion' type='Array/string' export-name="OSOther" ></bind>
+<bind name='guestOSOther' type='string' export-name="guestOSOther" ></bind>
+<bind name='vm' type='VC:VirtualMachine' export-name="vm" ></bind>
+</in-binding><out-binding><bind name='os' type='string' export-name="os" ></bind>
+</out-binding><position x='644.5' y='182.68181818181816'/>
+</workflow-item>
+<workflow-item name='item7' type='end' end-mode='0' >
+<position x='1204.5' y='109.04545454545453'/>
+</workflow-item>
+<workflow-item name='item5' out-name='item9' type='task' >
+<display-name><![CDATA[Reconfigure GuestOS]]></display-name>
+<script encoded='false'><![CDATA[if(os != null) {
+	System.log("Reconfiguring guestId to " + os);
+	Server.log("Reconfiguring guestId to " + os);
+
+	var vmSpec = new VcVirtualMachineConfigSpec();
+	vmSpec.guestId = os;
+	task = vm.reconfigVM_Task(vmSpec);
+} else {
+	System.log("Please Select Guest OS Version");
+	Server.log("Please Select Guest OS Version");
+}]]></script>
+<in-binding><bind name='vm' type='VC:VirtualMachine' export-name="vm" ></bind>
+<bind name='os' type='string' export-name="os" ></bind>
+</in-binding><out-binding><bind name='task' type='VC:Task' export-name="task" ></bind>
+</out-binding><position x='884.5' y='119.04545454545453'/>
+</workflow-item>
+<workflow-item name='item9' out-name='item7' type='task' script-module='com.vmware.library.vc.basic/vim3WaitTaskEnd' >
+<display-name><![CDATA[vim3WaitTaskEnd]]></display-name>
+<script encoded='false'><![CDATA[//Auto generated script, cannot be modified !
+actionResult = System.getModule("com.vmware.library.vc.basic").vim3WaitTaskEnd(task,progress,pollRate) ;]]></script>
+<in-binding><bind name='task' type='VC:Task' export-name="task" ><description><![CDATA[Task to Wait for]]></description>
+</bind>
+<bind name='progress' type='boolean' export-name="progress" ><description><![CDATA[Log progess while waiting for the task]]></description>
+</bind>
+<bind name='pollRate' type='number' export-name="pollRate" ><description><![CDATA[Polling rate for the task state [seconds]]]></description>
+</bind>
+</in-binding><out-binding><bind name='actionResult' type='Any' export-name="actionResult" ></bind>
+</out-binding><description><![CDATA[Wait for a VC Task to end.
+When task ended, return the task result if any. ]]></description>
+<position x='1024.5' y='119.04545454545453'/>
+</workflow-item>
+<presentation>
+<p-param name="vm"><desc><![CDATA[Virtual Machine to change guestOS type]]></desc>
+</p-param>
+<p-step>
+<title><![CDATA[OS Family]]></title>
+<p-param name="guestOSFamily"><desc><![CDATA[GuestOS Family]]></desc>
+<p-qual kind="ognl" name="linkedEnumeration" type="Array/string" ><![CDATA[#OSFamily]]></p-qual></p-param>
+</p-step>
+<p-step>
+<title><![CDATA[OS Version]]></title>
+<p-param name="guestOSLinux"><desc><![CDATA[Linux OS Version]]></desc>
+<p-qual kind="ognl" name="visible" type="boolean" ><![CDATA[#guestOSFamily == "Linux"]]></p-qual><p-qual kind="ognl" name="linkedEnumeration" type="Array/string" ><![CDATA[#OSLinux]]></p-qual></p-param>
+<p-param name="guestOSWindows"><desc><![CDATA[Windows OS Version]]></desc>
+<p-qual kind="ognl" name="visible" type="boolean" ><![CDATA[#guestOSFamily == "Windows"]]></p-qual><p-qual kind="ognl" name="linkedEnumeration" type="Array/string" ><![CDATA[#OSWindows]]></p-qual></p-param>
+<p-param name="guestOSOther"><desc><![CDATA[Other OS Version]]></desc>
+<p-qual kind="ognl" name="visible" type="boolean" ><![CDATA[#guestOSFamily == "Other"]]></p-qual><p-qual kind="ognl" name="linkedEnumeration" type="Array/string" ><![CDATA[#OSOther]]></p-qual></p-param>
+</p-step>
+</presentation></workflow>
