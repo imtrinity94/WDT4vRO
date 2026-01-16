@@ -21,7 +21,7 @@ A comprehensive visualization and documentation tool that converts XML-based wor
 - **Enhanced Diagram Rendering**
   - Correct rendering of all node icons directly from the internal library.
   - Improved arrow paths and marker placement.
-  - Better handling of vRO 2.0+ workflows with complex or orphaned nodes.
+  - Better handling of vRO workflows with complex or orphaned nodes.
 
 - **UI/UX Improvements**
   - Unified typography for a cleaner first impression.
