@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -14,24 +15,26 @@
     html {
       scroll-behavior: smooth;
     }
-    
+
     /* Style for workflow item sections */
     .workflow-item {
-      scroll-margin-top: 80px; /* Space for fixed header */
+      scroll-margin-top: 80px;
+      /* Space for fixed header */
       transition: all 0.3s ease;
     }
-    
+
     .workflow-item {
-      transform: translateZ(0); /* Force hardware acceleration */
+      transform: translateZ(0);
+      /* Force hardware acceleration */
       backface-visibility: hidden;
       perspective: 1000px;
       will-change: background-color, box-shadow, padding, margin;
     }
-    
+
     .workflow-item:target {
       animation: highlightFade 1.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
     }
-    
+
     @keyframes highlightFade {
       0% {
         background-color: rgba(0, 124, 187, 0.3);
@@ -40,14 +43,17 @@
         padding: 10px;
         margin: -10px;
       }
+
       30% {
         background-color: rgba(0, 124, 187, 0.2);
         box-shadow: 0 0 0 3px rgba(0, 124, 187, 0.2);
       }
+
       60% {
         background-color: rgba(0, 124, 187, 0.1);
         box-shadow: 0 0 0 2px rgba(0, 124, 187, 0.1);
       }
+
       100% {
         background-color: transparent;
         box-shadow: 0 0 0 0 transparent;
@@ -56,8 +62,9 @@
         margin: 0;
       }
     }
-    
+
     @import url('https://fonts.googleapis.com/css2?family=Metropolis:wght@400;700&display=swap');
+
     body {
       font-family: 'Metropolis', Arial, sans-serif;
       font-size: 14px;
@@ -131,7 +138,8 @@
       table-layout: fixed;
     }
 
-    th, td {
+    th,
+    td {
       font-family: 'Metropolis', Arial, sans-serif;
       border: 1px solid #ccc;
       padding: 8px;
@@ -155,7 +163,7 @@
       padding: 10px;
       border-radius: 4px;
     }
-    
+
     button {
       padding: 8px 16px;
       background-color: #007cbb;
@@ -165,7 +173,7 @@
       cursor: pointer;
       font-family: 'Metropolis', Arial, sans-serif;
     }
-    
+
     button:hover {
       background-color: #0069a3;
     }
@@ -192,11 +200,11 @@
       padding: 16px 32px;
       display: flex;
       align-items: center;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.03);
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.03);
       margin-bottom: 0;
       position: relative;
     }
-    
+
     .hamburger {
       display: none;
       background: none;
@@ -206,21 +214,21 @@
       cursor: pointer;
       padding: 5px;
     }
-    
+
     .hamburger:hover {
       opacity: 0.8;
     }
-    
+
     @media (max-width: 1024px) {
       .hamburger {
         display: block;
       }
-      
+
       .top-bar .title {
         /* font-size: 1rem; */
         margin-right: 10px;
       }
-      
+
       #topBarActions {
         position: fixed;
         top: 70px;
@@ -231,17 +239,17 @@
         padding: 15px 20px;
         gap: 12px;
         border-radius: 0 0 0 8px;
-        box-shadow: -2px 4px 10px rgba(0,0,0,0.2);
+        box-shadow: -2px 4px 10px rgba(0, 0, 0, 0.2);
         transition: right 0.3s ease;
         z-index: 1000;
         max-height: calc(100vh - 80px);
         overflow-y: auto;
       }
-      
+
       #topBarActions.mobile-menu-open {
         right: 0;
       }
-      
+
       .top-bar .title {
         font-size: 0.9rem;
         white-space: nowrap;
@@ -250,22 +258,23 @@
         max-width: 200px;
       }
     }
-    
+
     @media (max-width: 768px) {
       .top-bar {
         padding: 10px 12px;
       }
-      
+
       #topBarActions {
         width: 250px;
       }
-      
+
       .top-bar .title {
         font-size: 0.8rem;
         margin: 0 8px;
         max-width: none;
       }
     }
+
     .top-bar .icon {
       width: 32px;
       height: 32px;
@@ -273,6 +282,7 @@
       display: inline-block;
       vertical-align: middle;
     }
+
     .top-bar .title {
       font-family: 'Metropolis', Arial, sans-serif;
       font-size: 1rem;
@@ -286,12 +296,18 @@
       min-width: 0;
       line-height: 1.3;
     }
+
     .themed-input[type="file"] {
       display: none;
     }
-    .welcome-box, .welcome-notes, .welcome-box ul, .welcome-box li {
+
+    .welcome-box,
+    .welcome-notes,
+    .welcome-box ul,
+    .welcome-box li {
       font-family: 'Metropolis', Arial, sans-serif;
     }
+
     .btn {
       font-family: 'Metropolis', Arial, sans-serif;
       font-size: 14px;
@@ -306,44 +322,46 @@
       justify-content: center;
       white-space: nowrap;
     }
-    
+
     .btn.btn-primary {
       background: #007cbb !important;
       color: #fff !important;
       border: none !important;
-      box-shadow: 0 2px 8px rgba(0,124,187,0.15);
+      box-shadow: 0 2px 8px rgba(0, 124, 187, 0.15);
     }
+
     .btn.btn-primary:hover {
       background: #0069a3 !important;
       transform: translateY(-1px);
-      box-shadow: 0 4px 12px rgba(0,124,187,0.2);
+      box-shadow: 0 4px 12px rgba(0, 124, 187, 0.2);
     }
-    
+
     .btn.btn-outline {
       background: transparent;
       border: 1px solid #007cbb;
       color: #007cbb;
     }
-    
+
     .btn.btn-outline:hover {
       background: rgba(0, 124, 187, 0.05);
       transform: translateY(-1px);
     }
-    
+
     .github-link {
       opacity: 0.9;
       transition: opacity 0.2s ease, transform 0.2s ease;
     }
-    
+
     .github-link:hover {
       opacity: 1;
       transform: translateY(-1px);
       color: #fff !important;
     }
+
     .welcome-box {
       background: #fff;
       border-radius: 8px;
-      box-shadow: 0 2px 12px rgba(0,0,0,0.1);
+      box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
       max-width: 1400px;
       width: calc(100% - 40px);
       margin: 20px auto;
@@ -355,6 +373,7 @@
       position: relative;
       overflow: visible;
     }
+
     .welcome-notes {
       flex: 1 1 300px;
       display: flex;
@@ -368,6 +387,7 @@
       width: 100%;
       box-sizing: border-box;
     }
+
     .welcome-notes h2 {
       font-size: 1.6rem;
       font-weight: 600;
@@ -381,12 +401,14 @@
       text-overflow: clip;
       transition: all 0.3s ease;
     }
+
     .welcome-notes .welcome-desc {
       font-size: clamp(0.7rem, 1.2vw, 0.8rem);
       line-height: 1.5;
       margin: 0 0 0.8rem 0;
       color: #4a5568;
     }
+
     .welcome-notes ul {
       font-size: clamp(0.65rem, 1.1vw, 0.75rem);
       margin: 0 0 1rem 0;
@@ -394,6 +416,7 @@
       line-height: 1.6;
       color: #4a5568;
     }
+
     .welcome-graphic {
       flex: 1 1 300px;
       min-height: 280px;
@@ -404,9 +427,13 @@
       overflow: hidden;
       padding: 1rem;
     }
+
     .dot-bg {
       position: absolute;
-      top: 0; left: 0; right: 0; bottom: 0;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
       width: 100%;
       height: 100%;
       z-index: 0;
@@ -414,6 +441,7 @@
       background-size: 18px 18px;
       background-position: 0 0;
     }
+
     .welcome-graphic img {
       max-width: 100%;
       max-height: 100%;
@@ -421,6 +449,7 @@
       position: relative;
       z-index: 1;
     }
+
     .welcome-upload-bottom {
       width: 100%;
       margin-top: 1.2rem;
@@ -434,6 +463,7 @@
       padding-top: 1rem;
       border-top: 1px solid #eaeef2;
     }
+
     .upload-section {
       margin-top: 16px;
       display: flex;
@@ -443,11 +473,12 @@
       gap: 12px;
       width: 100%;
     }
-    
+
     .upload-section .btn {
       margin: 0;
       white-space: nowrap;
     }
+
     .no-script {
       padding: 10px;
       color: #666;
@@ -466,19 +497,23 @@
       letter-spacing: 0.02em;
       font-family: 'Metropolis', Arial, sans-serif;
     }
+
     .footer-note a {
       color: #007cbb;
       text-decoration: none;
       font-size: 0.85rem;
       margin-left: 0.2em;
     }
+
     #messages {
       /* Add font family for all messages */
       font-family: 'Metropolis', Arial, sans-serif;
     }
-    #messages > div {
+
+    #messages>div {
       font-family: 'Metropolis', Arial, sans-serif;
     }
+
     .details-main-heading {
       font-size: 2.2rem;
       font-weight: 900;
@@ -486,6 +521,7 @@
       margin-top: 0;
       letter-spacing: 0.01em;
     }
+
     .details-section-heading {
       font-size: 1.25rem;
       font-weight: 700;
@@ -493,44 +529,44 @@
       margin-bottom: 18px;
       letter-spacing: 0.01em;
     }
-    
+
     @media (max-width: 768px) {
       .welcome-box {
         padding: 1.2rem;
         margin: 8px;
         width: calc(100% - 16px);
       }
-      
+
       .welcome-notes h2 {
         font-size: 1.3rem;
         margin-bottom: 0.5rem;
       }
-      
+
       .welcome-notes .welcome-desc,
       .welcome-notes ul {
         font-size: 0.85rem;
         line-height: 1.5;
       }
-      
+
       .welcome-upload-bottom {
         margin-top: 1.2rem;
         padding-top: 1rem;
       }
-      
+
       .upload-section {
         flex-direction: column;
         gap: 10px;
         width: 100%;
         margin-top: 12px;
       }
-      
+
       .upload-section .btn {
         width: 100%;
         padding: 12px 16px;
         margin: 0;
         font-size: 14px;
       }
-      
+
       .btn.btn-outline {
         margin-top: 0;
       }
@@ -540,6 +576,7 @@
   <script src="https://unpkg.com/@clr/icons/clr-icons.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 </head>
+
 <body>
   <div class="top-bar">
     <img src="assets/wdt4vro_icon.svg" class="icon" alt="Workflow Icon" />
@@ -548,40 +585,60 @@
       <button class="hamburger" id="menuToggle" style="margin-left: 15px;">☰</button>
     </div>
     <div id="topBarActions" style="margin-left:auto; display:flex; align-items:center; gap: 12px;">
-      <a href="https://github.com/imtrinity94/WDT4vRO" target="_blank" rel="noopener noreferrer" class="btn btn-sm btn-outline" style="color: #fff; border-color: rgba(255,255,255,0.6); height: 32px; display: inline-flex; align-items: center; padding: 0 12px; font-size: 13px; font-weight: 500; transition: all 0.2s; margin-right: 8px;" title="View on GitHub">
+      <a href="https://github.com/imtrinity94/WDT4vRO" target="_blank" rel="noopener noreferrer"
+        class="btn btn-sm btn-outline"
+        style="color: #fff; border-color: rgba(255,255,255,0.6); height: 32px; display: inline-flex; align-items: center; padding: 0 12px; font-size: 13px; font-weight: 500; transition: all 0.2s; margin-right: 8px;"
+        title="View on GitHub">
         <svg height="16" viewBox="0 0 16 16" width="16" fill="currentColor" style="margin-right: 6px;">
-          <path fill-rule="evenodd" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"></path>
+          <path fill-rule="evenodd"
+            d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z">
+          </path>
         </svg>
         <span>GitHub</span>
       </a>
-      <a href="https://cloudblogger.co.in/2025/09/14/wdt4vro-external-tooling-for-orchestrator-workflow-documentation-xml-png-html/" target="_blank" rel="noopener noreferrer" class="btn btn-sm btn-outline" style="color: #fff; border-color: rgba(255,255,255,0.6); height: 32px; display: inline-flex; align-items: center; padding: 0 12px; font-size: 13px; font-weight: 500; transition: all 0.2s;" title="View Documentation">
+      <a href="https://cloudblogger.co.in/2025/09/14/wdt4vro-external-tooling-for-orchestrator-workflow-documentation-xml-png-html/"
+        target="_blank" rel="noopener noreferrer" class="btn btn-sm btn-outline"
+        style="color: #fff; border-color: rgba(255,255,255,0.6); height: 32px; display: inline-flex; align-items: center; padding: 0 12px; font-size: 13px; font-weight: 500; transition: all 0.2s;"
+        title="View Documentation">
         <svg height="16" viewBox="0 0 24 24" width="16" fill="currentColor" style="margin-right: 6px;">
-          <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 17h-2v-2h2v2zm2.07-7.75l-.9.92C13.45 12.9 13 13.5 13 15h-2v-.5c0-1.1.45-2.1 1.17-2.83l1.24-1.26c.37-.36.59-.86.59-1.41 0-1.1-.9-2-2-2s-2 .9-2 2H8c0-2.21 1.79-4 4-4s4 1.79 4 4c0 .88-.36 1.68-.93 2.25z"></path>
+          <path
+            d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 17h-2v-2h2v2zm2.07-7.75l-.9.92C13.45 12.9 13 13.5 13 15h-2v-.5c0-1.1.45-2.1 1.17-2.83l1.24-1.26c.37-.36.59-.86.59-1.41 0-1.1-.9-2-2-2s-2 .9-2 2H8c0-2.21 1.79-4 4-4s4 1.79 4 4c0 .88-.36 1.68-.93 2.25z">
+          </path>
         </svg>
         <span>Documentation</span>
       </a>
-      <a href="https://github.com/imtrinity94/WDT4vRO/issues/new" target="_blank" rel="noopener noreferrer" class="btn btn-sm btn-outline open-issue-btn" style="color: #fff; border-color: rgba(255,255,255,0.6); height: 32px; display: inline-flex; align-items: center; padding: 0 12px; font-size: 13px; font-weight: 500; transition: all 0.2s;" title="Open an issue">
+      <a href="https://github.com/imtrinity94/WDT4vRO/issues/new" target="_blank" rel="noopener noreferrer"
+        class="btn btn-sm btn-outline open-issue-btn"
+        style="color: #fff; border-color: rgba(255,255,255,0.6); height: 32px; display: inline-flex; align-items: center; padding: 0 12px; font-size: 13px; font-weight: 500; transition: all 0.2s;"
+        title="Open an issue">
         <svg height="16" viewBox="0 0 16 16" width="16" fill="currentColor" style="margin-right: 6px;">
-          <path fill-rule="evenodd" d="M8 1.5a6.5 6.5 0 100 13 6.5 6.5 0 000-13zM0 8a8 8 0 1116 0A8 8 0 010 8zm9 3a1 1 0 11-2 0 1 1 0 012 0zm-.25-6.25a.75.75 0 00-1.5 0v3.5a.75.75 0 001.5 0v-3.5z"></path>
+          <path fill-rule="evenodd"
+            d="M8 1.5a6.5 6.5 0 100 13 6.5 6.5 0 000-13zM0 8a8 8 0 1116 0A8 8 0 010 8zm9 3a1 1 0 11-2 0 1 1 0 012 0zm-.25-6.25a.75.75 0 00-1.5 0v3.5a.75.75 0 001.5 0v-3.5z">
+          </path>
         </svg>
         <span>Open Issue</span>
       </a>
       <span id="zoomControls" style="display:none; margin-right: 12px;">
-        <button id="zoomInBtn" class="btn btn-primary" style="padding: 6px 10px; margin-right: 4px; min-width: 0; width: 36px; height: 36px; display: inline-flex; align-items: center; justify-content: center;">
+        <button id="zoomInBtn" class="btn btn-primary"
+          style="padding: 6px 10px; margin-right: 4px; min-width: 0; width: 36px; height: 36px; display: inline-flex; align-items: center; justify-content: center;">
           <span style="font-size: 20px; color: #fff;">&#x2b;</span> <!-- Plus sign for zoom in -->
         </button>
-        <button id="zoomOutBtn" class="btn btn-primary" style="padding: 6px 10px; min-width: 0; width: 36px; height: 36px; display: inline-flex; align-items: center; justify-content: center;">
+        <button id="zoomOutBtn" class="btn btn-primary"
+          style="padding: 6px 10px; min-width: 0; width: 36px; height: 36px; display: inline-flex; align-items: center; justify-content: center;">
           <span style="font-size: 20px; color: #fff;">&#x2212;</span> <!-- Minus sign for zoom out -->
         </button>
       </span>
-      <button id="downloadSvgBtn" class="btn btn-primary" style="display:none; margin-left: 8px;">Download Diagram</button>
-      <button id="downloadHtmlBtn" class="btn btn-primary" style="display:none; margin-left: 8px;">Download as HTML</button>
+      <button id="downloadSvgBtn" class="btn btn-primary" style="display:none; margin-left: 8px;">Download
+        Diagram</button>
+      <button id="downloadHtmlBtn" class="btn btn-primary" style="display:none; margin-left: 8px;">Download as
+        HTML</button>
     </div>
   </div>
   <div class="welcome-box">
     <div class="welcome-notes">
       <h2 class="responsive-heading">
-        <span style="display: inline-block; animation: wave 2s ease-in-out infinite;">👋</span> Welcome to WDT4vRO <span class="version-badge" style="
+        <span style="display: inline-block; animation: wave 2s ease-in-out infinite;">👋</span> Welcome to WDT4vRO <span
+          class="version-badge" style="
           display: inline-block;
           background: linear-gradient(45deg, #007cbb, #00a8e8, #00c9ff, #00a8e8, #007cbb);
           background-size: 300% 300%;
@@ -597,15 +654,31 @@
       </h2>
       <style>
         @keyframes gradientShift {
-          0% { background-position: 0% 50%; }
-          50% { background-position: 100% 50%; }
-          100% { background-position: 0% 50%; }
+          0% {
+            background-position: 0% 50%;
+          }
+
+          50% {
+            background-position: 100% 50%;
+          }
+
+          100% {
+            background-position: 0% 50%;
+          }
         }
+
         @keyframes float {
-          0%, 100% { transform: translateY(0); }
-          50% { transform: translateY(-5px); }
+
+          0%,
+          100% {
+            transform: translateY(0);
+          }
+
+          50% {
+            transform: translateY(-5px);
+          }
         }
-        
+
         /* Responsive heading adjustments */
         @media (min-width: 768px) and (max-width: 1200px) {
           .welcome-notes h2 {
@@ -613,7 +686,7 @@
             margin: 0.4rem 0 1.2rem 0;
           }
         }
-        
+
         @media (max-width: 767px) {
           .welcome-notes h2 {
             font-size: 1.2rem;
@@ -621,7 +694,7 @@
             line-height: 1.35;
           }
         }
-        
+
         @media (max-width: 480px) {
           .welcome-notes h2 {
             font-size: 1.1rem;
@@ -630,14 +703,17 @@
           }
         }
       </style>
-      <p class="welcome-desc">This tool helps you visualize, document, and understand Orchestrator workflows with clarity. Upload your Orchestrator workflow XML and instantly see a diagram that matches the real Orchestrator Workflow designer, complete with icons, arrows, and details for every node.</p>
+      <p class="welcome-desc">This tool helps you visualize, document, and understand Orchestrator workflows with
+        clarity. Upload your Orchestrator workflow XML and instantly see a diagram that matches the real Orchestrator
+        Workflow designer, complete with icons, arrows, and details for every node.</p>
       <ul>
         <li>Converts Workflow XMLs into beautiful SVG diagrams</li>
         <li>Lists all the items and their properties</li>
         <li>Monaco-powered code viewer for scripts</li>
         <li>Download PNGs and HTMLs for quick sharing</li>
       </ul>
-      <p class="welcome-desc"><strong>What's New in v2.0.0:</strong> Enhanced script display, improved workflow item handling, new branding and better support for custom conditions.</p>
+      <p class="welcome-desc"><strong>What's New in v2.0.0:</strong> Enhanced script display, improved workflow item
+        handling, new branding and better support for custom conditions.</p>
       <div class="welcome-actions" style="margin-top: 1.5rem; display: flex; flex-wrap: wrap; gap: 1rem; width: 100%;">
         <label for="fileUpload" class="btn btn-primary" style="margin: 0;">
           Upload Workflow XML
@@ -657,19 +733,22 @@
   <div id="exportArea">
     <div id="graphZoomContainer" style="display:none; width: 100%; height: 100%; overflow: auto;">
       <!-- <div class="dot-bg" style="position: relative;"> -->
-        <div id="graph" style="position: relative; z-index: 1;"></div>
+      <div id="graph" style="position: relative; z-index: 1;"></div>
     </div>
     <div class="details" style="display:none;">
-    <div id="details"></div>
+      <div id="details"></div>
     </div>
   </div>
 
   <!-- Help Modal -->
-  <div id="helpModal" style="display: none; font-family: 'Metropolis', Arial, sans-serif; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.5); z-index: 1000; justify-content: center; align-items: center;">
-    <div style="background: white; padding: 2rem; border-radius: 8px; max-width: 700px; width: 90%; max-height: 80vh; overflow-y: auto; position: relative;">
-      <button id="closeHelp" style="position: absolute; top: 1rem; right: 1rem; background: none; border: none; font-size: 1.5rem; cursor: pointer;">&times;</button>
+  <div id="helpModal"
+    style="display: none; font-family: 'Metropolis', Arial, sans-serif; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.5); z-index: 1000; justify-content: center; align-items: center;">
+    <div
+      style="background: white; padding: 2rem; border-radius: 8px; max-width: 700px; width: 90%; max-height: 80vh; overflow-y: auto; position: relative;">
+      <button id="closeHelp"
+        style="position: absolute; top: 1rem; right: 1rem; background: none; border: none; font-size: 1.5rem; cursor: pointer;">&times;</button>
       <h2 style="margin-top: 0; color: #007cbb;">How to Get Workflow XML</h2>
-      
+
       <div style="margin: 1.5rem 0;">
         <h3 style="color: #007cbb;">Method 1: From Orchestrator Package</h3>
         <ol style="margin-top: 0.5rem; padding-left: 1.2rem;">
@@ -684,7 +763,7 @@
           <li>Upload the file using the "Upload Workflow XML" button</li>
         </ol>
       </div>
-      
+
       <div style="margin: 1.5rem 0;">
         <h3 style="color: #007cbb;">Method 2: From GitHub Repository</h3>
         <ol style="margin-top: 0.5rem; padding-left: 1.2rem;">
@@ -697,7 +776,7 @@
           <li>Upload the saved file using the "Upload Workflow XML" button</li>
         </ol>
       </div>
-      
+
       <div style="margin-top: 2rem; font-size: 0.9em; color: #666; border-top: 1px solid #eee; padding-top: 1rem;">
         <p>Note: Make sure the XML file follows the standard Orchestrator workflow XML format for proper parsing.</p>
       </div>
@@ -709,7 +788,8 @@
   </footer> -->
 
   <!-- Floating Buttons Container -->
-  <div id="floatingButtons" style="position: fixed; right: 30px; bottom: 30px; display: flex; flex-direction: column; gap: 12px; z-index: 99;">
+  <div id="floatingButtons"
+    style="position: fixed; right: 30px; bottom: 30px; display: flex; flex-direction: column; gap: 12px; z-index: 99;">
     <!-- Go to Top Button -->
     <button id="goToTopBtn" title="Go to top" style="
       display: none !important;
@@ -760,41 +840,57 @@
   </div>
 
   <!-- Progress bar container -->
-  <div id="progressContainer" class="progress-block" style="display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: white; padding: 2rem; border-radius: 0.5rem; box-shadow: 0 0 20px rgba(0,0,0,0.2); z-index: 1000; max-width: 90%; width: 400px; text-align: center;">
+  <div id="progressContainer" class="progress-block"
+    style="display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: white; padding: 2rem; border-radius: 0.5rem; box-shadow: 0 0 20px rgba(0,0,0,0.2); z-index: 1000; max-width: 90%; width: 400px; text-align: center;">
     <h3 style="font-family: 'Metropolis', Arial, sans-serif;">Generating HTML File</h3>
     <div class="progress">
       <progress value="0" max="100" class="progress-bar" style="width: 100%;"></progress>
     </div>
-    <div class="progress-status" style="margin-top: 1rem; font-size: 0.9rem; font-family: 'Metropolis', Arial, sans-serif; color: #666;">Preparing download...</div>
+    <div class="progress-status"
+      style="margin-top: 1rem; font-size: 0.9rem; font-family: 'Metropolis', Arial, sans-serif; color: #666;">Preparing
+      download...</div>
   </div>
-  <div id="overlay" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 999;"></div>
+  <div id="overlay"
+    style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 999;">
+  </div>
 
   <div class="tools-section" style="max-width: 1200px; margin: 40px auto; padding: 0 20px;">
     <h2 style="color: #007cbb; text-align: center; margin-bottom: 25px; font-size: 24px;">Other Helpful Tools</h2>
-    <div style="display: flex; flex-wrap: nowrap; gap: 20px; justify-content: center; overflow-x: auto; padding-bottom: 10px;">
+    <div
+      style="display: flex; flex-wrap: nowrap; gap: 20px; justify-content: center; overflow-x: auto; padding-bottom: 10px;">
       <!-- VRO Code Editor Resizer -->
-      <div class="tool-card" style="background: white; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); padding: 20px; min-width: 300px; flex: 1 1 0;">
+      <div class="tool-card"
+        style="background: white; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); padding: 20px; min-width: 300px; flex: 1 1 0;">
         <h3 style="margin-top: 0; color: #2c3e50;">vRO Code Editor Resizer</h3>
-        <p style="color: #555; line-height: 1.5;">A Chrome extension that enhances the vRO code editor with resizable panels and improved usability.</p>
-        <a href="https://chromewebstore.google.com/detail/vro-code-editor-resizer/gbgologffcmhapnjimcpipiljeaadgpf" target="_blank" style="display: inline-block; margin-top: 10px; color: #007cbb; text-decoration: none; font-weight: 500;">
+        <p style="color: #555; line-height: 1.5;">A Chrome extension that enhances the vRO code editor with resizable
+          panels and improved usability.</p>
+        <a href="https://chromewebstore.google.com/detail/vro-code-editor-resizer/gbgologffcmhapnjimcpipiljeaadgpf"
+          target="_blank"
+          style="display: inline-block; margin-top: 10px; color: #007cbb; text-decoration: none; font-weight: 500;">
           Get the Extension →
         </a>
       </div>
 
       <!-- vRO Documentation Generator -->
-      <div class="tool-card" style="background: white; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); padding: 20px; min-width: 300px; flex: 1 1 0;">
+      <div class="tool-card"
+        style="background: white; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); padding: 20px; min-width: 300px; flex: 1 1 0;">
         <h3 style="margin-top: 0; color: #2c3e50;">vRODoc - vRO JSDoc HTML Generator </h3>
-        <p style="color: #555; line-height: 1.5;">Generate comprehensive JSDoc HTMLs for your vRO actions automatically.</p>
-        <a href="https://cloudblogger.co.in/2025/04/29/vrodoc/" target="_blank" style="display: inline-block; margin-top: 10px; color: #007cbb; text-decoration: none; font-weight: 500;">
+        <p style="color: #555; line-height: 1.5;">Generate comprehensive JSDoc HTMLs for your vRO actions automatically.
+        </p>
+        <a href="https://cloudblogger.co.in/2025/04/29/vrodoc/" target="_blank"
+          style="display: inline-block; margin-top: 10px; color: #007cbb; text-decoration: none; font-weight: 500;">
           Learn More →
         </a>
       </div>
 
       <!-- cURL to vRO -->
-      <div class="tool-card" style="background: white; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); padding: 20px; min-width: 300px; flex: 1 1 0;">
+      <div class="tool-card"
+        style="background: white; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); padding: 20px; min-width: 300px; flex: 1 1 0;">
         <h3 style="margin-top: 0; color: #2c3e50;">cURL to vRO</h3>
-        <p style="color: #555; line-height: 1.5;">Convert cURL commands to vRO REST API calls with this handy online tool.</p>
-        <a href="https://curl2vro.vercel.app/" target="_blank" style="display: inline-block; margin-top: 10px; color: #007cbb; text-decoration: none; font-weight: 500;">
+        <p style="color: #555; line-height: 1.5;">Convert cURL commands to vRO REST API calls with this handy online
+          tool.</p>
+        <a href="https://curl2vro.vercel.app/" target="_blank"
+          style="display: inline-block; margin-top: 10px; color: #007cbb; text-decoration: none; font-weight: 500;">
           Try it Now →
         </a>
       </div>
@@ -803,25 +899,25 @@
 
   <script>
     // Help modal functionality
-    document.addEventListener('DOMContentLoaded', function() {
+    document.addEventListener('DOMContentLoaded', function () {
       const helpBtn = document.getElementById('helpBtn');
       const helpModal = document.getElementById('helpModal');
       const closeHelp = document.getElementById('closeHelp');
-      
+
       if (helpBtn && helpModal) {
-        helpBtn.addEventListener('click', function() {
+        helpBtn.addEventListener('click', function () {
           helpModal.style.display = 'flex';
         });
       }
-      
+
       if (closeHelp) {
-        closeHelp.addEventListener('click', function() {
+        closeHelp.addEventListener('click', function () {
           helpModal.style.display = 'none';
         });
       }
-      
+
       // Close modal when clicking outside the content
-      window.addEventListener('click', function(event) {
+      window.addEventListener('click', function (event) {
         if (event.target === helpModal) {
           helpModal.style.display = 'none';
         }
@@ -829,25 +925,31 @@
     });
 
     // Floating buttons functionality
-    document.addEventListener('DOMContentLoaded', function() {
+    document.addEventListener('DOMContentLoaded', function () {
       const goToTopBtn = document.getElementById('goToTopBtn');
       const homeBtn = document.getElementById('homeBtn');
       let isWorkflowLoaded = false;
 
       // Function to show/hide workflow-related UI elements
-      window.toggleWorkflowUI = function(show) {
+      window.toggleWorkflowUI = function (show) {
         isWorkflowLoaded = show;
-        
+
         // Show/hide the home button (always visible when workflow is loaded)
         if (homeBtn) {
           homeBtn.style.display = show ? 'flex' : 'none';
         }
-        
+
+        // Show/hide tools section
+        const toolsSection = document.querySelector('.tools-section');
+        if (toolsSection) {
+          toolsSection.style.display = show ? 'none' : '';
+        }
+
         // Show/hide GitHub, Documentation, and Open Issue buttons
         const githubLink = document.querySelector('a[href*="github.com"]:not(.open-issue-btn)');
         const docBtn = document.querySelector('a[href*="cloudblogger"]');
         const openIssueBtn = document.querySelector('.open-issue-btn');
-        
+
         if (githubLink) {
           githubLink.style.display = show ? 'none' : 'inline-flex';
         }
@@ -857,7 +959,7 @@
         if (openIssueBtn) {
           openIssueBtn.style.display = show ? 'none' : 'inline-flex';
         }
-        
+
         // Show/hide the go-to-top button based on scroll position
         if (goToTopBtn) {
           if (show) {
@@ -867,14 +969,14 @@
           }
         }
       };
-      
+
       // Show/hide button on scroll (only if workflow is loaded)
-      window.onscroll = function() {
+      window.onscroll = function () {
         if (!isWorkflowLoaded) {
           if (goToTopBtn) goToTopBtn.style.display = 'none';
           return;
         }
-        
+
         if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
           if (goToTopBtn) {
             goToTopBtn.style.display = 'flex';
@@ -886,39 +988,39 @@
           }
         }
       };
-      
+
       // Scroll to top when button is clicked
       if (goToTopBtn) {
-        goToTopBtn.addEventListener('click', function() {
+        goToTopBtn.addEventListener('click', function () {
           window.scrollTo({
             top: 0,
             behavior: 'smooth'
           });
         });
       }
-      
+
       // Handle home button click
       if (homeBtn) {
-        homeBtn.addEventListener('click', function() {
+        homeBtn.addEventListener('click', function () {
           // Show welcome screen and hide workflow view
           document.querySelector('.welcome-box').style.display = '';
           document.getElementById('graphZoomContainer').style.display = 'none';
           document.querySelector('.details').style.display = 'none';
-          
+
           // Hide download buttons when returning to welcome screen
           const downloadButtons = ['downloadSvgBtn', 'downloadHtmlBtn'];
           downloadButtons.forEach(btnId => {
             const btn = document.getElementById(btnId);
             if (btn) btn.style.display = 'none';
           });
-          
+
           // Hide zoom controls when returning to welcome screen
           const zoomControls = document.getElementById('zoomControls');
           if (zoomControls) zoomControls.style.display = 'none';
-          
+
           // Hide floating buttons
           window.toggleWorkflowUI(false);
-          
+
           // Reset file input
           const fileInput = document.getElementById('fileUpload');
           if (fileInput) fileInput.value = '';
@@ -967,7 +1069,7 @@
     const colorMapping = {
       "task": "#4CAF50",
       "scriptable-task": "#4CAF50",
-      "action": "#4CAF50", 
+      "action": "#4CAF50",
       "condition": "#FF9800",
       "decision": "#FF9800",
       "end": "#F44336",
@@ -980,18 +1082,18 @@
     function getIconForNode(item) {
       const itemName = item.getAttribute("name");
       console.log('getIconForNode called for item:', itemName, 'node type:', item.nodeName);
-      
+
       const type = item.getAttribute("type");
       const prototypeId = item.getAttribute("prototype-id");
       const scriptModule = item.getAttribute("script-module");
-      
+
       console.log('Item attributes:', {
         name: itemName,
         type: type,
         prototypeId: prototypeId,
         scriptModule: scriptModule
       });
-      
+
       // Special case: End node with end-mode="1" should use exception icon
       if (type === "end" && item.getAttribute("end-mode") === "1") {
         return "icons/exception.svg";
@@ -1004,15 +1106,15 @@
         // 2. Must have out-binding with type="WorkflowToken" and name="wfToken"
         const hasLaunchedWorkflowId = item.hasAttribute("launched-workflow-id");
         const outBinds = item.getElementsByTagName("out-binding")[0]?.getElementsByTagName("bind") || [];
-        
-        const hasCorrectWorkflowToken = Array.from(outBinds).some(bind => 
-          bind.getAttribute("type") === "WorkflowToken" && 
+
+        const hasCorrectWorkflowToken = Array.from(outBinds).some(bind =>
+          bind.getAttribute("type") === "WorkflowToken" &&
           bind.getAttribute("name") === "wfToken"
         );
-        
+
         // All conditions must be met
         const isAsyncWorkflow = hasLaunchedWorkflowId && hasCorrectWorkflowToken;
-        
+
         if (isAsyncWorkflow) {
           const itemName = item.getAttribute("name");
           console.log(`Async workflow detected for item ${itemName}`, {
@@ -1023,27 +1125,27 @@
           return "icons/workflow-async.svg";
         }
       }
-      
+
       // Special case: Task with script-module should use action icon
       if ((type === "task" || type === "scriptable-task") && (scriptModule || scriptModule === "")) {
         return "icons/action.svg";
       }
-      
+
       // Special case: Schedule workflow - check for both task and scriptable-task types
       if (type === "task" || type === "scriptable-task") {
         const itemName = item.getAttribute("name");
         const displayName = item.getElementsByTagName("display-name")[0]?.textContent;
-        
+
         // Get bindings
         const inBinds = item.getElementsByTagName("in-binding")[0]?.getElementsByTagName("bind") || [];
         const outBinds = item.getElementsByTagName("out-binding")[0]?.getElementsByTagName("bind") || [];
-        
+
         // Log details for debugging
         console.log(`Checking schedule workflow for item: ${itemName} (${displayName || 'no display name'})`);
-        
+
         let hasScheduleInput = false;
         let hasScheduleOutput = false;
-        
+
         // Check for workflowScheduleDate in input bindings
         for (let bind of inBinds) {
           if (bind.getAttribute("name") === "workflowScheduleDate") {
@@ -1051,7 +1153,7 @@
             break;
           }
         }
-        
+
         // Check for scheduledTask in output bindings
         for (let bind of outBinds) {
           if (bind.getAttribute("name") === "scheduledTask") {
@@ -1059,14 +1161,14 @@
             break;
           }
         }
-        
+
         // If both required bindings are present, it's a schedule workflow
         if (hasScheduleInput && hasScheduleOutput) {
           console.log(`Schedule workflow detected for item ${itemName} (${displayName || 'no display name'})`);
-          console.log('Found schedule workflow by bindings:', {itemName, displayName});
+          console.log('Found schedule workflow by bindings:', { itemName, displayName });
           return "icons/workflow-schedule.svg";
         }
-        
+
         // Also check display name as a fallback
         if (displayName && displayName.includes("Schedule")) {
           console.log('Found schedule workflow by display name:', displayName);
@@ -1157,12 +1259,12 @@
       const nodeHeight = 100;
       const horizontalSpacing = 180;
       const verticalSpacing = 150;
-      
+
       workflowItems.forEach((item, index) => {
         const name = item.getAttribute("name");
         const row = Math.floor(index / 4);
         const col = index % 4;
-        
+
         positions[name] = {
           x: col * horizontalSpacing + 60,
           y: row * verticalSpacing + 60,
@@ -1170,7 +1272,7 @@
           height: nodeHeight
         };
       });
-      
+
       return positions;
     }
     // Function to create arrow path between two points (center to center)
@@ -1188,14 +1290,14 @@
       const startY = y1 - verticalOffset + unitY * (nodeHeight / 2);
       const endX = x2 - unitX * (nodeWidth / 2);
       const endY = y2 - verticalOffset - unitY * (nodeHeight / 2);
-      
+
       // For dotted arrows, create a dashed line
       if (isDotted) {
         const dashLength = 4;
         const gapLength = 4;
         const totalLength = Math.sqrt((endX - startX) ** 2 + (endY - startY) ** 2);
         const numDashes = Math.floor(totalLength / (dashLength + gapLength));
-        
+
         let path = `M${startX},${startY}`;
         for (let i = 0; i < numDashes; i++) {
           const t = i / numDashes;
@@ -1210,7 +1312,7 @@
         }
         return path;
       }
-      
+
       return `M${startX},${startY} L${endX},${endY}`;
     }
 
@@ -1227,7 +1329,7 @@
       if (existingHeader) {
         existingHeader.remove();
       }
-      
+
       // Add new workflow name with improved styling
       const detailsContainer = document.querySelector('.details');
       const detailsHeader = document.createElement('h1');
@@ -1255,7 +1357,7 @@
       }
       // showMessage('Processing workflow...', 'success');
       const reader = new FileReader();
-      reader.onload = function(event) {
+      reader.onload = function (event) {
         try {
           const workflowXML = event.target.result;
           const parser = new DOMParser();
@@ -1281,11 +1383,11 @@
               // Check if this is an async workflow task before converting
               const hasLaunchedWorkflowId = item.hasAttribute("launched-workflow-id");
               const outBinds = item.getElementsByTagName("out-binding")[0]?.getElementsByTagName("bind") || [];
-              const hasCorrectWorkflowToken = Array.from(outBinds).some(bind => 
-                bind.getAttribute("type") === "WorkflowToken" && 
+              const hasCorrectWorkflowToken = Array.from(outBinds).some(bind =>
+                bind.getAttribute("type") === "WorkflowToken" &&
                 bind.getAttribute("name") === "wfToken"
               );
-              
+
               // Only convert to scriptable-task if it's not an async workflow
               if (!(hasLaunchedWorkflowId && hasCorrectWorkflowToken)) {
                 item.setAttribute("type", "scriptable-task");
@@ -1401,7 +1503,7 @@
             let type = item.getAttribute("type") || "default";
             let displayName = item.getElementsByTagName("display-name")[0]?.textContent || name;
             console.log(`Diagram - Item: ${name}, Type: ${type}, Initial Display Name: "${displayName}"`);
-            
+
             // Special handling for custom conditions to ensure they're properly displayed
             if (type === "custom-condition") {
               // Use the display name or fall back to the name without the "item" prefix
@@ -1423,7 +1525,7 @@
             const color = colorMapping[type] || colorMapping.default;
             const pos = positions[name];
             let nodeText = displayName;
-            
+
             // For workflow and link types, use display-name if available
             if (type === 'workflow' || type === 'link') {
               const displayNameElement = item.getElementsByTagName('display-name')[0];
@@ -1496,7 +1598,7 @@
             const altOutName = item.getAttribute("alt-out-name");
             const catchName = item.getAttribute("catch-name");
             const type = item.getAttribute("type") || "default";
-            
+
             const fromPos = positions[name];
             const fromX = fromPos.x + fromPos.width / 2;
             const fromY = fromPos.y + fromPos.height / 2;
@@ -1505,12 +1607,12 @@
               const toPos = positions[outName];
               const toX = toPos.x + toPos.width / 2;
               const toY = toPos.y + toPos.height / 2;
-              
+
               const isDecision = type === "condition" || type === "decision" || type === "custom-condition" || type === "decision-activity";
               const arrowColor = isDecision ? "green" : "#0079ad";
               const markerId = isDecision ? "arrow-green" : "arrow";
               const pathData = createArrowPath(fromX, fromY, toX, toY);
-              
+
               if (pathData) {
                 svgContent += `
                 <path d="${pathData}" stroke="${arrowColor}" stroke-width="1.5" fill="none" marker-end="url(#${markerId})"/>`;
@@ -1521,9 +1623,9 @@
               const toPos = positions[altOutName];
               const toX = toPos.x + toPos.width / 2;
               const toY = toPos.y + toPos.height / 2;
-              
+
               const pathData = createArrowPath(fromX, fromY, toX, toY);
-              
+
               if (pathData) {
                 svgContent += `
                 <path d="${pathData}" stroke="red" stroke-width="2" stroke-dasharray="5,5" fill="none" marker-end="url(#arrow-red)"/>`;
@@ -1534,9 +1636,9 @@
               const toPos = positions[catchName];
               const toX = toPos.x + toPos.width / 2;
               const toY = toPos.y + toPos.height / 2;
-              
+
               const pathData = createArrowPath(fromX, fromY, toX, toY);
-              
+
               if (pathData) {
                 svgContent += `
                 <path d="${pathData}" stroke="red" stroke-width="1.5" fill="none" stroke-dasharray="4,4" marker-end="url(#catchArrow)"/>`;
@@ -1562,7 +1664,7 @@
             const rootPos = positions[rootName];
             const startNodeX = rootPos.x - 180;
             const startNodeY = rootPos.y;
-            
+
             // Add start node
             svgContent += `
             <g transform="translate(${startNodeX},${startNodeY})">
@@ -1581,7 +1683,7 @@
               </foreignObject>
             </g>
             `;
-            
+
             // Add arrow from start node to root node
             const fromX = startNodeX + 60;
             const fromY = startNodeY + 50;
@@ -1600,7 +1702,7 @@
           // Hide welcome box, show graph, details, and download buttons
           document.querySelector('.welcome-box').style.display = 'none';
           const graphZoomContainer = document.getElementById("graphZoomContainer");
-          
+
           // Show download buttons and zoom controls
           document.getElementById('downloadSvgBtn').style.display = 'inline-block';
           document.getElementById('downloadHtmlBtn').style.display = 'inline-block';
@@ -1610,12 +1712,12 @@
           graphDiv.style.display = '';
           const detailsDiv = document.querySelector('.details');
           detailsDiv.style.display = '';
-          
+
           // Show zoom controls after workflow upload
           const zoomControls = document.getElementById('zoomControls');
           if (zoomControls) zoomControls.style.display = '';
           graphDiv.innerHTML = svgContent;
-          
+
           // Show floating buttons after workflow is processed
           if (window.toggleWorkflowUI) {
             window.toggleWorkflowUI(true);
@@ -1639,23 +1741,23 @@
       };
       reader.readAsText(file);
     });
-    
+
     function updateDetails(xmlDoc, workflowItems, inputs, outputs) {
-          const detailsDiv = document.getElementById("details");
+      const detailsDiv = document.getElementById("details");
       // Clear existing content first
       detailsDiv.innerHTML = '';
-      
+
       // Workflow-level details
-      const workflowInputs = inputs.map(input => 
+      const workflowInputs = inputs.map(input =>
         `<tr><td>${input.getAttribute("name")}</td><td>${input.getAttribute("type")}</td></tr>`
       ).join("") || "<tr><td colspan='2'>No workflow inputs</td></tr>";
-      const workflowOutputs = outputs.map(output => 
+      const workflowOutputs = outputs.map(output =>
         `<tr><td>${output.getAttribute("name")}</td><td>${output.getAttribute("type")}</td></tr>`
       ).join("") || "<tr><td colspan='2'>No workflow outputs</td></tr>";
-          const workflowAttributes = Array.from(xmlDoc.getElementsByTagName("attrib")).map(attr => {
-            const name = attr.getAttribute("name");
-            const type = attr.getAttribute("type");
-            const value = attr.getElementsByTagName("value")[0]?.textContent || "No value";
+      const workflowAttributes = Array.from(xmlDoc.getElementsByTagName("attrib")).map(attr => {
+        const name = attr.getAttribute("name");
+        const type = attr.getAttribute("type");
+        const value = attr.getElementsByTagName("value")[0]?.textContent || "No value";
         return `<tr><td>${name}</td><td>${type}</td><td>${value}</td></tr>`;
       }).join("") || "<tr><td colspan='3'>No workflow attributes</td></tr>";
       // Workflow items details (skip end/item0 nodes)
@@ -1665,7 +1767,7 @@
         const type = item.getAttribute("type") || "default";
         const displayName = item.getElementsByTagName("display-name")[0]?.textContent || name;
         console.log(`Item: ${name}, Type: ${type}, Display Name: "${displayName}"`);
-        
+
         // Only exclude end nodes
         const include = type !== "end";
         if (!include) {
@@ -1676,7 +1778,7 @@
         const name = item.getAttribute("name");
         let type = item.getAttribute("type") || "default";
         let displayName = item.getElementsByTagName("display-name")[0]?.textContent || name;
-        
+
         // Special handling for custom conditions to ensure they're properly displayed
         if (type === "custom-condition") {
           // Use the display name or fall back to the name without the "item" prefix
@@ -1690,7 +1792,7 @@
         const scriptElement = item.getElementsByTagName("script")[0];
         const script = scriptElement?.textContent || "";
         const scriptId = `monaco-script-${name}`;
-        
+
         // Debug logging for script content
         console.log(`Item ${name} (${displayName}) script content:`, {
           hasScriptElement: !!scriptElement,
@@ -1711,20 +1813,20 @@
               </tr>
               <tr>
                 <td colspan="2">
-                  ${itemInputs.length > 0 ? 
-                    `<table><tr><th>Name</th><th>Type</th></tr>
-                    ${itemInputs.map(input => 
-                      `<tr><td>${input.getAttribute("name")}</td><td>${input.getAttribute("type")}</td></tr>`
-                    ).join("")}</table>` 
-                    : "No inputs"}
+                  ${itemInputs.length > 0 ?
+            `<table><tr><th>Name</th><th>Type</th></tr>
+                    ${itemInputs.map(input =>
+              `<tr><td>${input.getAttribute("name")}</td><td>${input.getAttribute("type")}</td></tr>`
+            ).join("")}</table>`
+            : "No inputs"}
                 </td>
                 <td colspan="2">
-                  ${itemOutputs.length > 0 ? 
-                    `<table><tr><th>Name</th><th>Type</th></tr>
-                    ${itemOutputs.map(output => 
-                      `<tr><td>${output.getAttribute("name")}</td><td>${output.getAttribute("type")}</td></tr>`
-                    ).join("")}</table>` 
-                    : "No outputs"}
+                  ${itemOutputs.length > 0 ?
+            `<table><tr><th>Name</th><th>Type</th></tr>
+                    ${itemOutputs.map(output =>
+              `<tr><td>${output.getAttribute("name")}</td><td>${output.getAttribute("type")}</td></tr>`
+            ).join("")}</table>`
+            : "No outputs"}
                 </td>
               </tr>
               <tr>
@@ -1773,7 +1875,7 @@
             const type = item.getAttribute("type") || "default";
             const scriptElement = item.getElementsByTagName("script")[0];
             let scriptContent = scriptElement?.textContent || "";
-            
+
             // Special handling for custom conditions
             if (type === "custom-condition") {
               // Get the script content directly from the script element
@@ -1782,27 +1884,27 @@
               // For other types, use the existing logic
               scriptContent = item.getElementsByTagName("script")[0]?.textContent.trim() || "";
             }
-            
+
             console.log(`Initializing Monaco for ${name} (${type}):`, {
               hasScriptElement: !!scriptElement,
               scriptLength: scriptContent.length,
               scriptPreview: scriptContent.substring(0, 50) + (scriptContent.length > 50 ? '...' : '')
             });
-            
+
             if (type === "end") return;
-            
+
             const scriptId = `monaco-script-${name}`;
             const el = document.getElementById(scriptId);
             if (!el) {
               console.log(`Element not found for script ID: ${scriptId}`);
               return;
             }
-            
+
             if (!scriptContent) {
               el.innerHTML = '<div class="no-script">No script available</div>';
               return;
             }
-            
+
             const lineCount = scriptContent.split('\n').length;
             // Calculate height based on line count and average line height
             const avgLineHeight = 18.05; // Average line height in pixels
@@ -1819,7 +1921,7 @@
               lineHeight: 18,
               readOnly: true
             });
-            
+
             el.style.height = `${editorHeight}px`;
           });
         });
@@ -1827,10 +1929,10 @@
     }
 
     // Add click handler to title to return to welcome note view
-    document.addEventListener('DOMContentLoaded', function() {
+    document.addEventListener('DOMContentLoaded', function () {
       const title = document.getElementById('mainTitle');
       if (title) {
-        title.addEventListener('click', function() {
+        title.addEventListener('click', function () {
           // Use the same logic as home button
           const homeBtn = document.getElementById('homeBtn');
           if (homeBtn) homeBtn.click();
@@ -1851,7 +1953,7 @@
       container.style.top = '-9999px';
       container.style.background = 'white';
       container.style.padding = '20px';
-      
+
       // Clone the SVG and its parent to maintain styles
       const svgClone = svgElement.cloneNode(true);
       container.appendChild(svgClone);
@@ -1861,11 +1963,11 @@
       async function convertImagesToDataUrls(element) {
         const images = element.querySelectorAll('image, img');
         const promises = [];
-        
+
         for (const img of images) {
           const src = img.getAttribute('xlink:href') || img.src;
           if (!src) continue;
-          
+
           const promise = new Promise((resolve) => {
             const imgEl = new Image();
             imgEl.crossOrigin = 'Anonymous';
@@ -1893,10 +1995,10 @@
             };
             imgEl.src = src;
           });
-          
+
           promises.push(promise);
         }
-        
+
         return Promise.all(promises);
       }
 
@@ -1950,12 +2052,12 @@
 
         // Create the diagram image
         const diagramDataUrl = await createDiagramImage();
-        
+
         // Add diagram as first page
         const imgProps = pdf.getImageProperties(diagramDataUrl);
         const imgWidth = pageWidth - 40; // Add some margin
         const imgHeight = (imgProps.height * imgWidth) / imgProps.width;
-        
+
         // Add diagram page (landscape)
         pdf.addPage([Math.max(pageWidth, imgWidth + 40), Math.max(pageHeight, imgHeight + 40)], 'l');
         pdf.addImage(diagramDataUrl, 'PNG', 20, 20, imgWidth, imgHeight, undefined, 'FAST');
@@ -1969,24 +2071,24 @@
             allowTaint: true,
             backgroundColor: 'white'
           });
-          
+
           const detailsDataUrl = detailsCanvas.toDataURL('image/png');
           const detailsProps = pdf.getImageProperties(detailsDataUrl);
           const detailsImgWidth = pageWidth - 40; // Add some margin
           const detailsImgHeight = (detailsProps.height * detailsImgWidth) / detailsProps.width;
-          
+
           // Add details pages with pagination if needed
           let heightLeft = detailsImgHeight;
           let position = 20; // Start position
           let pageNum = 1;
-          
+
           pdf.addPage(); // Add a new page for details
-          
+
           while (heightLeft > 0) {
             pdf.addImage(detailsDataUrl, 'PNG', 20, position, detailsImgWidth, detailsImgHeight, undefined, 'FAST');
             heightLeft -= (pageHeight - 40); // Account for margins
             position -= (pageHeight - 40);
-            
+
             if (heightLeft > 0) {
               pdf.addPage();
               pageNum++;
@@ -1994,10 +2096,10 @@
           }
         }
 
-        
+
         // Save the PDF with the workflow name
         pdf.save(`${workflowName}.pdf`);
-        
+
       } catch (error) {
         console.error('Error generating PDF:', error);
         showMessage('Error generating PDF. Please try again.', 'error');
@@ -2008,18 +2110,18 @@
     async function embedIconsInSvg(svgElement) {
       const svgClone = svgElement.cloneNode(true);
       const images = svgClone.querySelectorAll('image, img');
-      
+
       for (const img of images) {
         const src = img.getAttribute('xlink:href') || img.src;
         if (!src) continue;
-        
+
         try {
           const response = await fetch(src);
           if (!response.ok) throw new Error('Failed to fetch image');
-          
+
           const blob = await response.blob();
           const reader = new FileReader();
-          
+
           await new Promise((resolve, reject) => {
             reader.onload = (e) => {
               try {
@@ -2041,19 +2143,19 @@
           console.warn(`Could not embed image: ${src}`, error);
         }
       }
-      
+
       return svgClone;
     }
 
     // Function to embed all SVG icons as data URLs
     async function embedSvgIcons(element) {
       const images = element.querySelectorAll('img[src$=".svg"]');
-      
+
       for (const img of images) {
         try {
           const response = await fetch(img.src);
           if (!response.ok) continue;
-          
+
           const svgText = await response.text();
           const svgDataUrl = `data:image/svg+xml;base64,${btoa(unescape(encodeURIComponent(svgText)))}`;
           img.src = svgDataUrl;
@@ -2093,10 +2195,10 @@
         await new Promise(resolve => setTimeout(resolve, 300)); // Small delay for UI update
         // Clone the document and modify it for saving
         updateProgress(20, 'Cloning document...');
-        
+
         // Create a deep clone of the document but exclude the progress elements
         const doc = document.cloneNode(true);
-        
+
         // Remove UI elements that shouldn't be in the downloaded HTML
         const elementsToRemove = ['progressContainer', 'overlay', 'goToTopBtn', 'homeBtn', 'footer'];
         elementsToRemove.forEach(id => {
@@ -2105,12 +2207,12 @@
             element.parentNode.removeChild(element);
           }
         });
-        
+
         // Remove the top bar, title, and footers
         updateProgress(30, 'Cleaning up content...');
         const topBar = doc.querySelector('.top-bar');
         if (topBar) topBar.remove();
-        
+
         // Remove footer elements
         const footers = doc.querySelectorAll('footer, .footer-note');
         footers.forEach(footer => {
@@ -2118,33 +2220,33 @@
             footer.parentNode.removeChild(footer);
           }
         });
-        
+
         // Embed SVG icons
         updateProgress(50, 'Processing images and icons...');
         await embedSvgIcons(doc);
-        
+
         updateProgress(70, 'Preparing download...');
         // Use the workflow name directly for HTML files
         const fileName = `${workflowName || 'workflow'}.html`;
-        
+
         // Create a blob with the HTML content
         updateProgress(80, 'Generating file...');
         const htmlContent = '<!DOCTYPE html>\n' + doc.documentElement.outerHTML;
         const blob = new Blob([htmlContent], { type: 'text/html;charset=utf-8' });
-        
+
         // Create a download link
         updateProgress(90, 'Creating download link...');
         const link = document.createElement('a');
         const url = URL.createObjectURL(blob);
-        
+
         // Set the download attributes
         link.href = url;
         link.download = fileName;
-        
+
         // Append to body, trigger download, and clean up
         document.body.appendChild(link);
         link.click();
-        
+
         // Clean up and complete
         updateProgress(100, 'Download starting...');
         setTimeout(() => {
@@ -2152,7 +2254,7 @@
           URL.revokeObjectURL(url);
           showProgress(false);
         }, 300);
-        
+
       } catch (error) {
         showProgress(false);
         console.error('Error saving HTML:', error);
@@ -2219,16 +2321,16 @@
         container.style.top = '-9999px';
         container.style.background = 'white';
         container.style.padding = '20px';
-        
+
         // Clone the SVG and its parent to maintain styles
         const svgClone = svgElement.cloneNode(true);
-        
+
         // Ensure the cloned SVG has proper dimensions
         const bbox = svgElement.getBBox();
         svgClone.setAttribute('width', bbox.width);
         svgClone.setAttribute('height', bbox.height);
         svgClone.setAttribute('viewBox', `${bbox.x} ${bbox.y} ${bbox.width} ${bbox.height}`);
-        
+
         container.appendChild(svgClone);
         document.body.appendChild(container);
 
@@ -2236,11 +2338,11 @@
         async function convertImagesToDataUrls(element) {
           const images = element.querySelectorAll('image, img');
           const promises = [];
-          
+
           for (const img of images) {
             const src = img.getAttribute('xlink:href') || img.src;
             if (!src) continue;
-            
+
             const promise = new Promise((resolve) => {
               const imgEl = new Image();
               imgEl.crossOrigin = 'Anonymous';
@@ -2268,10 +2370,10 @@
               };
               imgEl.src = src;
             });
-            
+
             promises.push(promise);
           }
-          
+
           return Promise.all(promises);
         }
 
@@ -2292,7 +2394,7 @@
               clonedSvg.style.display = 'block';
               clonedSvg.style.overflow = 'visible';
             }
-            
+
             // Ensure all foreignObject content is visible
             const foreignObjects = clonedDoc.querySelectorAll('foreignObject');
             foreignObjects.forEach(fo => {
@@ -2308,20 +2410,20 @@
 
         // Convert canvas to PNG
         const pngData = canvas.toDataURL('image/png');
-        
+
         // Create download link
         const link = document.createElement('a');
         link.href = pngData;
         link.download = `${workflowName}.png`;
-        
+
         // Add link to body and trigger click
         document.body.appendChild(link);
         link.click();
-        
+
         // Clean up
         document.body.removeChild(link);
         document.body.removeChild(container);
-        
+
       } catch (error) {
         console.error('Error creating diagram:', error);
         showMessage('Error creating diagram image. Please try again.', 'error');
@@ -2336,7 +2438,7 @@
     const minZoom = 0.2;
     const maxZoom = 3.0;
     const zoomStep = 0.1;
-    document.getElementById('zoomInBtn').addEventListener('click', function() {
+    document.getElementById('zoomInBtn').addEventListener('click', function () {
       const svg = document.querySelector('#graph svg');
       if (currentZoom < maxZoom && svg) {
         currentZoom += zoomStep;
@@ -2344,7 +2446,7 @@
         svg.style.transformOrigin = 'top left';
       }
     });
-    document.getElementById('zoomOutBtn').addEventListener('click', function() {
+    document.getElementById('zoomOutBtn').addEventListener('click', function () {
       const svg = document.querySelector('#graph svg');
       if (currentZoom > minZoom && svg) {
         currentZoom -= zoomStep;
@@ -2358,21 +2460,21 @@
 
       // Find all switch nodes
       const switchNodes = workflowItems.filter(item => item.getAttribute('type') === 'switch');
-      
+
       switchNodes.forEach(switchNode => {
         const switchName = switchNode.getAttribute('name');
         const conditions = switchNode.querySelectorAll('condition');
-        
+
         // Get the default target if specified in the switch node's out-name attribute
         const defaultTarget = switchNode.getAttribute('out-name');
-        
+
         // Process all conditions
         conditions.forEach(condition => {
           const targetName = condition.getAttribute('label');
           if (positions[switchName] && positions[targetName]) {
             const from = positions[switchName];
             const to = positions[targetName];
-            
+
             // Create arrow from switch to target
             const path = createArrowPath(
               from.x + from.width / 2,
@@ -2380,16 +2482,16 @@
               to.x + to.width / 2,
               to.y + to.height / 2
             );
-            
+
             arrows += `<path d="${path}" stroke="#0079ad" stroke-width="1.5" fill="none" marker-end="url(#arrow)" />`;
           }
         });
-        
+
         // Handle default case if it exists and points to a valid target
         if (defaultTarget && defaultTarget !== 'null' && positions[switchName] && positions[defaultTarget]) {
           const from = positions[switchName];
           const to = positions[defaultTarget];
-          
+
           // Create arrow from switch to default target
           const path = createArrowPath(
             from.x + from.width / 2,
@@ -2397,7 +2499,7 @@
             to.x + to.width / 2,
             to.y + to.height / 2
           );
-          
+
           // Use green color for the default case
           arrows += `<path d="${path}" stroke="#4CAF50" stroke-width="1.5" fill="none" marker-end="url(#arrow)" />`;
         }
@@ -2409,23 +2511,25 @@
     const switchArrows = createSwitchArrows(workflowItems, positions);
     console.log('Generated switch arrows:', switchArrows); // Debugging log
   </script>
-  
-  <footer style="font-family: 'Metropolis', Arial, sans-serif; text-align: center; padding: 1rem; margin-top: 2rem; font-size: 0.8rem; color: #666; border-top: 1px solid #eee;">
-    <p>VMware VCF Operations Orchestrator™ is a trademark of Broadcom Inc. This tool is not affiliated with or endorsed by Broadcom Inc. or its subsidiaries.</p>
+
+  <footer
+    style="font-family: 'Metropolis', Arial, sans-serif; text-align: center; padding: 1rem; margin-top: 2rem; font-size: 0.8rem; color: #666; border-top: 1px solid #eee;">
+    <p>VMware VCF Operations Orchestrator™ is a trademark of Broadcom Inc. This tool is not affiliated with or endorsed
+      by Broadcom Inc. or its subsidiaries.</p>
   </footer>
   <script>
     // Mobile menu toggle
-    document.addEventListener('DOMContentLoaded', function() {
+    document.addEventListener('DOMContentLoaded', function () {
       const menuToggle = document.getElementById('menuToggle');
       const topBarActions = document.getElementById('topBarActions');
-      
+
       if (menuToggle && topBarActions) {
-        menuToggle.addEventListener('click', function() {
+        menuToggle.addEventListener('click', function () {
           topBarActions.classList.toggle('mobile-menu-open');
         });
-        
+
         // Close menu when clicking outside
-        document.addEventListener('click', function(event) {
+        document.addEventListener('click', function (event) {
           if (!event.target.closest('#topBarActions') && event.target !== menuToggle) {
             topBarActions.classList.remove('mobile-menu-open');
           }
@@ -2434,4 +2538,5 @@
     });
   </script>
 </body>
+
 </html>
