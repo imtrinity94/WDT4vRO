@@ -403,17 +403,17 @@
     }
 
     .welcome-notes .welcome-desc {
-      font-size: clamp(0.7rem, 1.2vw, 0.8rem);
-      line-height: 1.5;
-      margin: 0 0 0.8rem 0;
+      font-size: 13px;
+      line-height: 1.6;
+      margin: 0 0 1rem 0;
       color: #4a5568;
     }
 
     .welcome-notes ul {
-      font-size: clamp(0.65rem, 1.1vw, 0.75rem);
-      margin: 0 0 1rem 0;
-      padding-left: 1rem;
-      line-height: 1.6;
+      font-size: 13px;
+      margin: 0 0 1.2rem 0;
+      padding-left: 1.2rem;
+      line-height: 1.7;
       color: #4a5568;
     }
 
@@ -544,7 +544,7 @@
 
       .welcome-notes .welcome-desc,
       .welcome-notes ul {
-        font-size: 0.85rem;
+        font-size: 13px;
         line-height: 1.5;
       }
 
@@ -652,7 +652,7 @@
           position: relative;
           animation: gradientShift 3s ease infinite, float 4s ease-in-out infinite;
           text-shadow: 0 0 10px rgba(0, 200, 255, 0.3);
-        ">v2.0.0</span>
+        ">v2.1.0</span>
       </h2>
       <style>
         @keyframes gradientShift {
@@ -712,10 +712,16 @@
         <li>Converts Workflow XMLs into beautiful SVG diagrams</li>
         <li>Lists all the items and their properties</li>
         <li>Monaco-powered code viewer for scripts</li>
+        <li>Download high-quality PDFs for documentation</li>
         <li>Download PNGs and HTMLs for quick sharing</li>
       </ul>
-      <p class="welcome-desc"><strong>What's New in v2.0.0:</strong> Enhanced script display, improved workflow item
-        handling, new branding and better support for custom conditions.</p>
+      <p class="welcome-desc"><strong>What's New in v2.1.0:</strong> Brand new PDF documentation engine, corrected
+        diagram rendering with node icons, and better support for complex vRO 2.0+ workflows.</p>
+      <div
+        style="margin: 1rem 0; padding: 0.8rem 1rem; background-color: #fff4e5; border-left: 4px solid #ffa117; border-radius: 4px; color: #664d03; font-size: 13px; line-height: 1.5;">
+        <strong>⚠️ Production Warning:</strong> For production workflows, always compare the generated PDFs, HTMLs, and
+        PNGs with the actual workflow in <strong>VCF Operations Orchestrator</strong> to ensure 100% accuracy.
+      </div>
       <div class="welcome-actions" style="margin-top: 1.5rem; display: flex; flex-wrap: wrap; gap: 1rem; width: 100%;">
         <label for="fileUpload" class="btn btn-primary" style="margin: 0;">
           Upload Workflow XML
