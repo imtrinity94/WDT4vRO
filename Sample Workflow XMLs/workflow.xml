@@ -1,0 +1,936 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<ns2:workflow xmlns:ns2="http://vmware.com/vco/workflow" root-name="item30" object-name="workflow:name=generic" id="2e3509ed-93d3-49de-b98d-925a186452e0" editor-version="2.0" version="3.0.3" api-version="6.0.0" allowed-operations="vef" restartMode="1" resumeFromFailedMode="0">
+  <display-name>Host Provisioning</display-name>
+  <description>[NO ONAPP_multiUCS] This is a Master workflow for host provisioning and  include Host Deployment as sub workflows and used to Create Provider VDC , update highest hardware version of pvdc ,Update NSX UNICAST , and at last when all is ok then promotes to Tenant Onboard process that is this is uesd to host provisioning. This is a new version that allows multiple Cisco UCS to be used.</description>
+  <error-handler name="item20" throw-bind-name="BMC_ERROR">
+    <position y="65.0" x="50.0"/>
+  </error-handler>
+  <position y="120.0" x="50.0"/>
+  <input>
+    <param name="INVENTORY_CHECK_REQUIRED_BLADES" type="number">
+      <description>Input used to provide required blades</description>
+    </param>
+    <param name="BILLING_ID" type="string">
+      <description>Input used to provide tenant billing id</description>
+    </param>
+    <param name="TENANT_NAME" type="string">
+      <description>Input used to provide tenant name</description>
+    </param>
+    <param name="NEW_TENANT" type="boolean">
+      <description>Input used to check new or existing tenant</description>
+    </param>
+    <param name="INVENTORY_CHECK_DEBUG" type="boolean">
+      <description>Input used to check debug enabled or not in inventry check</description>
+    </param>
+    <param name="USER_NAME" type="string">
+      <description>Input used to provide user name. </description>
+    </param>
+    <param name="SITE_NAME" type="string">
+      <description>Input used to provide site name ie. LIDC, KIDC</description>
+    </param>
+    <param name="BACKUP_NOTIFICATION_EMAIL" type="string">
+      <description>Input used to provide backup notification email address</description>
+    </param>
+    <param name="TENANT_TYPE" type="string">
+      <description>Input used to provide tenant type</description>
+    </param>
+    <param name="ADD_ONLY_BLADES" type="boolean">
+      <description>Input used to check if only blades are required</description>
+    </param>
+    <param name="UniqueID" type="string">
+      <description>Originally should be passed by the WebForm to track the uniqueID run on the webpage</description>
+    </param>
+    <param name="SP_NAMES" type="Array/string"/>
+    <param name="DEPLOY_ORCHESTRATION_MODEL" type="boolean"/>
+    <param name="CUSTOMER_NAME" type="string"/>
+    <param name="IsVPCEnv" type="boolean"/>
+    <param name="BLADE_TYPE_IN" type="string"/>
+    <param name="nsxType" type="string"/>
+    <param name="__tokenName" type="string">
+      <description>Add some description</description>
+    </param>
+  </input>
+  <output>
+    <param name="_arrayOfSPNames" type="Array/string"/>
+    <param name="_vimServer" type="vCloud:VimServer"/>
+    <param name="_pvdcDesciption" type="string"/>
+    <param name="_pvdcEnable" type="boolean"/>
+    <param name="_resourceMoref" type="string"/>
+    <param name="_pvdcName" type="string"/>
+  </output>
+  <attrib name="AUTO_DEPLOY_SP" type="Array/Any">
+    <value encoded="n">[]</value>
+    <description>attribute used to provide UCSM service profiles  </description>
+  </attrib>
+  <attrib name="BMC_ERROR" type="string">
+    <value encoded="n"/>
+    <description>attribute used to parse workflow error to BMC</description>
+  </attrib>
+  <attrib name="NSX_WFUUID" type="string">
+    <value encoded="n"/>
+    <description>attribute used to provide workflow unique  id</description>
+  </attrib>
+  <attrib name="TIER0_STORAGE" type="string" conf-id="9994facf-a18a-409c-ab06-2ea9023dc601" conf-key="TIER0_STORAGE"/>
+  <attrib name="TIER1_STORAGE" type="string" conf-id="9994facf-a18a-409c-ab06-2ea9023dc601" conf-key="TIER1_STORAGE"/>
+  <attrib name="TIER2_STORAGE" type="string" conf-id="9994facf-a18a-409c-ab06-2ea9023dc601" conf-key="TIER2_STORAGE"/>
+  <attrib name="TIER3_STORAGE" type="string" conf-id="9994facf-a18a-409c-ab06-2ea9023dc601" conf-key="TIER3_STORAGE"/>
+  <attrib name="DC" type="string">
+    <value encoded="n"/>
+  </attrib>
+  <attrib name="DC_vCDHOST" type="vCloud:Host">
+    <value encoded="n"/>
+  </attrib>
+  <attrib name="VMW_HOSTS" type="Array/vCloud:VmwHost">
+    <value encoded="n"/>
+    <description>attribute used to provide input to prepare VMW Host</description>
+  </attrib>
+  <attrib name="pVDC_NAME" type="string">
+    <value encoded="n"/>
+    <description>attribute used to provide input to create pVDC</description>
+  </attrib>
+  <attrib name="pVDC_ENABLE" type="boolean">
+    <value encoded="n">false</value>
+    <description>attribute used to provide input to create pVDC</description>
+  </attrib>
+  <attrib name="VIMSERVER" type="vCloud:VimServer">
+    <value encoded="n"/>
+    <description>attribute used to provide vim server input to create pVDC</description>
+  </attrib>
+  <attrib name="RESOURCEPOOL_MOREF" type="string">
+    <value encoded="n"/>
+    <description>attribute used to provide resource moref input to create pVDC</description>
+  </attrib>
+  <attrib name="STORAGE_PROFILES" type="Array/string">
+    <value encoded="n"/>
+    <description>attribute used in provide storage profiles input to create pVDC</description>
+  </attrib>
+  <attrib name="HIGHEST_SUPPORTED_HARDWARE_VERSION" type="string" conf-id="9994facf-a18a-409c-ab06-2ea9023dc601" conf-key="PVDC_HIGHEST_SUPPORTED_HARDWARE_VERSION"/>
+  <attrib name="PROVIDER_VDC" type="vCloud:ProviderVdc">
+    <value encoded="n"/>
+    <description>attribute used to store pVDC output</description>
+  </attrib>
+  <attrib name="DC_DOMAIN" type="string">
+    <value encoded="n"/>
+  </attrib>
+  <attrib name="PRE_VALIDATION_RESULT" type="boolean">
+    <value encoded="n">false</value>
+  </attrib>
+  <attrib name="pVDC_DESCRIPTION" type="string">
+    <value encoded="n"/>
+    <description>attribute used to provide input to create pVDC</description>
+  </attrib>
+  <attrib name="MIN_SUPPORTED_HARDWARE_VERSION" type="string" conf-id="9994facf-a18a-409c-ab06-2ea9023dc601" conf-key="PVDC_MIN_SUPPORTED_HARDWARE_VERSION"/>
+  <attrib name="DC_NSX_VCD_ROOT_USERNAME" type="string" conf-id="2675a89d-326d-4ec2-9471-26382f37c7e5" conf-key="DC_NSX_VCD_ROOT_USERNAME"/>
+  <attrib name="DC_NSX_VCD_PASSWD" type="SecureString" conf-id="2675a89d-326d-4ec2-9471-26382f37c7e5" conf-key="DC_NSX_VCD_PASSWORD"/>
+  <attrib name="DC_NSX_VCD_PUSER" type="string" conf-id="2675a89d-326d-4ec2-9471-26382f37c7e5" conf-key="DC_NSX_VCD_USER"/>
+  <attrib name="WFRM_URL" type="string" conf-id="20253a3b-d62e-4017-8613-54d6fa3fde7e" conf-key="WFRM_URL"/>
+  <attrib name="order_status1" type="string">
+    <value encoded="n">Validation check competed</value>
+  </attrib>
+  <attrib name="percentage1" type="string">
+    <value encoded="n">2</value>
+  </attrib>
+  <attrib name="VCD_HOST_LOCATION" type="string">
+    <value encoded="n">Local</value>
+  </attrib>
+  <attrib name="VDN_SCOPE_BODY" type="ResourceElement">
+    <value encoded="n"><![CDATA[dunes://service.dunes.ch/ResourceElement?id='8e242121-c691-48e5-be70-3d66ca4df6a9'&dunesName='ResourceElement']]></value>
+  </attrib>
+  <attrib name="WF_FAILED_TEMPLATE" type="ResourceElement">
+    <value encoded="n"><![CDATA[dunes://service.dunes.ch/ResourceElement?id='c365768b-c68b-4635-80e3-1034a088aca8'&dunesName='ResourceElement']]></value>
+  </attrib>
+  <attrib name="DC_EMAIL_FROM" type="string" conf-id="016f55cd-8e62-4566-9561-ef4fa769216c" conf-key="DC_EMAIL_FROM"/>
+  <attrib name="DC_SMTPHOST" type="string" conf-id="20253a3b-d62e-4017-8613-54d6fa3fde7e" conf-key="DC_SMTPHOST"/>
+  <attrib name="CLEANUP_FLAG" type="boolean">
+    <value encoded="n">true</value>
+    <description>Input used to check whether tenant rollback is required or not</description>
+  </attrib>
+  <attrib name="dbInsertionResult" type="string">
+    <value encoded="n"/>
+  </attrib>
+  <attrib name="dbQueryResult" type="Array/string">
+    <value encoded="n"/>
+  </attrib>
+  <attrib name="ucsDomain" type="string">
+    <value encoded="n"/>
+  </attrib>
+  <attrib name="BLADE_TYPE" type="string">
+    <value encoded="n"/>
+  </attrib>
+  <workflow-item name="item0" type="end" end-mode="0" comparator="0">
+    <in-binding/>
+    <out-binding/>
+    <position y="65.0" x="2520.0"/>
+  </workflow-item>
+  <workflow-item name="item8" out-name="item2" throw-bind-name="BMC_ERROR" type="task" comparator="0">
+    <display-name>Update NSX UNICAST</display-name>
+    <script encoded="false"><![CDATA[/* global pVDC_NAME:readonly,
+ DC_NSX_VCD_PASSWD:readonly,
+ DC_NSX_VCD_PUSER:readonly,
+ resourceElement:readonly *//
+
+System.log("Starting update NSX unicast script");
+/*
+var DC_NS="pvDC_KIDC_DV_CL_TEN_013";
+var NSX_MANAGER_URL="https://pckidcdvnsxr01.dv.pc.local";
+var DC_NSX_VCD_PUSER="svc_vro";
+var DC_NSX_VCD_PASSWD="92beorhhVU6QKOp2";
+*/
+var vdnScopeRequest = "/api/2.0/vdn/scopes";
+var pvdcName = pVDC_NAME + "-VXLAN-NP";
+var utils = System.getModule("org.telus.xavient.util");
+var vdnScopeResponse = utils.invokeRestOperation("NSX", DC_NSX_VCD_PUSER, DC_NSX_VCD_PASSWD, vdnScopeRequest, "GET", "", "application/xml");
+vdnScopeResponse=vdnScopeResponse.contentAsString;
+var vdnScopeJsonData = System.getModule("com.vmware.library.http-rest").xml2json(vdnScopeResponse);
+var vdnName, vdnID, cpMode, vdnScopeBody = "",vdnScopePutRequest="";
+for each(var scope in vdnScopeJsonData.vdnScopes.vdnScope) {
+    vdnName = scope.name;
+    vdnID = scope.id;
+    cpMode = scope.controlPlaneMode;
+    if (pvdcName == vdnName && cpMode == "MULTICAST_MODE") {
+        if (vdnID) {
+            vdnScopeBody = System.getModule("org.telus.xavient.util").replaceContentofResourceElement(resourceElement,[vdnID,vdnName]);
+            vdnScopePutRequest = "/api/2.0/vdn/scopes/" + vdnID + "/attributes";
+            var vdnScopeResponse=utils.invokeRestOperation("NSX", DC_NSX_VCD_PUSER, DC_NSX_VCD_PASSWD, vdnScopePutRequest, "PUT", vdnScopeBody, "application/xml");
+			if(utils.getHttpOperationStatus(vdnScopeResponse.statusCode)){
+			 System.debug("VdnScope Name: "+vdnName+" changed to UNICAST_MODE.");
+			}
+        } else {
+            System.debug("Unable to retrieve vdnscope id or name");
+        }
+		break;
+    }
+}
+System.sleep(60*1000)
+System.log("Ending update NSX unicast script");
+]]></script>
+    <in-binding>
+      <bind name="pVDC_NAME" type="string" export-name="pVDC_NAME"/>
+      <bind name="DC_NSX_VCD_PASSWD" type="SecureString" export-name="DC_NSX_VCD_PASSWD"/>
+      <bind name="DC_NSX_VCD_PUSER" type="string" export-name="DC_NSX_VCD_PUSER"/>
+      <bind name="resourceElement" type="ResourceElement" export-name="VDN_SCOPE_BODY"/>
+    </in-binding>
+    <out-binding/>
+    <position y="75.0" x="2220.0"/>
+  </workflow-item>
+  <workflow-item name="item6" out-name="item9" throw-bind-name="BMC_ERROR" type="task" comparator="0">
+    <display-name>Prepare input for VMW Host</display-name>
+    <script encoded="false"><![CDATA[System.log("Starting prepare VMW Hosts input script");
+
+var vmwHostArray = [];
+var vmHostName;
+
+try {
+    var vCloudAdminHostExtension = System.getModule("org.telus.xavient.util").getvCloudHostAdminExtension(DC_vCDHOST);
+    if (vCloudAdminHostExtension != null) {
+        var vwmHost = vCloudAdminHostExtension.getVMWHosts();
+        if (vwmHost != null) {
+            for (var index in vwmHost) {
+                for (i in AUTO_DEPLOY_SP) {
+                    vmHostName = AUTO_DEPLOY_SP[i].name + "." + DC_DOMAIN;
+                    vmHostName = vmHostName.toLowerCase();
+                    if (vmHostName == vwmHost[index].name) {
+                        vmwHostArray.push(vwmHost[index]);
+                    }
+                }
+            }
+        } else {
+            System.debug("VMW Hosts not found");
+        }
+    } else {
+        System.debug("vCD Admin extension not found")
+    }
+} catch (ex) {
+    System.debug("Error occurred while getting VMW Hosts. (Reason: " + ex + ")");
+}
+
+if (vmwHostArray.length <= 0) {
+    throw "VMW Host not found";
+}
+
+VMW_HOSTS = vmwHostArray;
+
+//Out Parameters
+_vmwHosts = VMW_HOSTS;
+
+System.log("End prepare VMW Hosts input script");]]></script>
+    <in-binding>
+      <bind name="VMW_HOSTS" type="Array/vCloud:VmwHost" export-name="VMW_HOSTS"/>
+      <bind name="DC_vCDHOST" type="vCloud:Host" export-name="DC_vCDHOST"/>
+      <bind name="DC_DOMAIN" type="string" export-name="DC_DOMAIN"/>
+      <bind name="DC" type="string" export-name="DC"/>
+      <bind name="AUTO_DEPLOY_SP" type="Array/Any" export-name="AUTO_DEPLOY_SP"/>
+    </in-binding>
+    <out-binding>
+      <bind name="VMW_HOSTS" type="Array/vCloud:VmwHost" export-name="VMW_HOSTS"/>
+    </out-binding>
+    <position y="20.0" x="1700.0"/>
+  </workflow-item>
+  <workflow-item name="item9" out-name="item7" throw-bind-name="BMC_ERROR" type="foreach" comparator="0">
+    <display-name>Foreach (Prepare VMW host)</display-name>
+    <in-binding>
+      <bind name="vmwHost" type="Array/vCloud:VmwHost" export-name="*VMW_HOSTS">
+        <description>Input parameter to provide VMW Host</description>
+      </bind>
+      <bind name="username" type="string" export-name="DC_NSX_VCD_ROOT_USERNAME">
+        <description>Input parameter to provide user name</description>
+      </bind>
+      <bind name="password" type="SecureString" export-name="DC_NSX_VCD_PASSWD">
+        <description>Input parameter to provide password</description>
+      </bind>
+    </in-binding>
+    <out-binding/>
+    <description>Prepares or unprepares an ESX host.</description>
+    <reference id="1175af57-7ca3-443f-9ae6-de8a1c62588b" type="Workflow"/>
+    <position y="20.0" x="1830.0"/>
+  </workflow-item>
+  <workflow-item name="item5" out-name="item10" throw-bind-name="BMC_ERROR" type="task" comparator="0">
+    <display-name>Prepare pVDC inputs</display-name>
+    <script encoded="false"><![CDATA[System.log("Starting \"Prepare pVDC Inputs\" script");
+
+var clusterName = "";
+var vCHostName = AUTO_DEPLOY_SP[0].name + '.' + DC_DOMAIN;
+
+DC_vCDHOST = System.getModule("org.telus.vCloud").getvCloudHost(VCD_HOST_LOCATION);
+pVDC_DESCRIPTION = BILLING_ID.toString();
+try {
+    for each(vCenter in VcPlugin.allSdkConnections) {
+        for each(cluster in vCenter.getAllClusterComputeResources()) {
+            for each(var host in cluster.host) {
+                if (host.name.toLowerCase() == vCHostName.toLowerCase()) {
+                    clusterName = cluster.name;
+                    RESOURCEPOOL_MOREF = cluster.resourcePool.moref.value;
+					System.debug("For cluster ("+clusterName+"), selected respool moref is "+RESOURCEPOOL_MOREF);
+					break;
+                }
+            }
+        }
+    }
+} catch (ex) {
+    throw ("Error occurred while getting cluster compute resources. (Reason: " + ex + ")");
+}
+
+try {
+    var vCloudAdminHostExtension = System.getModule("org.telus.xavient.util").getvCloudHostAdminExtension(DC_vCDHOST);
+    if (vCloudAdminHostExtension != null) {
+        var vimServers = vCloudAdminHostExtension.getVimServers();
+        if (vimServers != null) {
+            for (var index in vimServers) {
+                VIMSERVER = vimServers[index];
+              	break;
+            }
+        } else {
+            System.error("VIM Servers not found");
+        }
+    } else {
+        System.error("vCD Admin host extension not found");
+    }
+} catch (ex) {
+    System.error("Error occurred while getting VIM Servers. (Reason: " + ex + ")");
+}
+
+if (clusterName) {
+    pVDC_NAME = "pvDC_" + clusterName;
+} else {
+    throw "Cluster not found"
+}
+
+if (!VIMSERVER) {
+    throw "VIM Server not found";
+}
+
+if (!RESOURCEPOOL_MOREF) {
+    throw "Resource pool moref not found";
+}
+
+//
+var arraytomatch = new Array();
+arraytomatch = SP_NAMES;
+_STORAGE_PROFILES = VIMSERVER.getStorageProfiles();
+var arrayOfSPNames = [];
+for each(var sp in _STORAGE_PROFILES) {
+	if(!sp.dataStoreRefs)
+		throw "Could find vSphere ("+VIMSERVER.name+") datastore which is supporting this Storage Profile "+sp.name+". Cannot Proceed!"
+    if (arraytomatch.indexOf(sp.name) != -1) {
+        arrayOfSPNames.push(sp.name);
+        System.log(sp.name);
+    }
+}
+if (arraytomatch.length > arrayOfSPNames.length)
+    throw "Some Storage Profiles are missing in " + VIMSERVER.name + ". Cannot Proceed!";
+else System.log("All Storage Profiles are available in VIM Server " + VIMSERVER.name);
+
+STORAGE_PROFILES = arrayOfSPNames;
+pVDC_ENABLE = true;
+
+//Out Parameters
+_arrayOfSPNames = STORAGE_PROFILES;
+_pvdcDesciption = pVDC_DESCRIPTION;
+_pvdcEnable = pVDC_ENABLE;
+_vimServer = VIMSERVER;
+_resourceMoref  = RESOURCEPOOL_MOREF;
+_pvdcName = pVDC_NAME;
+
+System.log("Ended \"Prepare pVDC Inputs\" script");]]></script>
+    <in-binding>
+      <bind name="TIER3_STORAGE" type="string" export-name="TIER3_STORAGE"/>
+      <bind name="TIER2_STORAGE" type="string" export-name="TIER2_STORAGE"/>
+      <bind name="TIER1_STORAGE" type="string" export-name="TIER1_STORAGE"/>
+      <bind name="TIER0_STORAGE" type="string" export-name="TIER0_STORAGE"/>
+      <bind name="DC_vCDHOST" type="vCloud:Host" export-name="DC_vCDHOST"/>
+      <bind name="DC_DOMAIN" type="string" export-name="DC_DOMAIN"/>
+      <bind name="DC" type="string" export-name="DC"/>
+      <bind name="AUTO_DEPLOY_SP" type="Array/Any" export-name="AUTO_DEPLOY_SP"/>
+      <bind name="BILLING_ID" type="string" export-name="BILLING_ID"/>
+      <bind name="VCD_HOST_LOCATION" type="string" export-name="VCD_HOST_LOCATION"/>
+      <bind name="SP_NAMES" type="Array/string" export-name="SP_NAMES"/>
+    </in-binding>
+    <out-binding>
+      <bind name="pVDC_NAME" type="string" export-name="pVDC_NAME"/>
+      <bind name="pVDC_ENABLE" type="boolean" export-name="pVDC_ENABLE"/>
+      <bind name="VIMSERVER" type="vCloud:VimServer" export-name="VIMSERVER"/>
+      <bind name="RESOURCEPOOL_MOREF" type="string" export-name="RESOURCEPOOL_MOREF"/>
+      <bind name="STORAGE_PROFILES" type="Array/string" export-name="STORAGE_PROFILES"/>
+      <bind name="PROVIDER_VDC" type="vCloud:ProviderVdc" export-name="PROVIDER_VDC"/>
+      <bind name="DC_vCDHOST" type="vCloud:Host" export-name="DC_vCDHOST"/>
+      <bind name="pVDC_DESCRIPTION" type="string" export-name="pVDC_DESCRIPTION"/>
+      <bind name="_arrayOfSPNames" type="Array/string" export-name="_arrayOfSPNames"/>
+      <bind name="_vimServer" type="vCloud:VimServer" export-name="_vimServer"/>
+      <bind name="_pvdcDesciption" type="string" export-name="_pvdcDesciption"/>
+      <bind name="_pvdcEnable" type="boolean" export-name="_pvdcEnable"/>
+      <bind name="_resourceMoref" type="string" export-name="_resourceMoref"/>
+      <bind name="_pvdcName" type="string" export-name="_pvdcName"/>
+    </out-binding>
+    <position y="75.0" x="1310.0"/>
+  </workflow-item>
+  <workflow-item name="item10" out-name="item23" throw-bind-name="BMC_ERROR" type="link" linked-workflow-id="63ab75e3-49ea-46aa-9437-abb6ddd3dcf5" comparator="0">
+    <display-name>Create Provider VDC</display-name>
+    <in-binding>
+      <bind name="host" type="vCloud:Host" export-name="DC_vCDHOST"/>
+      <bind name="name" type="string" export-name="pVDC_NAME"/>
+      <bind name="description" type="string" export-name="pVDC_DESCRIPTION"/>
+      <bind name="enabled" type="boolean" export-name="pVDC_ENABLE"/>
+      <bind name="vimServer" type="vCloud:VimServer" export-name="VIMSERVER"/>
+      <bind name="resourcePoolMoRef" type="string" export-name="RESOURCEPOOL_MOREF"/>
+      <bind name="storageProfiles" type="Array/string" export-name="STORAGE_PROFILES"/>
+      <bind name="highestSupportedHardwareVersion" type="string" export-name="MIN_SUPPORTED_HARDWARE_VERSION"/>
+    </in-binding>
+    <out-binding>
+      <bind name="providerVdcOut" type="vCloud:ProviderVdc" export-name="PROVIDER_VDC"/>
+    </out-binding>
+    <description>Adds a provider vDC to a vCloud Director host.</description>
+    <position y="75.0" x="1440.0"/>
+  </workflow-item>
+  <workflow-item name="item3" out-name="item5" alt-out-name="item17" type="condition" comparator="0">
+    <display-name>Check to add only blades</display-name>
+    <script encoded="false">// Generated by the system, cannot be edited
+return (ADD_ONLY_BLADES === false);</script>
+    <in-binding>
+      <bind name="ADD_ONLY_BLADES" type="boolean" export-name="ADD_ONLY_BLADES"/>
+    </in-binding>
+    <out-binding/>
+    <condition name="ADD_ONLY_BLADES" type="boolean" comparator="1" label="null">false</condition>
+    <position y="120.0" x="1180.0"/>
+  </workflow-item>
+  <workflow-item name="item11" throw-bind-name="BMC_ERROR" type="end" end-mode="1" comparator="0">
+    <in-binding/>
+    <out-binding/>
+    <position y="65.0" x="310.0"/>
+  </workflow-item>
+  <workflow-item name="item4" type="end" end-mode="0" comparator="0">
+    <in-binding/>
+    <out-binding/>
+    <position y="120.0" x="1480.0"/>
+  </workflow-item>
+  <workflow-item name="item7" out-name="item15" throw-bind-name="BMC_ERROR" type="task" comparator="0">
+    <display-name>update pVDC</display-name>
+    <script encoded="false"><![CDATA[System.log("Starting update pVDC ");
+
+var pVDCObject;
+var hostAdmin = DC_vCDHOST.toAdminObject();
+System.sleep(180 * 1000);
+
+var isPVDCExist = false;
+var counter = 0;
+while (counter < 30) {
+    var pvdcs = System.getModule("com.vmware.library.vCloud.operation.admin").getProviderVdcsVCloudHostAdmin(hostAdmin);
+    for each(pvdc in pvdcs) {
+        if (pvdc.name == pVDC_NAME) {
+            pVDCObject = pvdc;
+            System.debug("pVDC found successfully");
+			var order_status = 'pVDC found successfully';
+			var percentage = '75';
+			System.getModule("org.telus.updatewebstatus").updateWebRequest(UniqueID,WFRM_URL,order_status,percentage) ;
+            isPVDCExist = true;
+            break;
+        }
+    }
+    if (isPVDCExist == false) {
+        System.debug("pVDC not  found yet, sleeping another 10s'");
+        System.sleep(10 * 1000);
+        counter++;
+    }
+    if (isPVDCExist == true) {
+        counter = 30;
+        break;
+    }
+}
+
+if (pVDCObject != null) {
+    try {
+        System.debug("Setting the hardware version for  " + pVDCObject.name + " with description as " + pVDCObject.description);
+        var vmwPVDC = System.getModule("com.vmware.library.vCloud.operation.admin").toAdminExtensionObjectProviderVdc(pVDCObject);
+        vmwPVDC = System.getModule("com.vmware.library.vCloud.schema.entities.extension").modifyVMWProviderVdc(vmwPVDC, null, null, null, null, pVDCObject.description, HIGHEST_SUPPORTED_HARDWARE_VERSION, null, true, pVDCObject.name, null, null, null, null, null, null);
+        vmwPVDC = System.getModule("com.vmware.library.vCloud.operation.admin.extensions").updateVMWProviderVdc(vmwPVDC);
+        System.sleep(30 * 1000);
+        System.getModule("com.vmware.library.vCloud.operation.admin.extensions").updateInternalStateVMWProviderVdc(vmwPVDC);
+        System.getModule("com.vmware.library.vCloud.operation.admin").updateInternalStateProviderVdc(vmwPVDC);
+        System.debug("Setting highest hardware successfully ");
+    } catch (ex) {
+        System.debug("Setting highest hardware version Failed, Reason: " + ex);
+    }
+} else {
+    System.debug("pVDC not found")
+}
+
+if (pVDCObject != null) {
+    UpdateMetaData(pVDCObject, BILLING_ID);
+}
+
+function UpdateMetaData(pVDC, billingId) {
+    try {
+        var metadata = pVDC.getMetadata();
+
+        var metaDataValue = new VclMetadataStringValue();
+        metaDataValue.value = billingId;
+
+        var abstractValue = new VclAbstractValueObject();
+        abstractValue.setValue(metaDataValue);
+
+        var domainTag = new VclMetadataDomainTag();
+        domainTag.visibility = "PRIVATE";
+        domainTag.value = "SYSTEM";
+
+        var metadataEntry = new VclMetadataEntry();
+        metadataEntry.key = "TELUSCPID";
+        metadataEntry.typedValue = abstractValue;
+        metadataEntry.domain = domainTag;
+
+        metadata.updateTypedEntry(metadataEntry);
+        System.debug("pVDC '" + pVDC.name + "' metadata updated successfully");
+    } catch (ex) {
+        System.debug("Failed to update pVDC metadata. (Reason:" + ex + ")");
+    }
+}
+
+
+System.log("Ending update pVDC ");]]></script>
+    <in-binding>
+      <bind name="HIGHEST_SUPPORTED_HARDWARE_VERSION" type="string" export-name="HIGHEST_SUPPORTED_HARDWARE_VERSION"/>
+      <bind name="pVDC_NAME" type="string" export-name="pVDC_NAME"/>
+      <bind name="DC_vCDHOST" type="vCloud:Host" export-name="DC_vCDHOST"/>
+      <bind name="BILLING_ID" type="string" export-name="BILLING_ID"/>
+      <bind name="UniqueID" type="string" export-name="UniqueID"/>
+      <bind name="WFRM_URL" type="string" export-name="WFRM_URL"/>
+    </in-binding>
+    <out-binding/>
+    <position y="75.0" x="1960.0"/>
+  </workflow-item>
+  <workflow-item name="item14" out-name="item19" throw-bind-name="BMC_ERROR" type="task" comparator="0">
+    <display-name>Check Validation Result</display-name>
+    <script encoded="false">System.log("Starting script check validation result");
+
+System.debug("PRE_VALIDATION_RESULT value in Check Validation Result :"+PRE_VALIDATION_RESULT);
+if(PRE_VALIDATION_RESULT == false){
+	var order_status = encodeURIComponent('ERROR: ' + 'Validation check failed!');
+	var percentage = '100';
+	System.getModule("org.telus.updatewebstatus").updateWebRequest(UniqueID,WFRM_URL,order_status,percentage);
+	throw  "Check validation failed";
+}
+else{
+	System.debug("Check validation passed");
+}
+System.log("Ending script check validation result");</script>
+    <in-binding>
+      <bind name="PRE_VALIDATION_RESULT" type="boolean" export-name="PRE_VALIDATION_RESULT"/>
+      <bind name="UniqueID" type="string" export-name="UniqueID"/>
+      <bind name="WFRM_URL" type="string" export-name="WFRM_URL"/>
+    </in-binding>
+    <out-binding/>
+    <position y="130.0" x="790.0"/>
+  </workflow-item>
+  <workflow-item name="item15" out-name="item8" throw-bind-name="BMC_ERROR" type="task" comparator="0">
+    <display-name>Checking hardware version</display-name>
+    <script encoded="false">System.log("Starting checking hardware version");
+var vCDHostMatched = DC_vCDHOST;
+var listOfVDCS = vCDHostMatched.toAdminObject().toAdminExtensionObject().getVMWProviderVdcs();
+for each(var vdc in listOfVDCS) {
+    if (vdc.name == pVDC_NAME) {
+        System.debug(vdc.name + " has version: " + vdc.highestSupportedHardwareVersion);
+		if(vdc.highestSupportedHardwareVersion!=HIGHEST_SUPPORTED_HARDWARE_VERSION)
+		{
+			System.debug("Failed to set to " + HIGHEST_SUPPORTED_HARDWARE_VERSION );
+		}
+        break;
+    }
+}
+System.log("Ending checking hardware version");</script>
+    <in-binding>
+      <bind name="DC_vCDHOST" type="vCloud:Host" export-name="DC_vCDHOST"/>
+      <bind name="pVDC_NAME" type="string" export-name="pVDC_NAME"/>
+      <bind name="HIGHEST_SUPPORTED_HARDWARE_VERSION" type="string" export-name="HIGHEST_SUPPORTED_HARDWARE_VERSION"/>
+    </in-binding>
+    <out-binding/>
+    <position y="75.0" x="2090.0"/>
+  </workflow-item>
+  <workflow-item name="item17" out-name="item4" throw-bind-name="BMC_ERROR" type="task" comparator="0">
+    <display-name>Update Web Status</display-name>
+    <script encoded="false">	
+var order_status = 'Host(s) added successfully! Operation complete.';
+var percentage = '100';
+System.getModule("org.telus.updatewebstatus").updateWebRequest(UniqueID,WFRM_URL,order_status,percentage);
+</script>
+    <in-binding>
+      <bind name="UniqueID" type="string" export-name="UniqueID"/>
+      <bind name="WFRM_URL" type="string" export-name="WFRM_URL"/>
+    </in-binding>
+    <out-binding/>
+    <position y="130.0" x="1310.0"/>
+  </workflow-item>
+  <workflow-item name="item18" out-name="item29" throw-bind-name="BMC_ERROR" type="task" script-module="org.telus.updatewebstatus/createWebRequest" comparator="0">
+    <display-name>createWebRequest</display-name>
+    <script encoded="false">//Auto generated script, cannot be modified !
+System.getModule("org.telus.updatewebstatus").createWebRequest(UniqueID,WFRM_URL) ;</script>
+    <in-binding>
+      <bind name="UniqueID" type="string" export-name="UniqueID">
+        <description>The UniqueID, passed to vRO by the WebForm server (generated during the form generation)</description>
+      </bind>
+      <bind name="WFRM_URL" type="string" export-name="WFRM_URL">
+        <description>The URL of the WebForm (full path to the WFRM directory)</description>
+      </bind>
+    </in-binding>
+    <out-binding/>
+    <position y="130.0" x="530.0"/>
+  </workflow-item>
+  <workflow-item name="item19" out-name="item28" throw-bind-name="BMC_ERROR" type="task" script-module="org.telus.updatewebstatus/updateWebRequest" comparator="0">
+    <display-name>updateWebRequest</display-name>
+    <script encoded="false">//Auto generated script, cannot be modified !
+System.getModule("org.telus.updatewebstatus").updateWebRequest(UniqueID,WFRM_URL,order_status,percentage) ;</script>
+    <in-binding>
+      <bind name="UniqueID" type="string" export-name="UniqueID">
+        <description>The UniqueID, passed to vRO by the WebForm server (generated during the form generation)</description>
+      </bind>
+      <bind name="WFRM_URL" type="string" export-name="WFRM_URL">
+        <description>The URL of the WebForm (full path to the WFRM directory)</description>
+      </bind>
+      <bind name="order_status" type="string" export-name="order_status1">
+        <description>The current status</description>
+      </bind>
+      <bind name="percentage" type="string" export-name="percentage1">
+        <description>The current %</description>
+      </bind>
+    </in-binding>
+    <out-binding/>
+    <position y="130.0" x="920.0"/>
+  </workflow-item>
+  <workflow-item name="item20" out-name="item11" throw-bind-name="BMC_ERROR" type="task" comparator="0">
+    <display-name>Workflow Failure User Notification</display-name>
+    <script encoded="false">var replacingValue = new Properties();
+replacingValue.put("WF_NAME",workflow.name);
+replacingValue.put("ERROR_CODE",ERROR);
+
+var requesterLogin = Server.getCurrentLdapUser().loginName; 
+System.debug("Login Username: "+requesterLogin); 
+try {  
+	var targetUser = ActiveDirectory.searchExactMatch("User", requesterLogin); 
+} catch (e) {
+	throw "AD Plugin seems to be broken. Reason: "+e;
+} 
+//System.debug("Target User: "+targetUser);  
+if(targetUser[0].getAttribute("mail") !=  null)  {  
+	System.debug("Target AD_User mailId: "+targetUser[0].getAttribute("mail")); 
+	var toAddress = targetUser[0].getAttribute("mail");
+	var subject = "Workflow "+ workflow.name +" failed";
+	System.getModule("org.telus.xavient.util").sendTelusMail(DC_SMTPHOST,subject,DC_EMAIL_FROM,toAddress,WF_FAILED_TEMPLATE,replacingValue);
+}</script>
+    <in-binding>
+      <bind name="DC_EMAIL_FROM" type="string" export-name="DC_EMAIL_FROM"/>
+      <bind name="DC_SMTPHOST" type="string" export-name="DC_SMTPHOST"/>
+      <bind name="ERROR" type="string" export-name="BMC_ERROR"/>
+      <bind name="WF_FAILED_TEMPLATE" type="ResourceElement" export-name="WF_FAILED_TEMPLATE"/>
+    </in-binding>
+    <out-binding/>
+    <position y="80.0" x="140.0"/>
+  </workflow-item>
+  <workflow-item name="item2" out-name="item0" throw-bind-name="BMC_ERROR" type="link" linked-workflow-id="4afaf9d6-897a-48cb-a893-7df4914bc71b" comparator="0">
+    <display-name>Tenant Onboard</display-name>
+    <in-binding>
+      <bind name="TENANT_NAME" type="string" export-name="TENANT_NAME">
+        <description>Input parameter to provide tenant name</description>
+      </bind>
+      <bind name="SITE_NAME" type="string" export-name="SITE_NAME">
+        <description>Input parameter to provide site name</description>
+      </bind>
+      <bind name="BACKUP_NOTIFICATION_EMAIL" type="string" export-name="BACKUP_NOTIFICATION_EMAIL">
+        <description>Input parameter to provide backup notification email address</description>
+      </bind>
+      <bind name="BILLING_ID" type="string" export-name="BILLING_ID">
+        <description>Input parameter to provide billing id</description>
+      </bind>
+      <bind name="NEW_TENANT" type="boolean" export-name="NEW_TENANT">
+        <description>Input parameter to check new or existing tenant</description>
+      </bind>
+      <bind name="TENANT_TYPE" type="string" export-name="TENANT_TYPE">
+        <description>Input parameter to provide tenant type</description>
+      </bind>
+      <bind name="CLEANUP_FLAG" type="boolean" export-name="CLEANUP_FLAG">
+        <description>Input used to check whether tenant rollback is required or not</description>
+      </bind>
+      <bind name="UniqueID" type="string" export-name="UniqueID">
+        <description>Originally should be passed by the WebForm to track the uniqueID run on the webpage</description>
+      </bind>
+      <bind name="DEPLOY_ORCHESTRATION_MODEL" type="boolean" export-name="DEPLOY_ORCHESTRATION_MODEL"/>
+      <bind name="CUSTOMER_NAME" type="string" export-name="CUSTOMER_NAME"/>
+      <bind name="IsVPCEnv" type="boolean" export-name="IsVPCEnv"/>
+    </in-binding>
+    <out-binding>
+      <bind name="dbInsertionResult" type="string" export-name="dbInsertionResult"/>
+    </out-binding>
+    <position y="75.0" x="2350.0"/>
+  </workflow-item>
+  <workflow-item name="item23" out-name="item6" alt-out-name="item25" type="custom-condition" comparator="0">
+    <display-name>check vCloud version</display-name>
+    <script encoded="false"><![CDATA[var DC_vCDHOST = System.getModule("org.telus.vCloud").getvCloudHost(VCD_HOST_LOCATION);
+var api_version = DC_vCDHOST.getApiVersion();
+//System.log(api_version);
+if(api_version < 33.0){
+    return true;
+}
+else{
+    return false;
+}]]></script>
+    <in-binding>
+      <bind name="VCD_HOST_LOCATION" type="string" export-name="VCD_HOST_LOCATION"/>
+    </in-binding>
+    <out-binding/>
+    <description>Custom decision based on a custom script.</description>
+    <position y="65.0" x="1570.0"/>
+  </workflow-item>
+  <workflow-item name="item25" out-name="item7" throw-bind-name="BMC_ERROR" type="task" comparator="0">
+    <display-name>vCloud version details</display-name>
+    <script encoded="false">System.log("vCloud version is 10.0 or above... Skipping Host Preparation");</script>
+    <in-binding/>
+    <out-binding/>
+    <description>Simple task with custom script capability.</description>
+    <position y="75.0" x="1830.0"/>
+  </workflow-item>
+  <workflow-item name="item26" out-name="item27" type="task" script-module="com.telus.utl/getUCS" comparator="0">
+    <display-name>getUCS</display-name>
+    <script encoded="false">//Auto generated script, cannot be modified !
+actionResult = System.getModule("com.telus.utl").getUCS(BLADE_TYPE);
+</script>
+    <in-binding>
+      <bind name="BLADE_TYPE" type="string" export-name="BLADE_TYPE_IN"/>
+    </in-binding>
+    <out-binding>
+      <bind name="actionResult" type="string" export-name="ucsDomain"/>
+    </out-binding>
+    <description>Add a note to the workflow schema.</description>
+    <position y="130.0" x="270.0"/>
+  </workflow-item>
+  <workflow-item name="item27" out-name="item18" type="task" script-module="com.telus.utl/getBLADE_TYPE" comparator="0">
+    <display-name>getBLADE_TYPE</display-name>
+    <script encoded="false">//Auto generated script, cannot be modified !
+actionResult = System.getModule("com.telus.utl").getBLADE_TYPE(BLADE_TYPE);
+</script>
+    <in-binding>
+      <bind name="BLADE_TYPE" type="string" export-name="BLADE_TYPE_IN"/>
+    </in-binding>
+    <out-binding>
+      <bind name="actionResult" type="string" export-name="BLADE_TYPE"/>
+    </out-binding>
+    <description>Add a note to the workflow schema.</description>
+    <position y="130.0" x="400.0"/>
+  </workflow-item>
+  <workflow-item name="item28" out-name="item3" type="link" linked-workflow-id="ce61832f-c6e3-4192-b21e-3110bb983633" comparator="0">
+    <display-name>Host Deployment</display-name>
+    <in-binding>
+      <bind name="BILLING_ID" type="string" export-name="BILLING_ID">
+        <description>Input used to provide BillingID </description>
+      </bind>
+      <bind name="TENANT_NAME" type="string" export-name="TENANT_NAME">
+        <description>Input used to provide Tenant Name </description>
+      </bind>
+      <bind name="NEW_TENANT" type="boolean" export-name="NEW_TENANT">
+        <description>Input used to check whether Tenant is new or existing </description>
+      </bind>
+      <bind name="USE_BMC" type="boolean" export-name="">
+        <description>Input used to check use BMC or not </description>
+      </bind>
+      <bind name="WF_USERNAME" type="string" export-name="USER_NAME">
+        <description>Input used to provide workflow username </description>
+      </bind>
+      <bind name="INVENTORY_CHECK_REQUIRED_BLADES" type="number" export-name="INVENTORY_CHECK_REQUIRED_BLADES">
+        <description>Input used to provide required blades </description>
+      </bind>
+      <bind name="BLADE_TYPE_IN" type="string" export-name="BLADE_TYPE_IN">
+        <description> Input used to list down blade type options </description>
+      </bind>
+      <bind name="INVENTORY_CHECK_DEBUG_BOOL" type="boolean" export-name="">
+        <description>Input used to check debug enabled or not in inventory check </description>
+      </bind>
+      <bind name="UniqueID" type="string" export-name="UniqueID">
+        <description>Originally should be passed by the WebForm to track the uniqueID run on the webpage</description>
+      </bind>
+      <bind name="TENANT_TYPE" type="string" export-name="TENANT_TYPE"/>
+      <bind name="ucs" type="string" export-name=""/>
+      <bind name="nsxType" type="string" export-name="nsxType">
+        <description>NSX-V or NSX-T</description>
+      </bind>
+    </in-binding>
+    <out-binding>
+      <bind name="AUTODEPLOY_SERVICE_PROFILE_RESULT" type="Array/Any" export-name="AUTO_DEPLOY_SP">
+        <description>Output used to store array of UCSM Service Profiles</description>
+      </bind>
+      <bind name="AUTODEPLOY_WFUUID_RESULT" type="string" export-name="NSX_WFUUID">
+        <description>Output used to store Autodeploy workflow uuid </description>
+      </bind>
+      <bind name="dbQueryResult" type="Array/string" export-name="dbQueryResult"/>
+      <bind name="UCS_DOMAIN" type="Any" export-name="">
+        <description>Output used to store UCS Domain fetched from tags</description>
+      </bind>
+      <bind name="INVENTORY_CHECK_DEBUG_VARIABLE" type="Any" export-name="">
+        <description>Output used to store UCS getBlade action result</description>
+      </bind>
+      <bind name="INVENTORY_CHECK_RESULTS" type="Any" export-name="">
+        <description>Output used to store UCS blades information </description>
+      </bind>
+      <bind name="BLADES_LIST" type="Array/Any" export-name="">
+        <description>Output used to store array of UCS blades </description>
+      </bind>
+      <bind name="UCS_DOMAIN_1" type="string" export-name="">
+        <description>Output used to store UCS Domain fetched from tags</description>
+      </bind>
+      <bind name="LOCK_ID_AFTER_INVENTORY_CHECK" type="string" export-name=""/>
+      <bind name="LOCK_USER_AFTER_INVENTORY_CHECK" type="string" export-name=""/>
+      <bind name="UCS_DOMAIN_2" type="string" export-name="">
+        <description>Output used to store UCS Domain fetched from tags</description>
+      </bind>
+      <bind name="actionResult" type="Any" export-name=""/>
+    </out-binding>
+    <description> </description>
+    <position y="130.0" x="1050.0"/>
+  </workflow-item>
+  <workflow-item name="item29" out-name="item14" type="link" linked-workflow-id="e6172a65-4d8a-4fc3-b44e-fc3b45b8c772" comparator="0">
+    <display-name>Tenant specific validation</display-name>
+    <in-binding>
+      <bind name="TENANT_NAME" type="string" export-name="TENANT_NAME">
+        <description>Input parameter to provide tenant name</description>
+      </bind>
+      <bind name="SITE_NAME" type="string" export-name="SITE_NAME">
+        <description>Input parameter to provide site name</description>
+      </bind>
+      <bind name="BACKUP_NOTIFICATION_EMAIL" type="string" export-name="BACKUP_NOTIFICATION_EMAIL">
+        <description>Input parameter to provide backup notification email address</description>
+      </bind>
+      <bind name="BILLING_ID" type="string" export-name="BILLING_ID">
+        <description>Input parameter to provide billing id</description>
+      </bind>
+      <bind name="NEW_TENANT" type="boolean" export-name="NEW_TENANT">
+        <description>Input parameter to check new or existing tenant</description>
+      </bind>
+      <bind name="REQUIRED_BLADES" type="number" export-name="INVENTORY_CHECK_REQUIRED_BLADES">
+        <description>Input parameter to provide number of blades required</description>
+      </bind>
+      <bind name="USE_BMC" type="boolean" export-name="">
+        <description>Input parameter to check use BMC or not</description>
+      </bind>
+      <bind name="ucsDomain" type="string" export-name="ucsDomain"/>
+    </in-binding>
+    <out-binding>
+      <bind name="PRE_VALIDATION_RESULT" type="boolean" export-name="PRE_VALIDATION_RESULT"/>
+    </out-binding>
+    <description> </description>
+    <position y="130.0" x="660.0"/>
+  </workflow-item>
+  <workflow-item name="item30" out-name="item26" type="task" comparator="0">
+    <display-name>Get Environment Variables</display-name>
+    <script encoded="false">System.log("Starting "+System.currentWorkflowItem().getDisplayName()+"  script");
+
+var WFRM_URL = System.getModule("com.telus.utl").varParser(WFRM_URL);
+var DC_SMTPHOST = System.getModule("com.telus.utl").varParser(DC_SMTPHOST);
+var DC_EMAIL_FROM = System.getModule("com.telus.utl").varParser(DC_EMAIL_FROM);
+var DC_DOMAIN = System.getModule("com.telus.utl").getEnv()+'.pc.local';
+var DC = System.getModule("com.telus.utl").getIDC().toUpperCase();
+
+System.log("Ended "+System.currentWorkflowItem().getDisplayName()+"  script");</script>
+    <in-binding>
+      <bind name="WFRM_URL" type="string" export-name="WFRM_URL"/>
+      <bind name="DC_SMTPHOST" type="string" export-name="DC_SMTPHOST"/>
+      <bind name="DC_DOMAIN" type="string" export-name="DC_DOMAIN"/>
+      <bind name="DC" type="string" export-name="DC"/>
+      <bind name="DC_EMAIL_FROM" type="string" export-name="DC_EMAIL_FROM"/>
+    </in-binding>
+    <out-binding>
+      <bind name="WFRM_URL" type="string" export-name="WFRM_URL"/>
+      <bind name="DC_SMTPHOST" type="string" export-name="DC_SMTPHOST"/>
+      <bind name="DC_DOMAIN" type="string" export-name="DC_DOMAIN"/>
+      <bind name="DC_EMAIL_FROM" type="string" export-name="DC_EMAIL_FROM"/>
+    </out-binding>
+    <description>Simple task with custom script capability.</description>
+    <position y="130.0" x="140.0"/>
+  </workflow-item>
+  <presentation>
+    <p-param name="INVENTORY_CHECK_REQUIRED_BLADES">
+      <desc>Input used to provide required blades</desc>
+    </p-param>
+    <p-param name="BILLING_ID">
+      <desc>Input used to provide tenant billing id</desc>
+    </p-param>
+    <p-param name="TENANT_NAME">
+      <desc>Input used to provide tenant name</desc>
+    </p-param>
+    <p-param name="NEW_TENANT">
+      <desc>Input used to check new or existing tenant</desc>
+    </p-param>
+    <p-param name="INVENTORY_CHECK_DEBUG">
+      <desc>Input used to check debug enabled or not in inventry check</desc>
+    </p-param>
+    <p-param name="USER_NAME">
+      <desc>Input used to provide user name. </desc>
+    </p-param>
+    <p-param name="SITE_NAME">
+      <desc>Input used to provide site name ie. LIDC, KIDC</desc>
+    </p-param>
+    <p-param name="BACKUP_NOTIFICATION_EMAIL">
+      <desc>Input used to provide backup notification email address</desc>
+    </p-param>
+    <p-param name="TENANT_TYPE">
+      <desc>Input used to provide tenant type</desc>
+    </p-param>
+    <p-param name="ADD_ONLY_BLADES">
+      <desc>Input used to check if only blades are required</desc>
+    </p-param>
+    <p-param name="UniqueID">
+      <desc>Originally should be passed by the WebForm to track the uniqueID run on the webpage</desc>
+    </p-param>
+    <p-param name="SP_NAMES">
+      <desc>SP_NAMES</desc>
+    </p-param>
+    <p-param name="DEPLOY_ORCHESTRATION_MODEL">
+      <desc>DEPLOY_ORCHESTRATION_MODEL</desc>
+    </p-param>
+    <p-param name="CUSTOMER_NAME">
+      <desc>CUSTOMER_NAME</desc>
+    </p-param>
+    <p-param name="IsVPCEnv">
+      <desc>IsVPCEnv</desc>
+    </p-param>
+    <p-param name="BLADE_TYPE_IN">
+      <desc>BLADE_TYPE_IN</desc>
+    </p-param>
+  </presentation>
+  <workflow-note x="33.0" y="72.0" w="337.0" h="46.0" color="ffc2c2">
+    <description>Exception Handling</description>
+  </workflow-note>
+</ns2:workflow>

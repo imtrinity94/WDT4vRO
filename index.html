@@ -632,6 +632,8 @@
         Diagram</button>
       <button id="downloadHtmlBtn" class="btn btn-primary" style="display:none; margin-left: 8px;">Download as
         HTML</button>
+      <button id="downloadPdfBtn" class="btn btn-primary" style="display:none; margin-left: 8px;">Download as
+        PDF</button>
     </div>
   </div>
   <div class="welcome-box">
@@ -842,7 +844,7 @@
   <!-- Progress bar container -->
   <div id="progressContainer" class="progress-block"
     style="display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: white; padding: 2rem; border-radius: 0.5rem; box-shadow: 0 0 20px rgba(0,0,0,0.2); z-index: 1000; max-width: 90%; width: 400px; text-align: center;">
-    <h3 style="font-family: 'Metropolis', Arial, sans-serif;">Generating HTML File</h3>
+    <h3 id="progressTitle" style="font-family: 'Metropolis', Arial, sans-serif;">Processing...</h3>
     <div class="progress">
       <progress value="0" max="100" class="progress-bar" style="width: 100%;"></progress>
     </div>
@@ -949,6 +951,7 @@
         const githubLink = document.querySelector('a[href*="github.com"]:not(.open-issue-btn)');
         const docBtn = document.querySelector('a[href*="cloudblogger"]');
         const openIssueBtn = document.querySelector('.open-issue-btn');
+        const downloadPdfBtn = document.getElementById('downloadPdfBtn');
 
         if (githubLink) {
           githubLink.style.display = show ? 'none' : 'inline-flex';
@@ -958,6 +961,9 @@
         }
         if (openIssueBtn) {
           openIssueBtn.style.display = show ? 'none' : 'inline-flex';
+        }
+        if (downloadPdfBtn) {
+          downloadPdfBtn.style.display = show ? 'inline-block' : 'none';
         }
 
         // Show/hide the go-to-top button based on scroll position
@@ -1008,7 +1014,7 @@
           document.querySelector('.details').style.display = 'none';
 
           // Hide download buttons when returning to welcome screen
-          const downloadButtons = ['downloadSvgBtn', 'downloadHtmlBtn'];
+          const downloadButtons = ['downloadSvgBtn', 'downloadHtmlBtn', 'downloadPdfBtn'];
           downloadButtons.forEach(btnId => {
             const btn = document.getElementById(btnId);
             if (btn) btn.style.display = 'none';
@@ -1397,10 +1403,24 @@
             }
           });
           // Calculate positions for nodes
-          const positions = calculateNodePositions(workflowItems);
-          // Calculate SVG dimensions
-          const maxX = Math.max(...Object.values(positions).map(p => p.x + p.width));
-          const maxY = Math.max(...Object.values(positions).map(p => p.y + p.height));
+          // Filter out items without valid coordinates (vRO 2.0+ format)
+          const validWorkflowItems = workflowItems.filter(item => {
+            const pos = item.getElementsByTagName("position")[0];
+            return pos && pos.getAttribute("x") !== null && pos.getAttribute("y") !== null;
+          });
+
+          // Calculate positions for nodes
+          const positions = calculateNodePositions(validWorkflowItems);
+
+          // Calculate SVG dimensions with fallbacks
+          let maxX = 800;
+          let maxY = 600;
+
+          if (Object.keys(positions).length > 0) {
+            maxX = Math.max(...Object.values(positions).map(p => p.x + p.width));
+            maxY = Math.max(...Object.values(positions).map(p => p.y + p.height));
+          }
+
           const svgWidth = maxX + 60;
           const svgHeight = maxY + 60;
           // Create SVG with background and foreignObject nodes
@@ -1472,6 +1492,11 @@
           // --- Render nodes ---
           // Add error handler nodes first
           errorHandlerNodes.forEach(eh => {
+            const targetPos = positions[eh.target];
+            if (!targetPos) {
+              console.warn(`Target position for error handler ${eh.name} -> ${eh.target} not found`);
+              return;
+            }
             svgContent += `
             <!-- Error Handler Node: ${eh.name} -->
             <g transform="translate(${eh.pos.x},${eh.pos.y})">
@@ -1498,44 +1523,27 @@
 
           // Add regular workflow nodes
           console.log('=== Processing workflow items for diagram ===');
-          workflowItems.forEach(item => {
+          validWorkflowItems.forEach(item => {
             const name = item.getAttribute("name");
+            const pos = positions[name];
+            if (!pos) return;
+
             let type = item.getAttribute("type") || "default";
             let displayName = item.getElementsByTagName("display-name")[0]?.textContent || name;
-            console.log(`Diagram - Item: ${name}, Type: ${type}, Initial Display Name: "${displayName}"`);
 
-            // Special handling for custom conditions to ensure they're properly displayed
+            // Special handling for custom conditions
             if (type === "custom-condition") {
-              // Use the display name or fall back to the name without the "item" prefix
               displayName = displayName || name.replace(/^item\d+_?/, '');
               if (!displayName && name.startsWith("item")) {
                 displayName = name.replace(/^item(\d+)/, 'Condition $1');
               }
             }
-            // If type is 'link', treat as 'workflow'
-            if (type === 'link') {
-              type = 'workflow';
-              displayName = 'workflow';
-            }
-            // For end nodes, always show 'End' as the label
-            if (type === 'end') {
-              displayName = 'End';
-            }
+            if (type === 'link') type = 'workflow';
+            if (type === 'end') displayName = 'End';
+
             const icon = getIconForNode(item);
-            const color = colorMapping[type] || colorMapping.default;
-            const pos = positions[name];
-            let nodeText = displayName;
-
-            // For workflow and link types, use display-name if available
-            if (type === 'workflow' || type === 'link') {
-              const displayNameElement = item.getElementsByTagName('display-name')[0];
-              if (displayNameElement) {
-                nodeText = displayNameElement.textContent;
-              }
-            }
-
-            // Create a clickable link around each node
             const nodeId = `node-${name}`;
+
             svgContent += `
             <!-- Node: ${name} -->
             <g transform="translate(${pos.x},${pos.y})" class="node-group" data-node-id="${name}">
@@ -1571,90 +1579,57 @@
                          onerror="this.style.display='none'"
                          class="node-icon"/>
                     <div style="margin-top: 5px; font-weight: 700; font-family: 'Metropolis', Arial, sans-serif;" class="node-label">
-                      ${nodeText}
+                      ${displayName}
                     </div>
                   </div>
                 </foreignObject>
               </a>
-              <!-- Add hover and active styles -->
               <style>
-                .node-group:hover .node-highlight {
-                  background: rgba(0, 124, 187, 0.1) !important;
-                }
-                .node-group:active .node-highlight {
-                  background: rgba(0, 124, 187, 0.2) !important;
-                }
-                .node-group:focus .node-highlight {
-                  box-shadow: 0 0 0 2px rgba(0, 124, 187, 0.3);
-                }
+                .node-group:hover .node-highlight { background: rgba(0, 124, 187, 0.1) !important; }
+                .node-group:active .node-highlight { background: rgba(0, 124, 187, 0.2) !important; }
+                .node-group:focus .node-highlight { box-shadow: 0 0 0 2px rgba(0, 124, 187, 0.3); }
               </style>
             </g>`;
           });
 
           // Add connections/arrows
-          workflowItems.forEach(item => {
+          validWorkflowItems.forEach(item => {
             const name = item.getAttribute("name");
+            const fromPos = positions[name];
+            if (!fromPos) return;
+
             const outName = item.getAttribute("out-name");
             const altOutName = item.getAttribute("alt-out-name");
             const catchName = item.getAttribute("catch-name");
             const type = item.getAttribute("type") || "default";
 
-            const fromPos = positions[name];
             const fromX = fromPos.x + fromPos.width / 2;
             const fromY = fromPos.y + fromPos.height / 2;
 
-            if (outName && positions[outName]) {
-              const toPos = positions[outName];
-              const toX = toPos.x + toPos.width / 2;
-              const toY = toPos.y + toPos.height / 2;
+            const drawPath = (toName, color, marker, dash) => {
+              const toPos = positions[toName];
+              if (!toPos) return;
+              const pathData = createArrowPath(fromX, fromY, toPos.x + toPos.width / 2, toPos.y + toPos.height / 2);
+              if (pathData) {
+                svgContent += `<path d="${pathData}" stroke="${color}" stroke-width="${dash ? '2' : '1.5'}" fill="none" ${dash ? `stroke-dasharray="${dash}"` : ''} marker-end="url(#${marker})"/>`;
+              }
+            };
 
+            if (outName) {
               const isDecision = type === "condition" || type === "decision" || type === "custom-condition" || type === "decision-activity";
-              const arrowColor = isDecision ? "green" : "#0079ad";
-              const markerId = isDecision ? "arrow-green" : "arrow";
-              const pathData = createArrowPath(fromX, fromY, toX, toY);
-
-              if (pathData) {
-                svgContent += `
-                <path d="${pathData}" stroke="${arrowColor}" stroke-width="1.5" fill="none" marker-end="url(#${markerId})"/>`;
-              }
+              drawPath(outName, isDecision ? "green" : "#0079ad", isDecision ? "arrow-green" : "arrow");
             }
-
-            if (altOutName && positions[altOutName]) {
-              const toPos = positions[altOutName];
-              const toX = toPos.x + toPos.width / 2;
-              const toY = toPos.y + toPos.height / 2;
-
-              const pathData = createArrowPath(fromX, fromY, toX, toY);
-
-              if (pathData) {
-                svgContent += `
-                <path d="${pathData}" stroke="red" stroke-width="2" stroke-dasharray="5,5" fill="none" marker-end="url(#arrow-red)"/>`;
-              }
-            }
-
-            if (catchName && positions[catchName]) {
-              const toPos = positions[catchName];
-              const toX = toPos.x + toPos.width / 2;
-              const toY = toPos.y + toPos.height / 2;
-
-              const pathData = createArrowPath(fromX, fromY, toX, toY);
-
-              if (pathData) {
-                svgContent += `
-                <path d="${pathData}" stroke="red" stroke-width="1.5" fill="none" stroke-dasharray="4,4" marker-end="url(#catchArrow)"/>`;
-              }
-            }
+            if (altOutName) drawPath(altOutName, "red", "arrow-red", "5,5");
+            if (catchName) drawPath(catchName, "red", "catchArrow", "4,4");
           });
 
           // --- Render error handler arrows ---
           errorHandlerNodes.forEach(eh => {
-            // Draw from center of error handler node to center of target node using createArrowPath
+            const targetPos = positions[eh.target];
+            if (!targetPos) return;
             const fromX = eh.pos.x + eh.pos.width / 2;
             const fromY = eh.pos.y + eh.pos.height / 2;
-            const toPos = positions[eh.target];
-            const toX = toPos.x + toPos.width / 2;
-            const toY = toPos.y + toPos.height / 2;
-            const pathData = createArrowPath(fromX, fromY, toX, toY);
+            const pathData = createArrowPath(fromX, fromY, targetPos.x + targetPos.width / 2, targetPos.y + targetPos.height / 2);
             svgContent += `<path d="${pathData}" stroke="#0079ad" stroke-width="1.5" fill="none" marker-end="url(#arrow)"/>`;
           });
 
@@ -1706,6 +1681,7 @@
           // Show download buttons and zoom controls
           document.getElementById('downloadSvgBtn').style.display = 'inline-block';
           document.getElementById('downloadHtmlBtn').style.display = 'inline-block';
+          document.getElementById('downloadPdfBtn').style.display = 'inline-block';
           document.getElementById('zoomControls').style.display = 'flex';
           graphZoomContainer.style.display = '';
           const graphDiv = document.getElementById("graph");
@@ -1832,7 +1808,7 @@
               <tr>
                 <td colspan="4">
                   <strong>Script:</strong>
-                  ${script ? `<div id="${scriptId}" class="monaco-script" style="height:${script.split('\n').length > 2 ? '300px' : '50px'};border:1px solid #eee;"></div>` : '<div class="no-script">No script content</div>'}
+                  ${script ? `<div id="${scriptId}" class="monaco-script" data-script="${encodeURIComponent(script)}" style="height:${script.split('\n').length > 2 ? '300px' : '50px'};border:1px solid #eee;"></div>` : '<div class="no-script">No script content</div>'}
                 </td>
               </tr>
             </table>
@@ -1942,7 +1918,7 @@
 
     // Function to create a PNG of the diagram
     async function createDiagramImage() {
-      const svgElement = document.querySelector('svg');
+      const svgElement = document.querySelector('#graph svg');
       if (!svgElement) {
         throw new Error('No diagram content found');
       }
@@ -2039,70 +2015,121 @@
     }
 
 
-    // Download as PDF logic
     async function downloadAsPDF() {
       try {
+        const progressTitle = document.getElementById('progressTitle');
+        if (progressTitle) progressTitle.textContent = 'Generating PDF File';
+        showProgress(true);
+        updateProgress(10, 'Preparing PDF generation...');
+
         const { jsPDF } = window.jspdf;
         const detailsContainer = document.querySelector('.details');
 
-        // Create a new jsPDF instance
-        const pdf = new jsPDF('p', 'pt', 'a4');
+        if (!detailsContainer) {
+          throw new Error('Required content not found');
+        }
+
+        // Initialize PDF - Start with Landscape A4 for diagram
+        const pdf = new jsPDF('l', 'pt', 'a4');
         const pageWidth = pdf.internal.pageSize.getWidth();
         const pageHeight = pdf.internal.pageSize.getHeight();
 
-        // Create the diagram image
+        // 1. Add Diagram Page (Landscape)
+        updateProgress(30, 'Capturing workflow diagram...');
+
+        // Use createDiagramImage to ensure icons are converted to Data URLs
         const diagramDataUrl = await createDiagramImage();
 
-        // Add diagram as first page
-        const imgProps = pdf.getImageProperties(diagramDataUrl);
-        const imgWidth = pageWidth - 40; // Add some margin
-        const imgHeight = (imgProps.height * imgWidth) / imgProps.width;
+        const img = new Image();
+        await new Promise((resolve) => {
+          img.onload = resolve;
+          img.src = diagramDataUrl;
+        });
 
-        // Add diagram page (landscape)
-        pdf.addPage([Math.max(pageWidth, imgWidth + 40), Math.max(pageHeight, imgHeight + 40)], 'l');
-        pdf.addImage(diagramDataUrl, 'PNG', 20, 20, imgWidth, imgHeight, undefined, 'FAST');
+        // Calculate scaling to fit diagram on one page with margins
+        const maxW = pageWidth - 80;
+        const maxH = pageHeight - 80;
+        let dWidth = img.width;
+        let dHeight = img.height;
 
-        // Add details pages (portrait)
+        const ratio = Math.min(maxW / dWidth, maxH / dHeight, 1);
+        dWidth *= ratio;
+        dHeight *= ratio;
+
+        // Centering
+        const xOffset = (pageWidth - dWidth) / 2;
+        const yOffset = (pageHeight - dHeight) / 2;
+
+        pdf.addImage(diagramDataUrl, 'PNG', xOffset, yOffset, dWidth, dHeight, undefined, 'FAST');
+
+        // 2. Add Documentation Details
         if (detailsContainer) {
+          updateProgress(60, 'Capturing documentation details...');
+
           const detailsCanvas = await html2canvas(detailsContainer, {
             scale: 2,
             logging: false,
             useCORS: true,
             allowTaint: true,
-            backgroundColor: 'white'
+            backgroundColor: '#ffffff',
+            onclone: (clonedDoc) => {
+              const monacoEditors = clonedDoc.querySelectorAll('.monaco-script');
+              monacoEditors.forEach(editor => {
+                const scriptContent = decodeURIComponent(editor.getAttribute('data-script') || '');
+                if (scriptContent) {
+                  const pre = clonedDoc.createElement('pre');
+                  pre.style.cssText = `margin:0;padding:10px;background:#fdfdfd;color:#333;font-family:monospace;font-size:11px;line-height:1.5;white-space:pre-wrap;word-break:break-all;border:none;height:auto;`;
+                  pre.textContent = scriptContent;
+                  editor.innerHTML = '';
+                  editor.style.height = 'auto';
+                  editor.appendChild(pre);
+                }
+              });
+            }
           });
 
-          const detailsDataUrl = detailsCanvas.toDataURL('image/png');
-          const detailsProps = pdf.getImageProperties(detailsDataUrl);
-          const detailsImgWidth = pageWidth - 40; // Add some margin
-          const detailsImgHeight = (detailsProps.height * detailsImgWidth) / detailsProps.width;
+          updateProgress(80, 'Slicing documentation into pages...');
 
-          // Add details pages with pagination if needed
-          let heightLeft = detailsImgHeight;
-          let position = 20; // Start position
-          let pageNum = 1;
+          const pPageWidth = 595.28; // A4 points
+          const pPageHeight = 841.89;
+          const margin = 40;
+          const contentWidthPt = pPageWidth - (margin * 2);
+          const contentHeightPt = pPageHeight - (margin * 2);
 
-          pdf.addPage(); // Add a new page for details
+          const pxWidth = detailsCanvas.width;
+          const pxHeightPerPage = (contentHeightPt / contentWidthPt) * pxWidth;
+
+          let heightLeft = detailsCanvas.height;
+          let yOffset = 0;
 
           while (heightLeft > 0) {
-            pdf.addImage(detailsDataUrl, 'PNG', 20, position, detailsImgWidth, detailsImgHeight, undefined, 'FAST');
-            heightLeft -= (pageHeight - 40); // Account for margins
-            position -= (pageHeight - 40);
+            const sliceHeight = Math.min(heightLeft, pxHeightPerPage);
+            const tempCanvas = document.createElement('canvas');
+            tempCanvas.width = pxWidth;
+            tempCanvas.height = sliceHeight;
+            const ctx = tempCanvas.getContext('2d');
+            ctx.drawImage(detailsCanvas, 0, yOffset, pxWidth, sliceHeight, 0, 0, pxWidth, sliceHeight);
 
-            if (heightLeft > 0) {
-              pdf.addPage();
-              pageNum++;
-            }
+            pdf.addPage('a4', 'p');
+            const sliceData = tempCanvas.toDataURL('image/png');
+            const pdfSliceHeight = (sliceHeight * contentWidthPt) / pxWidth;
+            pdf.addImage(sliceData, 'PNG', margin, margin, contentWidthPt, pdfSliceHeight, undefined, 'FAST');
+
+            yOffset += sliceHeight;
+            heightLeft -= sliceHeight;
           }
         }
 
+        updateProgress(95, 'Finalizing PDF...');
+        pdf.save(`${workflowName || 'workflow'}.pdf`);
 
-        // Save the PDF with the workflow name
-        pdf.save(`${workflowName}.pdf`);
+        updateProgress(100, 'Done!');
+        setTimeout(() => showProgress(false), 500);
 
       } catch (error) {
+        showProgress(false);
         console.error('Error generating PDF:', error);
-        showMessage('Error generating PDF. Please try again.', 'error');
+        showMessage('Error generating PDF: ' + error.message, 'error');
       }
     }
 
@@ -2189,6 +2216,8 @@
     // Function to download the page as HTML with proper filename and styling
     async function downloadAsHTML() {
       try {
+        const progressTitle = document.getElementById('progressTitle');
+        if (progressTitle) progressTitle.textContent = 'Generating HTML File';
         // Show progress
         showProgress(true);
         updateProgress(10, 'Preparing HTML content...');
@@ -2302,6 +2331,12 @@
       downloadAsHTML().catch(error => {
         console.error('Error in downloadAsHTML:', error);
         showMessage('Failed to generate HTML. Please try again.', 'error');
+      });
+    });
+    document.getElementById('downloadPdfBtn').addEventListener('click', () => {
+      downloadAsPDF().catch(error => {
+        console.error('Error in downloadAsPDF:', error);
+        showMessage('Failed to generate PDF. Please try again.', 'error');
       });
     });
 
