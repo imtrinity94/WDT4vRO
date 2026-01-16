@@ -1,28 +1,32 @@
-# Workflow Documentation Tool for Aria Automation Orchestrator (WDT4vRO) v2.0.0
+# Workflow Documentation Tool for Aria Automation Orchestrator (WDT4vRO) v2.1.0
 
 [![Open in Browser](https://img.shields.io/badge/Open%20in-Browser-4285F4?style=for-the-badge&logo=googlechrome&logoColor=white)](https://wdt4vro.vercel.app/)
-[![Version](https://img.shields.io/badge/version-2.0.0-blue.svg?style=for-the-badge)](https://github.com/imtrinity94/WDT4vRO/releases/tag/v2.0.0)
+[![Version](https://img.shields.io/badge/version-2.1.0-blue.svg?style=for-the-badge)](https://github.com/imtrinity94/WDT4vRO/releases/tag/v2.1.0)
 
 A comprehensive visualization and documentation tool that converts XML-based workflow definitions from VMware VCF Operations Orchestrator (aka Aria Automation Orchestrator or vRealize Orchestrator) into intuitive, interactive diagrams. This tool helps teams understand, document, and maintain complex workflows with ease.
 
 🌐 **Try Online**: [https://wdt4vro.onrender.com/](https://wdt4vro.onrender.com/) or [https://wdt4vro.vercel.app/](https://wdt4vro.vercel.app/)
 
-## 🚀 What's New in v2.0.0
+> [!WARNING]
+> **Production Warning:** For production workflows, always compare the generated PDFs, HTMLs, and PNGs with the actual workflow in **VCF Operations Orchestrator** to ensure 100% accuracy.
 
-- **Enhanced Script Display**
-  - Improved script viewing with syntax highlighting
-  - Better handling of script content in custom conditions
-  - More reliable script extraction from workflow items
+## 🚀 What's New in v2.1.0
 
-- **Improved Workflow Item Handling**
-  - Better support for custom conditions
-  - More accurate display of workflow item properties
-  - Fixed issues with Windows OS condition display
+- **Brand New PDF Documentation Engine**
+  - High-quality, multi-page PDF generation from workflow definitions.
+  - Sliced pagination to prevent content duplication across page breaks.
+  - Centered and scaled workflow diagrams on the first page.
+  - Clean rendering of code blocks (replacing Monaco with readable `<pre>` tags for PDF).
+
+- **Enhanced Diagram Rendering**
+  - Correct rendering of all node icons directly from the internal library.
+  - Improved arrow paths and marker placement.
+  - Better handling of vRO 2.0+ workflows with complex or orphaned nodes.
 
 - **UI/UX Improvements**
-  - Updated welcome screen with version information
-  - Better error handling and user feedback
-  - Improved layout for workflow details
+  - Unified typography for a cleaner first impression.
+  - Dynamic progress reporting during file generation.
+  - Improved layout for workflow details and metadata.
 
 ## Homescreen
 <img width="816" alt="image" src="https://github.com/user-attachments/assets/8041e1e3-3286-4caa-9a84-c87e3e19d801" />
@@ -98,6 +102,7 @@ A comprehensive visualization and documentation tool that converts XML-based wor
 - **Reset View**: Click the home button
 
 ### Export Options
+- **PDF**: Full documentation with diagram and details
 - **PNG**: Download as high-resolution image
 - **HTML**: Self-contained HTML export
 
