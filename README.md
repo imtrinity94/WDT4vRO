@@ -1,3 +1,10 @@
+> [!IMPORTANT]
+> **This project is archived and no longer maintained.** It has been succeeded by **[vRO Peekage](https://vro-peekage.vercel.app/)** ([source](https://github.com/imtrinity94/vRO-Package-Viewer)).
+>
+> vRO Peekage keeps WDT4vRO's Orchestrator-style workflow diagrams and adds much more. Drop in a whole `.package` exported from vRealize Orchestrator 7.x, Aria Automation Orchestrator 8.x or VCF Operations Orchestrator 9.x, and browse every workflow schema, action, script, configuration and resource element, and recorded run. You can then export everything as a report, diagrams and script files.
+>
+> The [WDT4vRO web app](https://wdt4vro.vercel.app/) stays online and keeps working as it is, but it won't receive updates or fixes.
+
 # Workflow Documentation Tool for Aria Automation Orchestrator (WDT4vRO) v2.1.0
 
 [![Open in Browser](https://img.shields.io/badge/Open%20in-Browser-4285F4?style=for-the-badge&logo=googlechrome&logoColor=white)](https://wdt4vro.vercel.app/)
